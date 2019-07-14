@@ -14,18 +14,36 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
           maximus tempus lectus non commodo. 👍 🐶
         </p>
-        <hr />
-        <h3><strong>My Friends</strong></h3>
-        <p>...</p>
+        <?php if ($friends->count()): ?>
+          <hr />
+          <h3><strong>My Friends</strong></h3>
+          <div id="homepage-friends" class="homepage-thumbnail-grid">
+            <?php foreach($friends as $friend): ?>
+              <img src="<?= $friend->url; ?>/profile-photo" />
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
       </div>
+      <?php if ($photos->count()): ?>
       <div class="box">
         <h3><strong>Photos</strong></h3>
-        <p>...</p>
+        <div id="homepage-photos" class="homepage-thumbnail-grid">
+          <?php foreach($photos as $photo): ?>
+            <img src="/media/<?= $photo->thumbnail; ?>" />
+          <?php endforeach; ?>
+        </div>
       </div>
+      <?php endif; ?>
+      <?php if ($videos->count()): ?>
       <div class="box">
         <h3><strong>Videos</strong></h3>
-        <p>...</p>
+        <div id="homepage-videos" class="homepage-thumbnail-grid">
+          <?php foreach($videos as $video): ?>
+            <img src="/media/<?= $video->thumbnail; ?>" />
+          <?php endforeach; ?>
+        </div>
       </div>
+      <?php endif; ?>
     </div>
   </div>
   <div class="column">
@@ -35,6 +53,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
           <div class="media-content">
             <div class="content">
               <h2><?=$post->name;?></h2>
+              <h5><?= $post->created->format('F j, Y \a\t G:i a'); ?></h5>
               <p>
                 <?=nl2br($post->content);?>
               </p>
@@ -43,10 +62,29 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
                   <?php if ($media->thumbnail): ?>
                     <img src="/media/<?=$media->thumbnail;?>" />
                   <?php else: ?>
-
+                    ...
                   <?php endif;?>
                 <?php endforeach;?>
               <?php endif;?>
+              <hr />
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item" aria-label="reply">
+                    <span class="icon is-small">
+                      <i class="fas fa-comment" aria-hidden="true"></i>
+                    </span>
+                    &nbsp;
+                    <?= count($post->comments); ?> Comments
+                  </a>
+                  <a class="level-item" aria-label="retweet">
+                    <span class="icon is-small">
+                      <i class="fas fa-share" aria-hidden="true"></i>
+                    </span>
+                    &nbsp;
+                    Share
+                  </a>
+                </div>
+              </nav>
             </div>
           </div>
         </article>

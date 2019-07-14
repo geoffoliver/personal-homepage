@@ -15,5 +15,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/', ['controller' => 'Homepage', 'action' => 'index']);
 
+    $routes->connect('/hero-background', ['controller' => 'Medias', 'action' => 'heroBackground']);
+    $routes->connect('/profile-photo', ['controller' => 'Medias', 'action' => 'profilePhoto']);
+
     $routes->fallbacks(DashedRoute::class);
 });

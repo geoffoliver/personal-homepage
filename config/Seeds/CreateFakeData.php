@@ -36,6 +36,7 @@ class CreateFakeData extends AbstractSeed
 
         $posts = [];
         $medias = [];
+        $comments = [];
 
         for ($i = 0; $i < 100; $i++) {
             $postId = Text::uuid();
@@ -51,8 +52,9 @@ class CreateFakeData extends AbstractSeed
             ];
 
             if ($i % 2) {
+                $mediaId = Text::uuid();
                 $medias[]= [
-                    'id' => Text::uuid(),
+                    'id' => $mediaId,
                     'post_id' => $postId,
                     'mime' => 'image/jpeg',
                     'thumbnail' => '2019/07/13/dog-thumbnail.jpg',
@@ -62,6 +64,36 @@ class CreateFakeData extends AbstractSeed
                     'created' => $now,
                     'modified' => $now
                 ];
+
+                $maxComments = rand(1, 20);
+                for ($n = 0; $n < $maxComments; $n++) {
+                  $comments[]= [
+                    'id' => Text::uuid(),
+                    'model_id' => $mediaId,
+                    'comment' => $faker->paragraphs(rand(1, 4), true),
+                    'approved' => true,
+                    'public' => true,
+                    'posted_by' => $faker->email,
+                    'display_name' => $faker->name,
+                    'created' => $now,
+                    'modified' => $now
+                  ];
+                }
+            }
+
+            $maxComments = rand(1, 20);
+            for ($n = 0; $n < $maxComments; $n++) {
+              $comments[]= [
+                'id' => Text::uuid(),
+                'model_id' => $postId,
+                'comment' => $faker->paragraphs(rand(1, 4), true),
+                'approved' => true,
+                'public' => true,
+                'posted_by' => $faker->email,
+                'display_name' => $faker->name,
+                'created' => $now,
+                'modified' => $now
+              ];
             }
 
             $posts[]= $post;
@@ -69,5 +101,6 @@ class CreateFakeData extends AbstractSeed
 
         $this->table('posts')->insert($posts)->save();
         $this->table('medias')->insert($medias)->save();
+        $this->table('comments')->insert($comments)->save();
     }
 }

@@ -4,7 +4,45 @@ body {
   background: #f5f5f5;
 }
 
-#hero .hero-body {
-  padding-left: 0;
-  padding-right: 0;
+#hero {
+  margin-bottom: 20px;
+  background-size: cover;
+}
+
+#hero-main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#hero-profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  padding: 3px;
+  background: #fff;
+}
+
+#hero-profile-photo div {
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+#hero-profile-photo img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#hero-copy {
+  padding-left: 25px;
+}
+
+#hero-copy h1,
+#hero-copy h2 {
+  color: #fff;
+}
+
+footer {
+  margin-top: 45px;
 }

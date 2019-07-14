@@ -2,3 +2,19 @@
   position: sticky;
   top: 72px;
 }
+
+#sidebar h3 {
+  margin-bottom: 0.75rem;
+}
+
+.homepage-thumbnail-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.homepage-thumbnail-grid img {
+  margin: 2px;
+  width: 31.8%;
+}

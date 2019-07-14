@@ -49,6 +49,9 @@ class MediasTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('Comments', [
+            'foreignKey' => 'model_id'
+        ]);
     }
 
     /**

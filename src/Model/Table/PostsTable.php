@@ -48,6 +48,9 @@ class PostsTable extends Table
         $this->hasMany('Medias', [
             'foreignKey' => 'post_id'
         ]);
+        $this->hasMany('Comments', [
+            'foreignKey' => 'model_id'
+        ]);
     }
 
     /**

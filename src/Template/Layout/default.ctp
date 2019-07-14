@@ -43,17 +43,26 @@
   <main>
     <div class="container">
       <?php if ($this->fetch('hero')): ?>
-        <section class="hero is-light" id="hero">
+        <section class="hero is-light" id="hero" style="background-image: url('/hero-background');">
           <div class="hero-body">
             <div class="container">
-              <h1 class="title">
-                <?=$this->fetch('hero');?>
-              </h1>
-              <?php if ($this->fetch('hero_subtitle')): ?>
-              <h2 class="subtitle">
-                <?=$this->fetch('hero_subtitle');?>
-              </h2>
-              <?php endif;?>
+              <div id="hero-main">
+                <div id="hero-profile-photo">
+                  <div>
+                    <img src="/profile-photo" />
+                  </div>
+                </div>
+                <div id="hero-copy">
+                  <h1 class="title">
+                    <?=$this->fetch('hero');?>
+                  </h1>
+                  <?php if ($this->fetch('hero_subtitle')): ?>
+                  <h2 class="subtitle">
+                    <?=$this->fetch('hero_subtitle');?>
+                  </h2>
+                  <?php endif;?>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -62,8 +71,13 @@
       <?=$this->fetch('content')?>
     </div>
   </main>
-  <footer>
-    ...
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>My Personal Homepage</strong> by <a href="http://www.plan8studios.com" target="_blank">Plan8 Studios</a>
+        All content, copyright <?= date('Y'); ?> site owner.
+      </p>
+    </div>
   </footer>
 </body>
 </html>
