@@ -25,6 +25,7 @@ without leaving the comfort of your own website.
 
 # Software/Tech Used
 
-- [Cake PHP](https://www.cakephp.org) ([PHP](https://www.php.net) and [MySQL](https://www.mysql.com))
+- [Cake PHP](https://www.cakephp.org)
+- [MySQL](https://www.mysql.com)
 - [FontAwesome](https://www.fontawesome.com)
 - [Bulma](https://bulma.io)
