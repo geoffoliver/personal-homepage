@@ -28,4 +28,5 @@ without leaving the comfort of your own website.
 - [PHP](https://www.php.net)
 - [MySQL](https://www.mysql.com)
 - [Cake PHP](https://www.cakephp.org)
-
+- [FontAwesome](https://www.fontawesome.com)
+- [Bulma](https://bulma.io)
