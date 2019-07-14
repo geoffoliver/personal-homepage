@@ -6,7 +6,9 @@ governments.
 
 # Install
 
-🤷‍
+- Get repo
+- `composer install`
+- Probably some more stuff 🤷‍
 
 # Features
 
