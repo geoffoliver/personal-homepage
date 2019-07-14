@@ -9,14 +9,24 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
   <div class="column is-one-quarter">
     <div id="sidebar">
       <div class="box">
-        <h3><strong>About Me</strong></h3>
+        <h3>
+          <a href="/about">
+            <i class="fas fa-fw fa-address-card"></i>
+            <strong>About Me</strong>
+          </a>
+        </h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
           maximus tempus lectus non commodo. 👍 🐶
         </p>
         <?php if ($friends->count()): ?>
           <hr />
-          <h3><strong>My Friends</strong></h3>
+          <h3>
+            <a href="/friends">
+              <i class="fas fa-fw fa-user-friends"></i>
+              <strong>My Friends</strong>
+            </a>
+          </h3>
           <div id="homepage-friends" class="homepage-thumbnail-grid">
             <?php foreach($friends as $friend): ?>
               <img src="<?= $friend->url; ?>/profile-photo" />
@@ -26,7 +36,12 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
       </div>
       <?php if ($photos->count()): ?>
       <div class="box">
-        <h3><strong>Photos</strong></h3>
+        <h3>
+          <a href="/photos">
+            <i class="fas fa-fw fa-camera"></i>
+            <strong>Photos</strong>
+          </a>
+        </h3>
         <div id="homepage-photos" class="homepage-thumbnail-grid">
           <?php foreach($photos as $photo): ?>
             <img src="/media/<?= $photo->thumbnail; ?>" />
@@ -52,8 +67,10 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         <article class="media">
           <div class="media-content">
             <div class="content">
-              <h2><?=$post->name;?></h2>
-              <h5><?= $post->created->format('F j, Y \a\t G:i a'); ?></h5>
+              <h1 class="is-marginless is-size-4">
+                <a href="/posts/<?= $post->id; ?>/<?= $post->url_alias; ?>"><?=$post->name;?></a>
+              </h1>
+              <h5 class="is-size-7 has-text-grey-light"><?= $post->created->format('F j, Y \a\t G:i a'); ?></h5>
               <p>
                 <?=nl2br($post->content);?>
               </p>

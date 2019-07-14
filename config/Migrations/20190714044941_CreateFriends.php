@@ -25,6 +25,20 @@ class CreateFriends extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
+        $table->addColumn('name', 'string', [
+          'default' => null,
+          'limit' => 255,
+          'null' => false
+        ]);
+        $table->addColumn('description', 'text', [
+          'default' => null,
+          'limit' => 'LONG_TEXT',
+          'null' => true
+        ]);
+        $table->addColumn('icon', 'text', [
+            'default' => null,
+            'null' => true,
+        ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
             'null' => false,

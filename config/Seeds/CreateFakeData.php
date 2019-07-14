@@ -21,7 +21,7 @@ class CreateFakeData extends AbstractSeed
     {
         $faker = Faker\Factory::create();
         $userId = Text::uuid();
-        $now = date('Y-m-d H:i:s');
+        $now = $faker->dateTime()->format('Y-m-d H:i:s');
 
         $users = [[
             'id' => $userId,
@@ -40,6 +40,7 @@ class CreateFakeData extends AbstractSeed
 
         for ($i = 0; $i < 100; $i++) {
             $postId = Text::uuid();
+            $now = $faker->dateTime()->format('Y-m-d H:i:s');
             $post = [
                 'id' => $postId,
                 'url_alias' => $faker->slug,
@@ -53,6 +54,7 @@ class CreateFakeData extends AbstractSeed
 
             if ($i % 2) {
                 $mediaId = Text::uuid();
+                $now = $faker->dateTime()->format('Y-m-d H:i:s');
                 $medias[]= [
                     'id' => $mediaId,
                     'post_id' => $postId,
@@ -67,6 +69,7 @@ class CreateFakeData extends AbstractSeed
 
                 $maxComments = rand(1, 20);
                 for ($n = 0; $n < $maxComments; $n++) {
+                  $now = $faker->dateTime()->format('Y-m-d H:i:s');
                   $comments[]= [
                     'id' => Text::uuid(),
                     'model_id' => $mediaId,
@@ -83,6 +86,7 @@ class CreateFakeData extends AbstractSeed
 
             $maxComments = rand(1, 20);
             for ($n = 0; $n < $maxComments; $n++) {
+              $now = $faker->dateTime()->format('Y-m-d H:i:s');
               $comments[]= [
                 'id' => Text::uuid(),
                 'model_id' => $postId,

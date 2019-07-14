@@ -15,6 +15,9 @@ class HomepageController extends AppController
             'contain' => [
                 'Medias',
                 'Comments'
+            ],
+            'order' => [
+              'Posts.created' => 'DESC'
             ]
         ]
     ];

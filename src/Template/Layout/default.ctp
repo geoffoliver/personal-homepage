@@ -19,8 +19,8 @@
   <nav class="navbar is-fixed-top is-link" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <?=$this->fetch('title')?>
+        <a class="navbar-item" href="/" title="Home">
+          <i class="fas fa-home"></i>
         </a>
 
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -32,8 +32,7 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
-          <a href="#" class="navbar-item">Home</a>
-          <a href="#" class="navbar-item">About</a>
+           <a href="#" class="navbar-item">About</a>
           <a href="#" class="navbar-item">Photos</a>
           <a href="#" class="navbar-item">Videos</a>
         </div>
@@ -48,9 +47,9 @@
             <div class="container">
               <div id="hero-main">
                 <div id="hero-profile-photo">
-                  <div>
-                    <img src="/profile-photo" />
-                  </div>
+                  <figure class="image is-128x128">
+                    <img class="is-rounded" src="/profile-photo" />
+                  </figure>
                 </div>
                 <div id="hero-copy">
                   <h1 class="title">
