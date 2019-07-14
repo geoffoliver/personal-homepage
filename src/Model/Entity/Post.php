@@ -38,6 +38,6 @@ class Post extends Entity
         'created' => true,
         'modified' => true,
         'user' => true,
-        'media' => true
+        'medias' => true
     ];
 }

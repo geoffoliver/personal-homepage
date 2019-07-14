@@ -45,7 +45,7 @@ class PostsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('Media', [
+        $this->hasMany('Medias', [
             'foreignKey' => 'post_id'
         ]);
     }

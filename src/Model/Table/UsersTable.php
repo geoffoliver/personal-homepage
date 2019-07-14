@@ -41,7 +41,7 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Media', [
+        $this->hasMany('Medias', [
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Posts', [

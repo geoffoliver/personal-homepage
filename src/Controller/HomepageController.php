@@ -5,15 +5,37 @@ use App\Controller\AppController;
 
 class HomepageController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null
-     */
+    public $use = [];
+
+    public $paginate = [
+        'Posts' => [
+            'limit' => 10000,
+            'conditions' => [
+                'public' => true
+            ],
+            'contain' => [
+                'Medias'
+            ]
+        ]
+    ];
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->Authentication->allowUnauthenticated(['index']);
+
+        $this->modelClass = false;
+    }
+
     public function index()
     {
-        $homepage = $this->paginate($this->Homepage);
+        $this->loadModel('Posts');
 
-        $this->set(compact('homepage'));
+        $posts = $this->paginate('Posts');
+
+        $this->set([
+            'posts' => $posts
+        ]);
     }
 }

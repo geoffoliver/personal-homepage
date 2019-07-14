@@ -1,57 +1,69 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
-
-$cakeDescription = 'CakePHP: the rapid development php framework';
-?>
 <!DOCTYPE html>
 <html>
 <head>
-    <?= $this->Html->charset() ?>
+    <?=$this->Html->charset()?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
+        <?=$this->fetch('title')?>
     </title>
-    <?= $this->Html->meta('icon') ?>
+    <?=$this->Html->meta('icon')?>
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
+    <?=$this->Html->css('base.css')?>
 
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+    <?=$this->fetch('meta')?>
+    <?=$this->fetch('css')?>
+    <?=$this->fetch('script')?>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
-<body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
-        </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-                <li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>
-                <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
-            </ul>
+<body class="has-navbar-fixed-top">
+  <nav class="navbar is-fixed-top is-link" role="navigation" aria-label="main navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <?=$this->fetch('title')?>
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end">
+          <a href="#" class="navbar-item">Home</a>
+          <a href="#" class="navbar-item">About</a>
+          <a href="#" class="navbar-item">Photos</a>
+          <a href="#" class="navbar-item">Videos</a>
         </div>
-    </nav>
-    <?= $this->Flash->render() ?>
-    <div class="container clearfix">
-        <?= $this->fetch('content') ?>
+      </div>
     </div>
-    <footer>
-    </footer>
+  </nav>
+  <main>
+    <div class="container">
+      <?php if ($this->fetch('hero')): ?>
+        <section class="hero is-light" id="hero">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                <?=$this->fetch('hero');?>
+              </h1>
+              <?php if ($this->fetch('hero_subtitle')): ?>
+              <h2 class="subtitle">
+                <?=$this->fetch('hero_subtitle');?>
+              </h2>
+              <?php endif;?>
+            </div>
+          </div>
+        </section>
+      <?php endif;?>
+      <?=$this->Flash->render()?>
+      <?=$this->fetch('content')?>
+    </div>
+  </main>
+  <footer>
+    ...
+  </footer>
 </body>
 </html>
