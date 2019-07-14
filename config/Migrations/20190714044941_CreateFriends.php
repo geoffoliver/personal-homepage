@@ -25,6 +25,10 @@ class CreateFriends extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
+        $table->addColumn('feed_url', 'text', [
+            'default' => null,
+            'null' => false,
+        ]);
         $table->addColumn('name', 'string', [
           'default' => null,
           'limit' => 255,
