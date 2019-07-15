@@ -3,4 +3,8 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
     $message = h($message);
 }
 ?>
-<div class="message success" onclick="this.classList.add('hidden')"><?= $message ?></div>
+<article class="message is-success" onclick="this.classList.add('hidden');">
+  <div class="message-body">
+    <?= $message; ?>
+  </div>
+</article>
