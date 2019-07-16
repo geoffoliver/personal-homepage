@@ -14,6 +14,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->applyMiddleware('csrf');
 
     $routes->connect('/', ['controller' => 'Homepage', 'action' => 'index']);
+    $routes->connect('/homepage', ['controller' => 'Homepage', 'action' => 'index', 'homepage']);
+    $routes->connect('/feed', ['controller' => 'Homepage', 'action' => 'index', 'feed']);
 
     $routes->connect('/hero-background', ['controller' => 'Medias', 'action' => 'heroBackground']);
     $routes->connect('/profile-photo', ['controller' => 'Medias', 'action' => 'profilePhoto']);

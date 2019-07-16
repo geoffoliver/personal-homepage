@@ -28,15 +28,10 @@ use Cake\Event\Event;
 class AppController extends Controller
 {
 
-    /**
-     * Initialization hook method.
-     *
-     * Use this method to add common initialization code like loading components.
-     *
-     * e.g. `$this->loadComponent('Security');`
-     *
-     * @return void
-     */
+    public $helpers = [
+        'Authentication.Identity'
+    ];
+
     public function initialize()
     {
         parent::initialize();

@@ -32,11 +32,13 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
-           <a href="#" class="navbar-item">About</a>
-          <a href="#" class="navbar-item">Photos</a>
-          <a href="#" class="navbar-item">Videos</a>
+            <a href="#" class="navbar-item">About</a>
+            <a href="#" class="navbar-item">Photos</a>
+            <a href="#" class="navbar-item">Videos</a>
+            <?php if ($this->Identity->isLoggedIn()): ?>
+                <a href="#" class="navbar-item"><strong>Logout</strong></a>
+            <?php endif; ?>
         </div>
-      </div>
     </div>
   </nav>
   <main>
@@ -74,7 +76,7 @@
     <div class="content has-text-centered">
       <p>
         <strong>My Personal Homepage</strong> by <a href="http://www.plan8studios.com" target="_blank">Plan8 Studios</a>
-        All content, copyright <?= date('Y'); ?> site owner.
+        All content, copyright <?=date('Y');?> site owner.
       </p>
     </div>
   </footer>

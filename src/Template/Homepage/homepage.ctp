@@ -62,7 +62,6 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
     </div>
   </div>
   <div class="column">
-    <? dump($user); ?>
     <?php foreach ($posts as $post): ?>
       <div class="box">
         <article class="media">
