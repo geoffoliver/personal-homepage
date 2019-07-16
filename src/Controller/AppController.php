@@ -46,7 +46,7 @@ class AppController extends Controller
         ]);
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication', [
-            'logoutRedirect' => '/users/login'  // Default is false
+            'logoutRedirect' => '/users/login'
         ]);
 
         /*

@@ -15,7 +15,10 @@ class UsersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Authentication->allowUnauthenticated(['login']);
+        $this->Authentication->allowUnauthenticated([
+            'login',
+            'resetPassword'
+        ]);
     }
     /**
      * Index method
@@ -126,5 +129,50 @@ class UsersController extends AppController
         if ($this->request->is(['post']) && !$result->isValid()) {
             $this->Flash->error('Invalid username or password');
         }
+    }
+
+    public function resetPassword($hash = null)
+    {
+        if (!$hash) {
+            throw new \Exception('Invalid request');
+        }
+
+        $user = $this->Users->find()
+            ->where([
+                'Users.reset_hash' => $hash
+            ])
+            ->first();
+
+        if (!$user) {
+            $this->Flash->error(__('Invalid request'));
+            return $this->redirect([
+                'controller' => 'Users',
+                'action' => 'login'
+            ]);
+        }
+
+        if ($this->request->is('post')) {
+            $password = $this->request->getData('password');
+            if (!$password) {
+                throw new \Exception('Missing password');
+            }
+
+            $user->password = $password;
+            $user->reset_hash = null;
+            //$this->Users->patchEntity($user, ['password' => $password]);
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Password reset'));
+                return $this->redirect([
+                    'controller' => 'Users',
+                    'action' => 'login'
+                ]);
+            } else {
+                $this->Flash->error(__('Unable to reset password'));
+            }
+        }
+
+        $this->set([
+            'user' => $user
+        ]);
     }
 }

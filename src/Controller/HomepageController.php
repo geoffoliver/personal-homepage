@@ -33,6 +33,8 @@ class HomepageController extends AppController
 
     public function index()
     {
+        $user = $this->request->getAttribute('identity');
+
         $this->loadModel('Posts');
         $this->loadModel('Medias');
         $this->loadModel('Friends');
@@ -56,6 +58,7 @@ class HomepageController extends AppController
             ->all();
 
         $this->set([
+            'user' => $user,
             'posts' => $posts,
             'photos' => $photos,
             'videos' => $videos,
