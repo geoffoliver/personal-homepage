@@ -131,6 +131,18 @@ class UsersController extends AppController
         }
     }
 
+    public function logout()
+    {
+        $this->request->allowMethod(['post']);
+
+        $this->Authentication->logout();
+        $this->Flash->success(__('You have been logged out'));
+        return $this->redirect([
+            'controller' => 'Homepage',
+            'action' => 'index'
+        ]);
+    }
+
     public function resetPassword($hash = null)
     {
         if (!$hash) {

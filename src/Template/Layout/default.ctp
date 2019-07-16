@@ -32,11 +32,34 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
+            <?php if ($this->Identity->isLoggedIn()): ?>
+                <a href="/homepage" class="navbar-item">My Homepage</a>
+                <a href="/" class="navbar-item">My Feed</a>
+                <div class="nav-divider"></div>
+            <?php endif; ?>
             <a href="#" class="navbar-item">About</a>
             <a href="#" class="navbar-item">Photos</a>
             <a href="#" class="navbar-item">Videos</a>
             <?php if ($this->Identity->isLoggedIn()): ?>
-                <a href="#" class="navbar-item"><strong>Logout</strong></a>
+                <div class="nav-divider"></div>
+                <?= $this->Form->create(null, [
+                    'id' => 'nav-logout-form',
+                    'url' => [
+                        'controller' => 'Users',
+                        'action' => 'logout'
+                    ]
+                ]); ?>
+                    <?= $this->Form->button(
+                        '<strong>Logout <i class="fas fa-sign-out-alt"></i></strong>',
+                        [
+                            'type' => 'submit'
+                        ]
+                    ); ?>
+                <?= $this->Form->end(); ?>
+            <?php else: ?>
+                <a href="/users/login" class="navbar-item">
+                    <strong>Login <i class="fas fa-sign-in-alt"></i>
+                </a>
             <?php endif; ?>
         </div>
     </div>

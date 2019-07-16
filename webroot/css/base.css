@@ -4,6 +4,23 @@ body {
   background: #f5f5f5;
 }
 
+.nav-divider {
+    display: inline-block;
+    width: 21px;
+    position: relative;
+}
+
+.nav-divider::after {
+    display: block;
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 15px;
+    bottom: 15px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
 #hero {
   margin-bottom: 20px;
   background-size: cover;
@@ -36,4 +53,34 @@ body {
 
 footer {
   margin-top: 45px;
+}
+
+#nav-logout-form {
+  height: 100%;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+}
+
+#nav-logout-form button {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    color: #fff;
+    cursor: pointer;
+    padding: .5rem .75rem;
+}
+
+#nav-logout-form button strong {
+    color: #fff;
+}
+
+#nav-logout-form button:hover,
+#nav-logout-form button:active,
+#nav-logout-form button:focus {
+    background-color: #2366d1;
+}
+
+.hidden {
+    display: none;
 }
