@@ -41,7 +41,7 @@ nbproject/*
 .sass-cache/
 
 # Vagrant file
-.vagrana
+.vagrant
 
 # Node modules
 node_modules/
