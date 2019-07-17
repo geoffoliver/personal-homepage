@@ -31,6 +31,7 @@ without leaving the comfort of your own website.
 - [MySQL](https://www.mysql.com)
 - [FontAwesome](https://www.fontawesome.com)
 - [Bulma](https://bulma.io)
+- [Vue](https://vuejs.org);
 
 # TODO
 - [ ] Live reloading (or at least watching) of Vue assets
