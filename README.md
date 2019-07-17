@@ -33,6 +33,6 @@ without leaving the comfort of your own website.
 - [Bulma](https://bulma.io)
 
 # TODO
-- [] Live reloading (or at least watching) of Vue assets
-- [] Loading status display on feed
-- [] Fucktons of other stuff
+- [ ] Live reloading (or at least watching) of Vue assets
+- [ ] Loading status display on feed
+- [ ] Fucktons of other stuff

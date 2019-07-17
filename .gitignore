@@ -45,3 +45,6 @@ nbproject/*
 
 # Node modules
 node_modules/
+
+# Built JS files
+webroot/build/
