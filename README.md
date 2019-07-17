@@ -1,4 +1,4 @@
-# Personal Homepage
+# PageFeed
 
 A personal homepage to post your blogs, photos, and videos on, and stay in touch
 with your friends, all without sharing your data with advertisers or spooky
@@ -31,3 +31,8 @@ without leaving the comfort of your own website.
 - [MySQL](https://www.mysql.com)
 - [FontAwesome](https://www.fontawesome.com)
 - [Bulma](https://bulma.io)
+
+# TODO
+- [] Live reloading (or at least watching) of Vue assets
+- [] Loading status display on feed
+- [] Fucktons of other stuff
