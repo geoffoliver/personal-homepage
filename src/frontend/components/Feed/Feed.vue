@@ -5,27 +5,37 @@
         <i class="fas fa-spin fa-spinner"></i> Loading Feed...
       </div>
     </div>
-    <div v-else v-for="post in displayedPosts" :key="post.guid" class="box">
-      <div class="feed-post-item">
-        <div class="header">
-          <figure class="image is-32x32">
-            <img
-              :src="post.friend.icon"
-              class="is-rounded friend-icon"
-            />
-          </figure>
-          <div class="name">
-            <strong>{{post.friend.name}}</strong><br />
-            {{ post.isoDate | moment('dddd, MMMM Do YYYY, h:mm:ss a') }}
+    <div v-else>
+      <div v-for="post in displayedPosts" :key="post.guid" class="box">
+        <div class="feed-post-item">
+          <div class="feed-post-item-header">
+            <figure class="image is-48x48">
+              <img
+                :src="post.friend.icon"
+                class="is-rounded friend-icon"
+              />
+            </figure>
+            <div class="feed-post-item-friend-name">
+              <strong>{{post.friend.name}}</strong><br />
+              <time>{{ post.isoDate | moment('dddd, MMMM Do YYYY, h:mm:ss a') }}</time>
+            </div>
+          </div>
+          <div class="feed-post-item-content">
+            <h3 class="is-size-5"><strong>{{ post.title }}</strong></h3>
+            <div v-html="post.contentSnippet"></div>
+          </div>
+          <div class="feed-post-item-footer">
+            ...
           </div>
         </div>
-        <div class="content">
-          <h3 class="is-size-4"><strong>{{ post.title }}</strong></h3>
-          <div v-html="post.contentSnippet"></div>
-        </div>
-        <div class="footer">
-          ...
-        </div>
+      </div>
+      <div class="load-more" v-if="displayedPosts.length < posts.length">
+        <button
+          @click="nextPage()"
+          class="button is-link is-full-width"
+        >
+          Next Page
+        </button>
       </div>
     </div>
   </div>
@@ -35,15 +45,28 @@
   max-width: 100%;
   height: auto;
 }
-.header {
+.feed-post-item-header {
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #fefefe;
+  border-bottom: 1px solid #dfdfdf;
   padding-bottom: 10px;
   margin-bottom: 10px;
+  align-items: center;
 }
-.name {
+.feed-post-item-friend-name {
   padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+
+  time {
+    font-size: 0.75rem;
+    opacity: 0.75;
+  }
+}
+.feed-post-item-footer {
+  border-top: 1px solid #dfdfdf;
+  padding-top: 10px;
+  margin-top: 10px;
 }
 </style>
 
@@ -88,6 +111,9 @@ export default {
         promises.push(new Promise((resolve, reject) => {
           parser.parseURL(`/friends/feed/${f.id}.xml`).then(
             feed => {
+
+              console.log('feed', feed);
+
               this.posts = this.posts.concat(
                 feed.items.map(feedItem => {
                   feedItem.friend  = f;
@@ -106,16 +132,16 @@ export default {
 
       Promise.all(promises).then(
         () => {
-          console.log('promise success');
           this.loading = false;
-          // this.displayedPosts = this.posts.slice(0, this.perPage);
         },
         () => {
-          console.log('promises failed');
           this.loading = false;
         }
       );
     },
+    nextPage: function() {
+      this.page = this.page + 1;
+    }
   }
 };
 </script>

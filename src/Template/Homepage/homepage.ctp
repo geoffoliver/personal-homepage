@@ -7,7 +7,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
 ?>
 <div class="columns">
   <div class="column is-one-quarter">
-    <div id="sidebar">
+    <div class="sidebar sticky-sidebar">
       <div class="box">
         <h3>
           <a href="/about">
@@ -29,7 +29,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
           </h3>
           <div id="homepage-friends" class="sidebar-thumbnail-grid">
             <?php foreach($friends as $friend): ?>
-              <img src="<?= $friend->url; ?>/profile-photo" />
+              <img src="<?= $friend->icon; ?>" />
             <?php endforeach; ?>
           </div>
         <?php endif; ?>

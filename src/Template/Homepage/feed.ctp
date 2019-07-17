@@ -7,24 +7,31 @@ $this->append('css', $this->Html->css('/build/css/feed.css'));
 <div id="feedPage">
     <div class="columns">
         <div class="column is-one-quarter">
-            <div class="box">
-                <h3><a href="/friends"><strong>Friends</strong></a></h3>
-                <?php if ($friends->count()): ?>
-                    <div class="sidebar-thumbnail-grid">
-                        <?php foreach($friends as $friend): ?>
-                            <?= $this->Html->image(
-                                $friend->icon,
-                                [
-                                    'alt' => "Icon for {$friend->name}"
-                                ]
-                            ); ?>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <p>
-                        You have not setup any friends yet.
-                    </p>
-                <?php endif; ?>
+            <div class="sidebar sticky-sidebar">
+                <div class="box">
+                    <h3>
+                        <a href="/friends">
+                            <i class="fas fa-fw fa-user-friends"></i>
+                            <strong>My Friends</strong>
+                        </a>
+                    </h3>
+                    <?php if ($friends->count()): ?>
+                        <div class="sidebar-thumbnail-grid">
+                            <?php foreach($friends as $friend): ?>
+                                <?= $this->Html->image(
+                                    $friend->icon,
+                                    [
+                                        'alt' => "Icon for {$friend->name}"
+                                    ]
+                                ); ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p>
+                            You have not setup any friends yet.
+                        </p>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
         <div class="column">
