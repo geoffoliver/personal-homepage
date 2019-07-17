@@ -5,21 +5,20 @@ body {
 }
 
 .nav-divider {
-    display: inline-block;
-    width: 21px;
-    position: relative;
+  display: inline-block;
+  width: 21px;
+  position: relative;
 }
 
 .nav-divider::after {
-    display: block;
-    content: '';
-    position: absolute;
-    left: 11px;
-    top: 15px;
-    bottom: 15px;
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  display: block;
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 15px;
+  bottom: 15px;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
 }
-
 
 #hero {
   margin-bottom: 20px;
@@ -63,24 +62,36 @@ footer {
 }
 
 #nav-logout-form button {
-    background: transparent;
-    border: none;
-    font-size: 1rem;
-    color: #fff;
-    cursor: pointer;
-    padding: .5rem .75rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  padding: .5rem .75rem;
 }
 
 #nav-logout-form button strong {
-    color: #fff;
+  color: #fff;
 }
 
 #nav-logout-form button:hover,
 #nav-logout-form button:active,
 #nav-logout-form button:focus {
-    background-color: #2366d1;
+  background-color: #2366d1;
 }
 
 .hidden {
-    display: none;
+  display: none;
+}
+
+.sidebar-thumbnail-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sidebar-thumbnail-grid img {
+  margin: 1.5% 1%;
+  width: 31%;
 }

@@ -29,7 +29,10 @@ class AppController extends Controller
 {
 
     public $helpers = [
-        'Authentication.Identity'
+        'Authentication.Identity',
+        'Form' => [
+            'templates' => 'bulma_form'
+        ]
     ];
 
     public function initialize()

@@ -68,6 +68,7 @@ class User extends Entity implements IdentityInterface
 
     protected function _setPassword($password)
     {
+        die('blah');
         if (strlen($password) > 0) {
           return (new DefaultPasswordHasher)->hash($password);
         }

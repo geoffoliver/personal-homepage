@@ -1,7 +1,4 @@
 <?php
-$this->loadHelper('Form', [
-    'templates' => 'bulma_form',
-]);
 ?>
 <section class="section">
     <div class="columns">

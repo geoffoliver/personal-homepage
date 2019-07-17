@@ -6,15 +6,3 @@
 #sidebar h3 {
   margin-bottom: 1rem;
 }
-
-.homepage-thumbnail-grid {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.homepage-thumbnail-grid img {
-  margin: 1.5% 1%;
-  width: 31%;
-}

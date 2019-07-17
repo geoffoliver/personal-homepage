@@ -47,7 +47,7 @@ class CreateFriends extends AbstractMigration
             'default' => null,
             'null' => false,
         ]);
-        $table->addColumn('modfiied', 'datetime', [
+        $table->addColumn('modified', 'datetime', [
             'default' => null,
             'null' => false,
         ]);

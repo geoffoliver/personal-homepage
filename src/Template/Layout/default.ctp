@@ -33,13 +33,14 @@
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
             <?php if ($this->Identity->isLoggedIn()): ?>
-                <a href="/homepage" class="navbar-item">My Homepage</a>
-                <a href="/" class="navbar-item">My Feed</a>
+                <a href="/" class="navbar-item"><?= __('My Feed'); ?></a>
+                <a href="/homepage" class="navbar-item"><?= __('My Homepage'); ?></a>
                 <div class="nav-divider"></div>
             <?php endif; ?>
-            <a href="#" class="navbar-item">About</a>
-            <a href="#" class="navbar-item">Photos</a>
-            <a href="#" class="navbar-item">Videos</a>
+            <a href="/friends" class="navbar-item"><?= __('Friends'); ?></a>
+            <a href="#" class="navbar-item"><?= __('About'); ?></a>
+            <a href="#" class="navbar-item"><?= __('Photos'); ?></a>
+            <a href="#" class="navbar-item"><?= __('Videos'); ?></a>
             <?php if ($this->Identity->isLoggedIn()): ?>
                 <div class="nav-divider"></div>
                 <?= $this->Form->create(null, [
@@ -50,7 +51,7 @@
                     ]
                 ]); ?>
                     <?= $this->Form->button(
-                        '<strong>Logout <i class="fas fa-sign-out-alt"></i></strong>',
+                        '<strong>' . __('Logout') .' <i class="fas fa-sign-out-alt"></i></strong>',
                         [
                             'type' => 'submit'
                         ]
@@ -58,7 +59,7 @@
                 <?= $this->Form->end(); ?>
             <?php else: ?>
                 <a href="/users/login" class="navbar-item">
-                    <strong>Login <i class="fas fa-sign-in-alt"></i>
+                    <strong><?= __('Login'); ?> <i class="fas fa-sign-in-alt"></i></strong>
                 </a>
             <?php endif; ?>
         </div>

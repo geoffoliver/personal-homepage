@@ -39,4 +39,9 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
-.vagrant
+
+# Vagrant file
+.vagrana
+
+# Node modules
+node_modules/

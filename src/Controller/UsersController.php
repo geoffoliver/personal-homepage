@@ -171,7 +171,6 @@ class UsersController extends AppController
 
             $user->password = $password;
             $user->reset_hash = null;
-            //$this->Users->patchEntity($user, ['password' => $password]);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Password reset'));
                 return $this->redirect([

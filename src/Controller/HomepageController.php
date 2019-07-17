@@ -103,7 +103,10 @@ class HomepageController extends AppController
 
     public function feed()
     {
+        $this->loadModel('Friends');
+
         $this->set([
+            'friends' => $this->Friends->find()->all(),
             'user' => $this->request->getAttribute('identity')
         ]);
 

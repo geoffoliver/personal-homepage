@@ -27,7 +27,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
               <strong>My Friends</strong>
             </a>
           </h3>
-          <div id="homepage-friends" class="homepage-thumbnail-grid">
+          <div id="homepage-friends" class="sidebar-thumbnail-grid">
             <?php foreach($friends as $friend): ?>
               <img src="<?= $friend->url; ?>/profile-photo" />
             <?php endforeach; ?>
@@ -42,7 +42,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
             <strong>Photos</strong>
           </a>
         </h3>
-        <div id="homepage-photos" class="homepage-thumbnail-grid">
+        <div id="homepage-photos" class="sidebar-thumbnail-grid">
           <?php foreach($photos as $photo): ?>
             <img src="/media/<?= $photo->thumbnail; ?>" />
           <?php endforeach; ?>

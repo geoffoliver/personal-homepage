@@ -1,0 +1,24 @@
+.friends-list-friend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+  padding: 20px;
+  height: 100%;
+}
+
+.friends-list-friend-icon {
+  max-width: 76px;
+  width: 76px;
+}
+
+.friends-list-friend-info {
+  flex-grow: 1;
+  padding-left: 15px;
+}
+
+.friends-list-friend-buttons {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+}

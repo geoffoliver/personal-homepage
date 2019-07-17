@@ -11,6 +11,8 @@ Router::scope('/', function (RouteBuilder $routes) {
         'httpOnly' => true
     ]));
 
+    $routes->setExtensions(['xml']);
+
     $routes->applyMiddleware('csrf');
 
     $routes->connect('/', ['controller' => 'Homepage', 'action' => 'index']);
