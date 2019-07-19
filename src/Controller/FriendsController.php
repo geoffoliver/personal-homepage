@@ -44,29 +44,25 @@ class FriendsController extends AppController
             throw new \Exception('Invalid friend ID');
         }
 
-        /*
         $cached = Cache::read($friend->id, 'feeds');
         if ($cached) {
             return $this->response
-                ->withType('text/xml')
+                ->withType('application/json')
                 ->withHeader('X-Cached-Result', 'true')
                 ->withStringBody($cached);
         }
-        */
 
         $client = new Client();
 
         $response = $client->get($friend->feed_url);
 
-        dd($fp->normalize($response->getStringBody()));
-
-        if ($body = $response->getStringBody()) {
-            Cache::write($friend->id, $body, 'feeds');
+        if ($feed = $fp->normalize($response->getStringBody())) {
+            Cache::write($friend->id, $feed, 'feeds');
         }
 
         return $this->response
-            ->withType('text/xml')
-            ->withBody($response->getBody());
+            ->withType('application/json')
+            ->withStringBody($feed);
     }
 
     public function add()

@@ -173,6 +173,7 @@ export default {
       this.friends.forEach(f => {
         f.loading = true;
         promises.push(new Promise((resolve, reject) => {
+          //TODO: replace this with an ajax request to a JSON endpoint
           parser.parseURL(`/friends/feed/${f.id}.xml`).then(
             feed => {
               f.loading = false;
