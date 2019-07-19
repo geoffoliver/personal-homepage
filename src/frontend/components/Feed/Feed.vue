@@ -16,9 +16,10 @@
               class="friend-icon"
             >
               <a
-                :href="friend.url"
                 target="_blank"
                 rel="noopener noreferrer"
+                :href="friend.url"
+                :title="friend.name"
               >
                 <img
                   :src="friend.icon"
@@ -59,7 +60,13 @@
                 </div>
               </div>
               <div class="feed-post-item-content">
-                <h3 class="is-size-5"><strong>{{ post.title }}</strong></h3>
+                <h3 class="is-size-5">
+                  <strong>
+                    <a :href="post.link" target="_blank" rel="noopener noreferrer">
+                      {{ post.title }}
+                    </a>
+                  </strong>
+                </h3>
                 <div v-html="post.contentSnippet"></div>
               </div>
               <div class="feed-post-item-footer">

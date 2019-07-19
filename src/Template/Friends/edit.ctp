@@ -1,5 +1,5 @@
 <?php
-$this->assign('title', __('Add Friend'));
+$this->assign('title', __('Edit Friend'));
 ?>
 <div id="addFriendPage">
     <div class="container">

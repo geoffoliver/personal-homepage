@@ -2,7 +2,10 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Lib\FeedParser;
+
 use Cake\Http\Client;
+use Cake\Cache\Cache;
 
 class FriendsController extends AppController
 {
@@ -23,10 +26,13 @@ class FriendsController extends AppController
         $this->set('friend', $friend);
     }
 
-    public function feed($id) {
+    public function feed($id)
+    {
         if (!$id) {
             throw new \Exception('Missing friend ID');
         }
+
+        $fp = new FeedParser();
 
         $friend = $this->Friends->find()
             ->where([
@@ -38,11 +44,29 @@ class FriendsController extends AppController
             throw new \Exception('Invalid friend ID');
         }
 
+        /*
+        $cached = Cache::read($friend->id, 'feeds');
+        if ($cached) {
+            return $this->response
+                ->withType('text/xml')
+                ->withHeader('X-Cached-Result', 'true')
+                ->withStringBody($cached);
+        }
+        */
+
         $client = new Client();
+
+        $response = $client->get($friend->feed_url);
+
+        dd($fp->normalize($response->getStringBody()));
+
+        if ($body = $response->getStringBody()) {
+            Cache::write($friend->id, $body, 'feeds');
+        }
 
         return $this->response
             ->withType('text/xml')
-            ->withBody($client->get($friend->feed_url)->getBody());
+            ->withBody($response->getBody());
     }
 
     public function add()
@@ -231,6 +255,7 @@ class FriendsController extends AppController
         // prefer apple icons because they should always be PNGs
         $appleIcons = $domXpath->query('/html/head/link[@rel="apple-touch-icon"]');
         $favicons = $domXpath->query('/html/head/link[@rel="shortcut icon"]');
+        $moreFavicons = $domXpath->query('/html/head/link[@rel="icon"]');
 
         for ($i = 0; $i < $appleIcons->length; $i++) {
             if ($iIcon = $appleIcons->item($i)->attributes->getNamedItem('href')) {
@@ -249,6 +274,20 @@ class FriendsController extends AppController
 
         for ($i = 0; $i < $favicons->length; $i++) {
             if ($iIcon = $favicons->item($i)->attributes->getNamedItem('href')) {
+                $icon = $iIcon->value;
+                if (!$icon) {
+                    continue;
+                }
+
+                if (strpos($icon, 'http') === false && strpos($icon, $url) === false) {
+                    $icon = rtrim($url, '/') . '/' . ltrim($icon, '/');
+                }
+                $icons[]= $iIcon->value;
+            }
+        }
+
+        for ($i = 0; $i < $moreFavicons->length; $i++) {
+            if ($iIcon = $moreFavicons->item($i)->attributes->getNamedItem('href')) {
                 $icon = $iIcon->value;
                 if (!$icon) {
                     continue;

@@ -106,7 +106,7 @@ class HomepageController extends AppController
         $this->loadModel('Friends');
 
         $this->set([
-            'friends' => $this->Friends->find()->all(),
+            'friends' => $this->Friends->find()->order(['Friends.created' => 'DESC'])->all(),
             'user' => $this->request->getAttribute('identity')
         ]);
 
