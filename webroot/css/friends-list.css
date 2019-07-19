@@ -12,6 +12,10 @@
   width: 76px;
 }
 
+.friends-list-friend-icon img {
+  width: 100%;
+}
+
 .friends-list-friend-info {
   flex-grow: 1;
   padding-left: 15px;

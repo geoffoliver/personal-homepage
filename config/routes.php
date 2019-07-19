@@ -11,7 +11,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         'httpOnly' => true
     ]));
 
-    $routes->setExtensions(['xml']);
+    $routes->setExtensions(['json','xml']);
 
     $routes->applyMiddleware('csrf');
 

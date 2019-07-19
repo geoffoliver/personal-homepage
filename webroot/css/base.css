@@ -91,9 +91,20 @@ footer {
   justify-content: space-around;
 }
 
-.sidebar-thumbnail-grid img {
+.sidebar-thumbnail-grid > * {
   margin: 1.5% 1%;
   width: 31%;
+}
+
+.sidebar-thumbnail-grid a {
+  display: block;
+}
+
+.sidebar-thumbnail-grid > div img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  float: left;
 }
 
 .sidebar h3 {

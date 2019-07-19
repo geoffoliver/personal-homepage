@@ -40,7 +40,7 @@ $this->assign('title', __('Add Friend'));
                                 'label' => __('Feed URL'),
                                 'type' => 'text',
                                 'required' => true,
-                                'value' => $friend->url
+                                'value' => $friend->feed_url
                             ]
                         );
                         echo $this->Form->control(
