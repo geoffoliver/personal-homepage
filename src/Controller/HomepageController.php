@@ -74,19 +74,15 @@ class HomepageController extends AppController
 
         $posts = $this->paginate('Posts');
 
-        $photos = $this->Medias->find()
-          ->where(['Medias.mime LIKE' => 'image/%'])
+        $medias = $this->Medias->find()
           ->order(['Medias.created' => 'DESC'])
-          ->limit(12)
-          ->all();
+          ->limit(12);
 
-        $videos = $this->Medias->find()
-          ->where(['Medias.mime LIKE' => 'video/%'])
-          ->order(['Medias.created' => 'DESC'])
-          ->limit(12)
-          ->all();
+        $photos = $medias->where(['Medias.mime LIKE' => 'image/%'])->all();
+        $videos = $medias->where(['Medias.mime LIKE' => 'video/%'])->all();
 
         $friends = $this->Friends->find()
+            ->order(['Friends.created' => 'DESC'])
             ->limit(12)
             ->all();
 
