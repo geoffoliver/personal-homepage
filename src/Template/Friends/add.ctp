@@ -46,7 +46,6 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
                             [
                                 'label' => __('Icon'),
                                 'type' => 'select',
-                                'required' => true,
                                 'options' => []
                             ]
                         );

@@ -79,8 +79,29 @@
                 </h3>
                 <div v-html="post.summary"></div>
               </div>
+              <hr />
               <div class="feed-post-item-footer">
-                ...
+                <nav class="level is-mobile">
+                  <div class="level-left">
+                    <a class="level-item" aria-title="View Original" :href="post.url" target="_blank" rel="noopener noreferrer">
+                      <i class="fas fa-external-link-alt"></i>
+                      &nbsp;
+                      View Original
+                    </a>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="level-item"
+                      title="View Comments"
+                      :href="post._page_feed.comments.url"
+                      v-if="post._page_feed && post._page_feed.comments && post._page_feed.comments.url"
+                    >
+                        <i class="fas fa-comment"></i>
+                        &nbsp;
+                        {{ post._page_feed.comments.total }} Comments
+                    </a>
+                  </div>
+                </nav>
               </div>
             </div>
           </div>
@@ -125,11 +146,14 @@
     opacity: 0.75;
   }
 }
+
+/*
 .feed-post-item-footer {
   border-top: 1px solid #dfdfdf;
   padding-top: 10px;
   margin-top: 10px;
 }
+*/
 
 .friend-icon {
   position: relative;

@@ -10,13 +10,13 @@ $this->assign('css', $this->Html->css('friends-list.css'));
                     <?= __('Friends'); ?>
                     <?php if ($user): ?>
                         <?= $this->Html->link(
-                            $this->Html->tag('i', '', ['class' => 'fas fa-plus-circle']),
+                            $this->Html->tag('i', '', ['class' => 'fas fa-plus-circle']) . '&nbsp;&nbsp;' . __('Add Friend'),
                             [
                                 'action' => 'add'
                             ],
                             [
                                 'title' => __('Add Friend'),
-                                'class' => 'is-size-6',
+                                'class' => 'button is-link is-size-6',
                                 'escape' => false
                             ]
                         ); ?>
@@ -59,7 +59,7 @@ $this->assign('css', $this->Html->css('friends-list.css'));
                                                             $friend->id
                                                         ],
                                                         [
-                                                            'class' => 'level-item button is-link is-fullwidth',
+                                                            'class' => 'level-item button is-link is-outlined is-fullwidth',
                                                         ]
                                                     ); ?>
                                                     <?php

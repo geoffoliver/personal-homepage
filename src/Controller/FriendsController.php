@@ -9,6 +9,16 @@ use Cake\Cache\Cache;
 
 class FriendsController extends AppController
 {
+
+    public $paginate = [
+        'Friends' => [
+            'order' => [
+                'name' => 'ASC',
+                'created' => 'DESC'
+            ]
+        ]
+    ];
+
     public function index()
     {
         $this->set([
