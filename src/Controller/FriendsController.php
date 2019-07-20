@@ -52,11 +52,7 @@ class FriendsController extends AppController
                 ->withStringBody($cached);
         }
 
-        $client = new Client();
-
-        $response = $client->get($friend->feed_url);
-
-        if ($feed = $fp->normalize($response->getStringBody())) {
+        if ($feed = $fp->fetch($friend->feed_url)) {
             Cache::write($friend->id, $feed, 'feeds');
         }
 

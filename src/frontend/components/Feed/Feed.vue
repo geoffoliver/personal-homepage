@@ -55,19 +55,29 @@
                   />
                 </figure>
                 <div class="feed-post-item-friend-name">
-                  <strong>{{post.friend.name}}</strong><br />
-                  <time>{{ post.isoDate | moment('dddd, MMMM Do YYYY, h:mm:ss a') }}</time>
+                  <strong>
+                    {{post.friend.name}}
+                    <span v-if="post.author && post.author.name">
+                      &mdash; by {{ post.author.name }}
+                    </span>
+                  </strong><br />
+                  <time>
+                    {{ post.date_published | moment('dddd, MMMM Do YYYY, h:mm:ss a') }}
+                    <span v-if="post.date_published !== post.date_modified" class="updated-time">
+                      (Updated {{ post.date_modified | moment('dddd, MMMM Do YYYY, h:mm:ss a') }})
+                    </span>
+                  </time>
                 </div>
               </div>
               <div class="feed-post-item-content">
                 <h3 class="is-size-5">
                   <strong>
-                    <a :href="post.link" target="_blank" rel="noopener noreferrer">
+                    <a :href="post.url" target="_blank" rel="noopener noreferrer">
                       {{ post.title }}
                     </a>
                   </strong>
                 </h3>
-                <div v-html="post.contentSnippet"></div>
+                <div v-html="post.summary"></div>
               </div>
               <div class="feed-post-item-footer">
                 ...
@@ -105,6 +115,11 @@
   display: flex;
   flex-direction: column;
 
+  span {
+    font-weight: lighter;
+    opacity: 0.75;
+  }
+
   time {
     font-size: 0.75rem;
     opacity: 0.75;
@@ -134,8 +149,7 @@
 }
 </style>
 <script>
-import Parser from "rss-parser";
-const parser = new Parser();
+import nanoajax from "nanoajax";
 
 export default {
   data: function() {
@@ -159,7 +173,7 @@ export default {
     displayedPosts: function() {
       return this.posts.slice()
         .sort((a, b) => {
-          return new Date(a.isoDate) < new Date(b.isoDate);
+          return new Date(a.date_modified) < new Date(b.date_modified);
         })
         .slice(0, this.perPage * this.page);
     }
@@ -173,24 +187,26 @@ export default {
       this.friends.forEach(f => {
         f.loading = true;
         promises.push(new Promise((resolve, reject) => {
-          //TODO: replace this with an ajax request to a JSON endpoint
-          parser.parseURL(`/friends/feed/${f.id}.xml`).then(
-            feed => {
-              f.loading = false;
-              this.posts = this.posts.concat(
-                feed.items.map(feedItem => {
-                  feedItem.friend  = f;
-                  return feedItem;
-                })
-              );
-              resolve(feed);
-            },
-            error => {
+          nanoajax.ajax({
+            url: `/friends/feed/${f.id}.json`,
+            responseType: "json"
+          }, (code, feed) => {
+            if (code !== 200) {
               f.loading = false;
               f.loaded = true;
               reject(error);
+              return;
             }
-          );
+
+            f.loading = false;
+            this.posts = this.posts.concat(
+              feed.items.map(feedItem => {
+                feedItem.friend = f;
+                return feedItem;
+              })
+            );
+            resolve(feed);
+          });
         }));
       });
 

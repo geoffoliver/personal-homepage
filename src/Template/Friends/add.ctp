@@ -116,10 +116,7 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
                 $('feed-url').closest('.field').classList.remove('hidden');
                 $('icon').closest('.field').classList.remove('hidden');
             }
-
-            console.log("code", code);
-            console.log("rt", response);
-        })
+        });
     });
 })();
 </script>
