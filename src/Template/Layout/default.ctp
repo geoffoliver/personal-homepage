@@ -20,17 +20,18 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
-            <?php if ($this->Identity->isLoggedIn()): ?>
-                <a href="/" class="navbar-item"><?= __('My Feed'); ?></a>
-                <a href="/homepage" class="navbar-item"><?= __('My Homepage'); ?></a>
-                <div class="nav-divider"></div>
-            <?php endif; ?>
             <a href="/friends" class="navbar-item"><?= __('Friends'); ?></a>
             <a href="#" class="navbar-item"><?= __('About'); ?></a>
             <a href="#" class="navbar-item"><?= __('Photos'); ?></a>
             <a href="#" class="navbar-item"><?= __('Videos'); ?></a>
             <?php if ($this->Identity->isLoggedIn()): ?>
                 <div class="nav-divider"></div>
+                <a href="/" class="navbar-item"><?= __('Feed'); ?></a>
+                <a href="/homepage" class="navbar-item"><?= __('Homepage'); ?></a>
+                <div class="nav-divider"></div>
+                <a href="/settings" class="navbar-item">
+                    <?= __('Settings'); ?>
+                </a>
                 <?= $this->Form->create(null, [
                     'id' => 'nav-logout-form',
                     'url' => [
