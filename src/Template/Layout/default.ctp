@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?=$this->Html->charset()?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?=$this->fetch('title')?>
-    </title>
-    <?=$this->Html->meta('icon')?>
-
-    <?=$this->Html->css('base.css')?>
-
-    <?=$this->fetch('meta')?>
-    <?=$this->fetch('css')?>
-    <?=$this->fetch('script')?>
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <?= $this->element('Layout/head'); ?>
 </head>
 <body class="has-navbar-fixed-top">
   <nav class="navbar is-fixed-top is-link" role="navigation" aria-label="main navigation">
@@ -96,13 +84,6 @@
       <?=$this->fetch('content')?>
     </div>
   </main>
-  <footer class="footer">
-    <div class="content has-text-centered">
-      <p>
-        <strong>My Personal Homepage</strong> by <a href="http://www.plan8studios.com" target="_blank">Plan8 Studios</a>
-        All content, copyright <?=date('Y');?> site owner.
-      </p>
-    </div>
-  </footer>
+  <?= $this->element('Layout/footer'); ?>
 </body>
 </html>
