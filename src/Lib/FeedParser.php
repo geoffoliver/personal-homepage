@@ -320,6 +320,7 @@ class FeedParser
             'tags' => $categories,
             'author' => $author,
             '_page_feed' => [
+                'about' => 'Custom fields for PageFeed',
                 'comments' => [
                     'url' => $commentsUrl,
                     'total' => (string) $totalComments,

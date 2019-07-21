@@ -19,6 +19,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/homepage', ['controller' => 'Homepage', 'action' => 'index', 'homepage']);
     $routes->connect('/feed', ['controller' => 'Homepage', 'action' => 'index', 'feed']);
 
+    $routes->connect('/page-feed', ['controller' => 'Posts', 'action' => 'feed']);
+
     $routes->connect('/hero-background', ['controller' => 'Medias', 'action' => 'heroBackground']);
     $routes->connect('/profile-photo', ['controller' => 'Medias', 'action' => 'profilePhoto']);
 
