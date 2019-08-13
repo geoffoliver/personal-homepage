@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use Cake\Utility\Hash;
 use App\Controller\AppController;
 
 class HomepageController extends AppController
@@ -101,11 +102,49 @@ class HomepageController extends AppController
     {
         $this->loadModel('Friends');
 
+        $friends = $this->Friends->find()->order(['Friends.created' => 'DESC'])->all();
+
         $this->set([
-            'friends' => $this->Friends->find()->order(['Friends.created' => 'DESC'])->all(),
+            'friends' => $friends,
+            'posts' => [],
             'user' => $this->request->getAttribute('identity')
         ]);
 
         return $this->render('feed');
     }
+
+    public function ajaxFeed()
+    {
+        $this->loadModel('Friends');
+        $this->layout = 'ajax';
+
+        $friends = $this->Friends->find()->all();
+
+        $posts = [];
+
+        foreach ($friends as $friend) {
+            $feed = $friend->getFeed(false);
+            if ($feed && isset($feed->items) && $feed->items) {
+                foreach ($feed->items as $item) {
+                    $item->friend = $friend;
+                    $posts[]= $item;
+                }
+            }
+        }
+
+        usort($posts, function($a, $b) {
+            if (
+                !$a->date_published ||
+                !$b->date_published ||
+                $a->date_published == $b->date_published
+            ) {
+                return 0;
+            }
+
+            return $a->date_published->gt($b->date_published) ? -1 : 1;
+        });
+
+        $this->set(['posts' => $posts]);
+    }
+
 }

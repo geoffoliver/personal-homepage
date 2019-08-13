@@ -2,3 +2,34 @@
   padding-top: 25px;
 }
 
+.feed-post-item img {
+  max-width: 100%;
+  height: auto;
+}
+.feed-post-item-header {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #dfdfdf;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.feed-post-item-friend-name {
+  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.feed-post-item-friend-name span {
+  font-weight: lighter;
+  opacity: 0.75;
+}
+
+.feed-post-item-friend-name time {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+.friend-icon {
+  position: relative;
+}

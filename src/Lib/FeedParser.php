@@ -3,10 +3,11 @@
 namespace App\Lib;
 
 use Cake\Http\Client;
+use Cake\I18n\Time;
 
 class FeedParser
 {
-    public function fetch($feedUrl)
+    public function fetch($feedUrl, $encode = true)
     {
         if (!$feedUrl) {
             throw new \Exception('Missing Feed URL');
@@ -31,10 +32,14 @@ class FeedParser
         }
 
         if ($feed = $this->jsonify($feedXml)) {
-            $feed['feed_url'] = $feedUrl;
+            $feed->feed_url = $feedUrl;
         }
 
-        return json_encode($feed);
+        if ($encode) {
+            return json_encode($feed);
+        }
+
+        return $feed;
     }
 
     public function jsonify($feedXml)
@@ -108,11 +113,11 @@ class FeedParser
             }
         }
 
-        return [
+        return (object)[
             'version' => 'https://jsonfeed.org/version/1',
             'title' => $title,
             'home_page_url' => $homepageUrl,
-            'date_modified' => $dateModified,
+            'date_modified' => new Time($dateModified),
             'author' => $author,
             'description' => $description,
             'next_url' => null,
@@ -306,22 +311,22 @@ class FeedParser
             }
         }
 
-        return [
+        return (object)[
             'id' => $id,
             'title' => $title,
             'url' => $url,
             'external_url' => $source,
-            'date_published' => $pubDate,
-            'date_modified' => $modDate,
+            'date_published' => new Time($pubDate),
+            'date_modified' => new Time($modDate),
             'summary' => $summary,
             'content_html' => $contentHtml,
             'content_text' => $contentText,
             'attachments' => $attachments,
             'tags' => $categories,
             'author' => $author,
-            '_page_feed' => [
+            '_page_feed' => (object)[
                 'about' => 'Custom fields for PageFeed',
-                'comments' => [
+                'comments' => (object)[
                     'url' => $commentsUrl,
                     'total' => (string) $totalComments,
                 ]

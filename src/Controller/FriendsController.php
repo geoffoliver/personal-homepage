@@ -2,14 +2,11 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use App\Lib\FeedParser;
 
 use Cake\Http\Client;
-use Cake\Cache\Cache;
 
 class FriendsController extends AppController
 {
-
     public $paginate = [
         'Friends' => [
             'order' => [
@@ -42,8 +39,6 @@ class FriendsController extends AppController
             throw new \Exception('Missing friend ID');
         }
 
-        $fp = new FeedParser();
-
         $friend = $this->Friends->find()
             ->where([
                 'Friends.id' => $id
@@ -54,21 +49,9 @@ class FriendsController extends AppController
             throw new \Exception('Invalid friend ID');
         }
 
-        $cached = Cache::read($friend->id, 'feeds');
-        if ($cached) {
-            return $this->response
-                ->withType('application/json')
-                ->withHeader('X-Cached-Result', 'true')
-                ->withStringBody($cached);
-        }
-
-        if ($feed = $fp->fetch($friend->feed_url)) {
-            Cache::write($friend->id, $feed, 'feeds');
-        }
-
         return $this->response
             ->withType('application/json')
-            ->withStringBody($feed);
+            ->withStringBody($friend->getFeed());
     }
 
     public function add()

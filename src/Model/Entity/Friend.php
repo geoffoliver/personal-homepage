@@ -1,6 +1,9 @@
 <?php
 namespace App\Model\Entity;
 
+use App\Lib\FeedParser;
+
+use Cake\Cache\Cache;
 use Cake\ORM\Entity;
 
 /**
@@ -35,4 +38,21 @@ class Friend extends Entity
         'created' => true,
         'modified' => true
     ];
+
+    public function getFeed($encode = true)
+    {
+        $fp = new FeedParser();
+
+        $cached = Cache::read($this->id, 'feeds');
+
+        if ($cached) {
+            return $cached;
+        }
+
+        if ($feed = $fp->fetch($this->feed_url, $encode)) {
+            Cache::write($this->id, $feed, 'feeds');
+        }
+
+        return $feed;
+    }
 }
