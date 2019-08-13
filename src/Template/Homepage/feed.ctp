@@ -55,15 +55,61 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 <script>
 (function() {
     var feed = document.getElementById('feedItems');
+    var loadingMessage = "<i class='fas fa-spin fa-spinner'></i> <?= __('Loading...'); ?>";
+    var loadErrorMessage = "<?= __('Error loading feed'); ?>";
 
-    nanoajax.ajax({
-        url: "/homepage/ajax-feed"
-    }, function(status, response) {
-        if (status !== 200) {
-            feed.innerHTML = "<?= __('Error loading feed'); ?>";
-            return;
+    var loadFeed = function(page) {
+        var url = "/homepage/ajax-feed";
+        if (page) {
+            url+= "?page=" + page
         }
-        feed.innerHTML = response;
+
+        nanoajax.ajax({
+            url: url
+        }, function(status, response) {
+            var pag = feed.querySelector('.feed-pagination');
+
+            if (status !== 200) {
+                if (pag) {
+                    pag.innerHTML = loadErrorMessage;
+                } else {
+                    feed.innerHTML = loadErrorMessage;
+                }
+                return;
+            }
+
+            if (pag) {
+                feed.removeChild(pag);
+            }
+
+            if (feed.getAttribute('loaded')) {
+                feed.innerHTML += response;
+            } else {
+                feed.setAttribute('loaded', true);
+                feed.innerHTML = response;
+            }
+        });
+    }
+
+    feed.addEventListener('click', function(e) {
+        var element = e.target;
+        if (element.classList.contains('paginate') && element.getAttribute('data-page')) {
+            var page = parseInt(element.getAttribute('data-page'));
+
+            if (isNaN(page) || page < 1) {
+                return;
+            }
+
+            loadFeed(page);
+
+            element.closest('div').innerHTML = loadingMessage;
+
+            e.preventDefault();
+
+            return false;
+        }
     });
+
+    loadFeed(<?= $this->request->getQuery('page', 'null'); ?>);
 })();
 </script>

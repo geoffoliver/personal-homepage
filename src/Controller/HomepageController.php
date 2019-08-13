@@ -144,7 +144,35 @@ class HomepageController extends AppController
             return $a->date_published->gt($b->date_published) ? -1 : 1;
         });
 
-        $this->set(['posts' => $posts]);
+        $limit = 50;
+        $page = 1;
+        if ($this->request->getQuery('page')) {
+            $page = $this->request->getQuery('page');
+        }
+
+        $page = (int)$page;
+
+        $paginated  = array_slice($posts, ($page - 1) * $limit, $limit);
+
+        $prev = null;
+        $next = null;
+
+        if ($page > 1) {
+            $prev = $page - 1;
+        }
+
+        if (count($posts) > $page * $limit) {
+            $next = $page + 1;
+        }
+
+        $this->set([
+            'posts' => $paginated,
+            'pagination' => [
+                'total' => count($posts),
+                'prev' => $prev,
+                'next' => $next
+            ]
+        ]);
     }
 
 }
