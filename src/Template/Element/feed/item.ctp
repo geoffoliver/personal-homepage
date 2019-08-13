@@ -17,10 +17,10 @@
                     <?php endif; ?>
                 </strong><br />
                 <time>
-                    <?= $post->date_published->format('l, F j, Y, g:i a'); ?>
+                    <?= $post->date_published->nice('America/Denver'); ?>
                     <?php if ($post->date_published != $post->date_modified): ?>
                         <span class="updated-time">
-                        (Updated <?= $post->date_modified->format('l, F j, Y, g:i a'); ?>)
+                            (Updated <?= $post->date_modified->nice('America/Denver'); ?>)
                         </span>
                     <?php endif; ?>
                 </time>

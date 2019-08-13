@@ -1,7 +1,10 @@
 <?php
-
 if (count($posts) === 0) {
-    echo $this->Html->div('box', __('There are no posts to display'));
+    if ($this->request->getQuery('page')) {
+        echo $this->Html->div('box', __('There are no more posts to display.'));
+    } else {
+        echo $this->Html->div('box', __('There are no posts to display.'));
+    }
 } else {
     foreach ($posts as $post) {
         echo $this->element(
@@ -17,7 +20,7 @@ if (count($posts) === 0) {
             if ($this->request->is('ajax') && $pagination['prev']) {
                 echo $this->Html->div('load-prev',
                     $this->Html->link(
-                        __('Previous Page'),
+                        __('Newer Posts'),
                         "/?page={$pagination['prev']}",
                         [
                             'class' => 'paginate button is-link is-full-width',
@@ -27,20 +30,18 @@ if (count($posts) === 0) {
                 );
             }
             */
-
             if ($pagination['next']) {
                 echo $this->Html->div('load-next',
                     $this->Html->link(
-                        __('Next Page'),
+                        __('Older Posts'),
                         "/?page={$pagination['next']}",
                         [
-                            'class' => 'paginate button is-link is-full-width',
+                            'class' => 'paginate button is-link is-fullwidth',
                             'data-page' => $pagination['next']
                         ]
                     )
                 );
             }
-
         echo '</div>';
     }
 }
