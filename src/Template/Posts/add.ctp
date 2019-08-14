@@ -13,15 +13,16 @@ $this->append('script', $this->Html->script('posts/add.js'));
                 echo $this->Form->create();
                     echo $this->Form->control('name', [
                         'type' => 'text',
-                        'label' => __('Name'),
-                        'placeholder' => __('Give your post a name'),
-                        'required' => true
+                        'label' => __('Title'),
+                        'placeholder' => __('Give your post a title'),
+                        'required' => true,
+                        'maxlength' => 255
                     ]);
 
                     echo $this->Form->control('content', [
                         'type' => 'textarea',
+                        'label' => __('Content'),
                         'placeholder' => __('What do you want to say?'),
-                        'label' => __('Post Content'),
                     ]);
                 ?>
                     <div id="add-post-attachments-container">
