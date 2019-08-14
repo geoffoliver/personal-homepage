@@ -20,11 +20,7 @@
 
     var img = newAttachment.querySelector('img[data-thumbnail]');
 
-    if (thumbnailUrl) {
-      img.src = thumbnailUrl;
-    } else {
-      img.src = file.previewElement.querySelector('img[data-dz-thumbnail]').src;
-    }
+    img.src = '/media/' + result.data.media.square_thumbnail;
 
     attachmentsContainer.appendChild(newAttachment);
   };

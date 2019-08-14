@@ -34,6 +34,7 @@ class Media extends Entity
         'post_id' => true,
         'mime' => true,
         'thumbnail' => true,
+        'square_thumbnail' => true,
         'local_filename' => true,
         'original_filename' => true,
         'user_id' => true,
