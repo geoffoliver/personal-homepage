@@ -64,3 +64,12 @@ $this->append('script', $this->Html->script('posts/add.js'));
         -->
     </div>
 </template>
+<template id="post-attachment-template">
+    <div class="add-post-attachment-item">
+        <img data-thumbnail />
+        <div class="add-post-attachment-item-controls">
+            <a href="#" class="button is-rounded is-dark is-small" title="Edit"><span class="fas fa-edit"></span></a>
+            <a href="#" class="button is-rounded is-dark is-small" title="Delete"><span class="fas fa-trash"></span></a>
+        </div>
+    </div>
+</template>

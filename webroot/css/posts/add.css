@@ -15,7 +15,7 @@
   margin-right: 15px;
 }
 
-#add-post-attachments img,
+#add-post-attachments > div,
 #add-post-attachment-button {
   width: 6rem;
   height: 6rem;
@@ -34,4 +34,47 @@
 #add-post-attachment-button.dz-drag-hover {
   color: #448b44;
   border-color: #448b44;
+}
+
+.add-post-attachment-item {
+  position: relative;
+}
+
+.add-post-attachment-item-controls {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  left: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-post-attachment-item-controls {
+  opacity: 0.7;
+}
+
+.add-post-attachment-item:hover .add-post-attachment-item-controls {
+  opacity: 1;
+}
+
+.add-post-attachment-item-controls .button{
+  padding: 7.5px;
+}
+
+
+.add-post-attachment-item .dz-progress {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  border-radius: 3px;
+  background: #fff;
+  padding: 1px;
+}
+
+.add-post-attachment-item .dz-progress span {
+  display: block;
+  height: 8px;
+  background: #3273DC;
+  border-radius: 3px;
 }
