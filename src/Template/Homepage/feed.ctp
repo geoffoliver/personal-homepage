@@ -1,7 +1,6 @@
 <?php
 $this->assign('title', __('My Feed'));
 $this->append('css', $this->Html->css('feed.css'));
-$this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 ?>
 <div id="feedPage">
     <div class="columns">
@@ -53,6 +52,7 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
         </div>
     </div>
 </div>
+<?= $this->Html->script('lib/nanoajax/nanoajax.min.js', ['inline' => true]); ?>
 <script>
 (function() {
     var feed = document.getElementById('feedItems');
@@ -103,7 +103,9 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 
             loadFeed(page);
 
-            element.closest('div').innerHTML = loadingMessage;
+            element.classList.add('is-loading');
+
+            //element.closest('div').innerHTML = loadingMessage;
 
             e.preventDefault();
 

@@ -14,13 +14,13 @@ $this->append('script', $this->Html->script('posts/add.js'));
                     echo $this->Form->control('name', [
                         'type' => 'text',
                         'label' => __('Name'),
-                        'placeholder' => __('Set the name for your post'),
+                        'placeholder' => __('Give your post a name'),
                         'required' => true
                     ]);
 
                     echo $this->Form->control('content', [
                         'type' => 'textarea',
-                        'placeholder' => __('Enter your post content here'),
+                        'placeholder' => __('What do you want to say?'),
                         'label' => __('Post Content'),
                     ]);
                 ?>
