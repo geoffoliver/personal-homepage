@@ -1,6 +1,5 @@
 <?php
-$faker = Faker\Factory::create();
-$this->assign('title', 'My Feed');
+$this->assign('title', __('My Feed'));
 $this->append('css', $this->Html->css('feed.css'));
 $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 ?>
@@ -44,6 +43,8 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
             </div>
         </div>
         <div class="column">
+            <div id="postingForm">
+            </div>
             <div id="feedItems">
                 <div class="box">
                     <i class="fas fa-spin fa-spinner"></i> <?= __('Loading Feed...'); ?>

@@ -24,6 +24,11 @@ class MediasController extends AppController
     $this->Authentication->allowUnauthenticated(['heroBackground', 'profilePhoto']);
   }
 
+  public function upload()
+  {
+      die('here');
+  }
+
   public function heroBackground()
   {
     $this->loadModel('Settings');

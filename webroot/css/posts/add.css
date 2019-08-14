@@ -1,0 +1,37 @@
+#add-post-attachments-container {
+  margin-bottom: 1.5rem;
+}
+
+#add-post-attachments-list {
+  display: flex;
+  flex-direction: row;
+}
+
+#add-post-attachments {
+  display: flex;
+}
+
+#add-post-attachments > div {
+  margin-right: 15px;
+}
+
+#add-post-attachments img,
+#add-post-attachment-button {
+  width: 6rem;
+  height: 6rem;
+}
+
+#add-post-attachment-button {
+  display: inline-flex;
+  font-size: 4rem;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #dfdfdf;
+  color: #dfdfdf;
+  line-height: 1;
+}
+
+#add-post-attachment-button.dz-drag-hover {
+  color: #448b44;
+  border-color: #448b44;
+}

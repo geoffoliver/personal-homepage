@@ -115,3 +115,10 @@ footer {
   position: sticky;
   top: 77px;
 }
+
+form div.required label::after {
+  display: inline-block;
+  content: '*';
+  color: darkred;
+  margin-left: 3px;
+}

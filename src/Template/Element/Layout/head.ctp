@@ -14,6 +14,4 @@
 
     echo $this->fetch('meta');
     echo $this->fetch('css');
-    echo $this->fetch('script');
 
-    echo $this->Html->script('https://use.fontawesome.com/releases/v5.3.1/js/all.js', ['defer']);

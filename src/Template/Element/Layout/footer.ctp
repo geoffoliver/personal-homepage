@@ -6,3 +6,7 @@
         </p>
     </div>
 </footer>
+<?php
+    echo $this->Html->script('https://use.fontawesome.com/releases/v5.3.1/js/all.js', ['defer']);
+    echo $this->fetch('script');
+?>
