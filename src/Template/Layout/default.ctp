@@ -8,7 +8,9 @@
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item" href="/" title="Home">
-          <i class="fas fa-home"></i>
+          <span class="fas fa-home"></span>
+          &nbsp;
+          Site Name
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
