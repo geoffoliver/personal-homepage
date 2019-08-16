@@ -31,7 +31,7 @@
                         ['class' => 'navbar-item']
                     );
                     echo $this->Html->link(
-                        __('Homepage'),
+                        __('Posts'),
                         ['controller' => 'Homepage', 'action' => 'index', 'homepage'],
                         ['class' => 'navbar-item']
                     );
@@ -40,15 +40,16 @@
                         ['controller' => 'Settings', 'action' => 'index'],
                         ['class' => 'navbar-item']
                     );
+                    echo '<div class="nav-divider"></div>';
                 }
-
+            ?>
+            <?php
                 echo $this->Html->link(
                     __('Friends'),
                     ['controller' => 'Friends', 'action' => 'index'],
                     ['class' => 'navbar-item']
                 );
             ?>
-            <div class="nav-divider"></div>
             <a href="#" class="navbar-item"><?= __('About'); ?></a>
             <a href="#" class="navbar-item"><?= __('Photos'); ?></a>
             <a href="#" class="navbar-item"><?= __('Videos'); ?></a>
@@ -83,6 +84,7 @@
   </nav>
   <main>
     <div class="container">
+      <?=$this->Flash->render()?>
       <?php if ($this->fetch('hero')): ?>
         <section class="hero is-light" id="hero" style="background-image: url('/hero-background');">
           <div class="hero-body">
@@ -108,7 +110,6 @@
           </div>
         </section>
       <?php endif;?>
-      <?=$this->Flash->render()?>
       <?=$this->fetch('content')?>
     </div>
   </main>

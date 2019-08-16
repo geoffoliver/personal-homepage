@@ -1,0 +1,96 @@
+#viewPost {
+  padding-top: 0;
+}
+
+.post-title {
+  padding: 20px 0;
+}
+
+.comments-list {
+  padding: 20px 20px 0;
+}
+
+.comments-list .no-comments {
+  margin-top: 0.75rem;
+}
+
+.comments-list h3 {
+  /* border-bottom: 2px solid #ddd; */
+  padding-bottom: 10px;
+}
+
+.comments-list .content {
+  padding: 0 1px;
+}
+
+.comment {
+  padding: 15px 20px 10px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid #ddd;
+  position: relative;
+}
+
+.comment::before {
+  position: absolute;
+  display: block;
+  content: '';
+  left: -21px;
+  top: 20px;
+  border-right: 20px solid #ddd;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+}
+
+.comment::after {
+  position: absolute;
+  display: block;
+  content: '';
+  left: -20px;
+  top: 20px;
+  border-right: 20px solid #F9F9F9;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+}
+
+.comment + .comment {
+  margin-top: 20px;
+}
+
+.comment-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.commenter-name {
+  font-weight: bold;
+  padding-right: 10px;
+}
+
+.comment-content {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.comment .level {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.comment-form {
+  padding: 15px 20px 20px;
+  border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.comment-form h4 {
+  font-weight: bold;
+}
+
+.comment-form p {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}

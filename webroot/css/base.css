@@ -50,8 +50,9 @@ body {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
-footer {
+footer.footer {
   margin-top: 45px;
+  padding-bottom: 3rem;
 }
 
 #nav-logout-form {
@@ -94,6 +95,7 @@ footer {
 .sidebar-thumbnail-grid > * {
   margin: 1.5% 1%;
   width: 31%;
+  height: 1%;
 }
 
 .sidebar-thumbnail-grid a {
@@ -121,4 +123,14 @@ form div.required label::after {
   content: '*';
   color: darkred;
   margin-left: 3px;
+}
+
+main > .container > article.message {
+  cursor: pointer;
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  z-index: 1000;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }

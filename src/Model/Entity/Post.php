@@ -30,10 +30,10 @@ class Post extends Entity
      * @var array
      */
     protected $_accessible = [
-        'url_alias' => true,
         'name' => true,
         'content' => true,
         'public' => true,
+        'allow_comments' => true,
         'user_id' => true,
         'created' => true,
         'modified' => true,

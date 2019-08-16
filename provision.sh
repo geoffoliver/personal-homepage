@@ -5,7 +5,7 @@ apt-get update
 apt-get install -y ffmpeg
 
 # install some things that we'll need
-apt-get install -y rpl imagemagick php-imagick php-mbstring php-zip # php-intl php-simplexml
+apt-get install -y rpl imagemagick php-imagick php-mbstring php-zip php-intl php-simplexml
 
 rpl public webroot /etc/apache2/sites-available/000-default.conf
 
@@ -23,3 +23,6 @@ php -r "unlink('composer-setup.php');"
 # install dependencies
 cd /var/www
 composer install
+
+bin/cake migrations migrate
+bin/cake migrations seed

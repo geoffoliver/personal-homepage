@@ -24,5 +24,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/hero-background', ['controller' => 'Medias', 'action' => 'heroBackground']);
     $routes->connect('/profile-photo', ['controller' => 'Medias', 'action' => 'profilePhoto']);
 
+    $routes->connect('/view-post/:id', ['controller' => 'Posts', 'action' => 'view'], ['_name' => 'viewPost'])->setPass(['id']);
+
     $routes->fallbacks(DashedRoute::class);
 });

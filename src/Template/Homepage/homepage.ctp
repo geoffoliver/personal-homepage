@@ -44,7 +44,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         </h3>
         <div id="homepage-photos" class="sidebar-thumbnail-grid">
           <?php foreach($photos as $photo): ?>
-            <img src="/media/<?= $photo->thumbnail; ?>" />
+            <img src="/media/<?= $photo->square_thumbnail; ?>" />
           <?php endforeach; ?>
         </div>
       </div>
@@ -54,7 +54,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         <h3><strong>Videos</strong></h3>
         <div id="homepage-videos" class="homepage-thumbnail-grid">
           <?php foreach($videos as $video): ?>
-            <img src="/media/<?= $video->thumbnail; ?>" />
+            <img src="/media/<?= $video->square_thumbnail; ?>" />
           <?php endforeach; ?>
         </div>
       </div>
@@ -62,50 +62,14 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
     </div>
   </div>
   <div class="column">
+    <?php if (count($posts) === 0): ?>
+        <div class="box">
+            <h4 class="is-size-4"><?= __('There is nothing to show here.'); ?></h4>
+            <p><?= __('If you are the site owner, you should add your first post!'); ?></p>
+        </div>
+    <?php endif; ?>
     <?php foreach ($posts as $post): ?>
-      <div class="box">
-        <article class="media">
-          <div class="media-content">
-            <div class="content">
-              <h1 class="is-marginless is-size-4">
-                <a href="/posts/<?= $post->id; ?>/<?= $post->url_alias; ?>"><?=$post->name;?></a>
-              </h1>
-              <h5 class="is-size-7 has-text-grey-light"><?= $post->created->format('F j, Y \a\t G:i a'); ?></h5>
-              <p>
-                <?=nl2br($post->content);?>
-              </p>
-              <?php if ($post->medias): ?>
-                <?php foreach ($post->medias as $media): ?>
-                  <?php if ($media->thumbnail): ?>
-                    <img src="/media/<?=$media->thumbnail;?>" />
-                  <?php else: ?>
-                    ...
-                  <?php endif;?>
-                <?php endforeach;?>
-              <?php endif;?>
-              <hr />
-              <nav class="level is-mobile">
-                <div class="level-left">
-                  <a class="level-item" aria-label="reply">
-                    <span class="icon is-small">
-                      <i class="fas fa-comment" aria-hidden="true"></i>
-                    </span>
-                    &nbsp;
-                    <?= count($post->comments); ?> Comments
-                  </a>
-                  <a class="level-item" aria-label="retweet">
-                    <span class="icon is-small">
-                      <i class="fas fa-share" aria-hidden="true"></i>
-                    </span>
-                    &nbsp;
-                    Share
-                  </a>
-                </div>
-              </nav>
-            </div>
-          </div>
-        </article>
-      </div>
+        <?= $this->element('homepage/post', ['post' => $post]); ?>
     <?php endforeach; ?>
   </div>
 </div>

@@ -46,10 +46,12 @@ class PostsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('Medias', [
-            'foreignKey' => 'post_id'
+            'foreignKey' => 'post_id',
+            'saveStrategy' => 'replace'
         ]);
         $this->hasMany('Comments', [
-            'foreignKey' => 'model_id'
+            'foreignKey' => 'model_id',
+            'dependent' => true
         ]);
     }
 
@@ -66,21 +68,10 @@ class PostsTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->scalar('url_alias')
-            ->maxLength('url_alias', 255)
-            ->requirePresence('url_alias', 'create')
-            ->notEmptyString('url_alias');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
-
-        $validator
-            ->scalar('content')
-            ->requirePresence('content', 'create')
-            ->notEmptyString('content');
 
         $validator
             ->boolean('public')

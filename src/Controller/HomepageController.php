@@ -15,7 +15,11 @@ class HomepageController extends AppController
             ],
             'contain' => [
                 'Medias',
-                'Comments'
+                'Comments' => [
+                    'conditions' => [
+                        'Comments.approved' => true
+                    ]
+                ]
             ],
             'order' => [
               'Posts.created' => 'DESC'
@@ -72,6 +76,14 @@ class HomepageController extends AppController
         $this->loadModel('Posts');
         $this->loadModel('Medias');
         $this->loadModel('Friends');
+
+        if ($this->Authentication->getIdentity()) {
+            unset($this->paginate['Posts']['conditions']);
+            $this->paginate['Posts']['contain'] = [
+                'Medias',
+                'Comments'
+            ];
+        }
 
         $posts = $this->paginate('Posts');
 

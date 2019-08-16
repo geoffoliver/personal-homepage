@@ -2,7 +2,12 @@
 namespace App\Controller;
 
 use Cake\Cache\Cache;
+use Cake\Utility\Text;
 
+use nadar\quill\Lexer;
+use nadar\quill\Debug;
+
+use App\Lib\Quill\Listeners\CodeBlock;
 use App\Controller\AppController;
 
 /**
@@ -17,7 +22,7 @@ class PostsController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Authentication->allowUnauthenticated(['feed']);
+        $this->Authentication->allowUnauthenticated(['feed', 'view']);
     }
 
     /**
@@ -44,8 +49,31 @@ class PostsController extends AppController
      */
     public function view($id = null)
     {
+        $contain = [
+            'Users',
+            'Comments' => [
+                'sort' => [
+                    'Comments.created' => 'DESC'
+                ]
+            ]
+        ];
+
+        if ($this->Authentication->getIdentity()) {
+            $contain[]= 'Medias.Comments';
+        } else {
+            $contain['Medias.Comments'] = [
+                'conditions' => [
+                    'Comments.approved' => true
+                ]
+            ];
+            $contain['Comments']['conditions'] = [
+                'Comments.approved' => true
+            ];
+        }
+
+
         $post = $this->Posts->get($id, [
-            'contain' => ['Users', 'Attachments', 'Comments']
+            'contain' => $contain
         ]);
 
         $this->set('post', $post);
@@ -59,17 +87,49 @@ class PostsController extends AppController
     public function add()
     {
         $post = $this->Posts->newEntity();
-        if ($this->request->is('post')) {
-            $post = $this->Posts->patchEntity($post, $this->request->getData());
-            if ($this->Posts->save($post)) {
-                $this->Flash->success(__('The post has been saved.'));
+        $user = $this->request->getAttribute('identity');
 
-                return $this->redirect(['action' => 'index']);
+        if ($this->request->is('post')) {
+            $post = $this->Posts->patchEntity(
+                $post,
+                $this->request->getData(),
+                ['associated' => ['Medias']]
+            );
+
+            $post->user_id = $user->id;
+
+            $quillDelta = $this->request->getData('delta');
+            $lexer = new Lexer($quillDelta);
+            $lexer->registerListener(new CodeBlock);
+            $lexer->escapeInput = true;
+            $post->content = str_replace('<p><br></p>', '', $lexer->render());
+
+            if ($this->Posts->save($post)) {
+                if ($att = $this->request->getData('new_media')) {
+                    foreach ($att as $attId) {
+                        $media = $this->Posts->Medias->find()
+                            ->where([
+                                'Medias.id' => $attId,
+                                'Medias.post_id IS NULL'
+                            ])
+                            ->first();
+
+                        if (!$media) {
+                            continue;
+                        }
+
+                        $this->Posts->Medias->link($post, [$media]);
+                    }
+                }
+
+                $this->Flash->success(__('The post has been saved.'));
+                return $this->redirect(['_name' => 'viewPost', $post->id]);
             }
+
             $this->Flash->error(__('The post could not be saved. Please, try again.'));
         }
-        $users = $this->Posts->Users->find('list', ['limit' => 200]);
-        $this->set(compact('post', 'users'));
+
+        $this->set(compact('post'));
     }
 
     /**
@@ -82,17 +142,28 @@ class PostsController extends AppController
     public function edit($id = null)
     {
         $post = $this->Posts->get($id, [
-            'contain' => []
+            'contain' => [
+                'Medias'
+            ]
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $post = $this->Posts->patchEntity($post, $this->request->getData());
+
+            $quillDelta = $this->request->getData('delta');
+            $lexer = new Lexer($quillDelta);
+            $lexer->registerListener(new CodeBlock);
+            $lexer->escapeInput = true;
+            $post->content = str_replace('<p><br></p>', '', $lexer->render());
+
             if ($this->Posts->save($post)) {
                 $this->Flash->success(__('The post has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['_name' => 'viewPost', $post->id]);
             }
             $this->Flash->error(__('The post could not be saved. Please, try again.'));
         }
+
         $users = $this->Posts->Users->find('list', ['limit' => 200]);
         $this->set(compact('post', 'users'));
     }
@@ -114,7 +185,7 @@ class PostsController extends AppController
             $this->Flash->error(__('The post could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Homepage', 'action' => 'homepage']);
     }
 
     public function feed()

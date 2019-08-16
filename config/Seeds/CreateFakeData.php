@@ -1,6 +1,7 @@
 <?php
 use Migrations\AbstractSeed;
 use Cake\Utility\Text;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 
 /**
  * CreateFakePosts seed.
@@ -22,12 +23,13 @@ class CreateFakeData extends AbstractSeed
         $faker = Faker\Factory::create();
         $userId = Text::uuid();
         $now = $faker->dateTime()->format('Y-m-d H:i:s');
+        $password = (new DefaultPasswordHasher)->hash('password');
 
         $users = [[
             'id' => $userId,
             'name' => 'Geoff Oliver',
             'email' => 'the@geoffoliver.org',
-            'password' => sha1('password'),
+            'password' => $password,
             'created' => $now,
             'modified' => $now
         ]];
@@ -38,15 +40,15 @@ class CreateFakeData extends AbstractSeed
         $medias = [];
         $comments = [];
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $postId = Text::uuid();
             $now = $faker->dateTime()->format('Y-m-d H:i:s');
             $post = [
                 'id' => $postId,
-                'url_alias' => $faker->slug,
                 'name' => $faker->words(5, true),
-                'content' => $faker->paragraphs(4, true),
+                'content' => '<p>' . implode('</p><p>', $faker->paragraphs(4)) . '</p>',
                 'public' => true,
+                'allow_comments' => true,
                 'user_id' => $userId,
                 'created' => $now,
                 'modified' => $now
@@ -59,6 +61,7 @@ class CreateFakeData extends AbstractSeed
                     'id' => $mediaId,
                     'post_id' => $postId,
                     'mime' => 'image/jpeg',
+                    'square_thumbnail' => '2019/07/13/dog-thumbnail.jpg',
                     'thumbnail' => '2019/07/13/dog-thumbnail.jpg',
                     'local_filename' => '2019/07/13/dog.jpg',
                     'original_filename' => 'a-really-cool-dog.jpg',
@@ -73,7 +76,7 @@ class CreateFakeData extends AbstractSeed
                   $comments[]= [
                     'id' => Text::uuid(),
                     'model_id' => $mediaId,
-                    'comment' => $faker->paragraphs(rand(1, 4), true),
+                    'comment' => '<p>' . implode('</p><p>', $faker->paragraphs(rand(1, 4))) . '</p>',
                     'approved' => true,
                     'public' => true,
                     'posted_by' => $faker->email,
@@ -90,7 +93,7 @@ class CreateFakeData extends AbstractSeed
               $comments[]= [
                 'id' => Text::uuid(),
                 'model_id' => $postId,
-                'comment' => $faker->paragraphs(rand(1, 4), true),
+                'comment' => '<p>' . implode('</p><p>', $faker->paragraphs(rand(1, 4))) . '</p>',
                 'approved' => true,
                 'public' => true,
                 'posted_by' => $faker->email,

@@ -1,5 +1,5 @@
 <?php
-$this->assign('title', __('Add Post'));
+$this->assign('title', __('Edit Post'));
 $this->append('css', $this->Html->css('posts/add.css'));
 // $this->append('css', $this->Html->css('/js/lib/quill/quill.core.css'));
 $this->append('css', $this->Html->css('/js/lib/quill/quill.bubble.css'));
@@ -10,7 +10,7 @@ $this->append('script', $this->Html->script('posts/add.js'));
 <section class="section" id="addPostForm">
     <div class="columns">
         <div class="column is-three-fifths is-offset-one-fifth">
-            <h1 class="is-size-3"><?= __('Add Post'); ?></h1>
+            <h1 class="is-size-3"><?= __('Edit Post'); ?></h1>
             <div class="box">
                 <?= $this->element('posts/form', ['post' => $post]); ?>
             </div>

@@ -16,6 +16,13 @@ class FriendsController extends AppController
         ]
     ];
 
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->Authentication->allowUnauthenticated(['index']);
+    }
+
     public function index()
     {
         $this->set([

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88053a39ff974b38bcedf7c52edef2b4",
+    "content-hash": "6c35e5def050764284c070cf7e80a201",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -1004,6 +1004,42 @@
                 "psr-3"
             ],
             "time": "2018-11-05T09:00:11+00:00"
+        },
+        {
+            "name": "nadar/quill-delta-parser",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nadar/quill-delta-parser.git",
+                "reference": "f875aa6521b1e86fc7699536ece698fe3b80dfe0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nadar/quill-delta-parser/zipball/f875aa6521b1e86fc7699536ece698fe3b80dfe0",
+                "reference": "f875aa6521b1e86fc7699536ece698fe3b80dfe0",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "nadar\\quill\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Basil Suter",
+                    "email": "git@nadar.io"
+                }
+            ],
+            "description": "A PHP library to parse Quill Deltas into HTML",
+            "time": "2019-07-10T14:46:30+00:00"
         },
         {
             "name": "natxet/cssmin",

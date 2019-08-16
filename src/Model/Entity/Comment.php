@@ -34,6 +34,7 @@ class Comment extends Entity
         'approved' => true,
         'public' => true,
         'posted_by' => true,
+        'display_name' => true,
         'created' => true,
         'modified' => true,
         'model' => true
