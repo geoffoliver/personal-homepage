@@ -3,6 +3,7 @@ $this->assign('title', __('Edit Post'));
 $this->append('css', $this->Html->css('posts/add.css'));
 // $this->append('css', $this->Html->css('/js/lib/quill/quill.core.css'));
 $this->append('css', $this->Html->css('/js/lib/quill/quill.bubble.css'));
+$this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 $this->append('script', $this->Html->script('lib/quill/quill.min.js'));
 $this->append('script', $this->Html->script('lib/dropzone/dropzone.js'));
 $this->append('script', $this->Html->script('posts/add.js'));

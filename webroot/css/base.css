@@ -134,3 +134,8 @@ main > .container > article.message {
   transform: translateX(-50%);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
+
+pre .hljs {
+  background-color: transparent;
+  padding: 0;
+}

@@ -6,8 +6,11 @@ use Cake\Utility\Text;
 
 use nadar\quill\Lexer;
 use nadar\quill\Debug;
+use nadar\quill\listener\Image;
+use nadar\quill\listener\Video;
 
 use App\Lib\Quill\Listeners\CodeBlock;
+// use App\Lib\Quill\Listeners\CustomImage;
 use App\Controller\AppController;
 
 /**
@@ -97,12 +100,11 @@ class PostsController extends AppController
             );
 
             $post->user_id = $user->id;
-
+            /*
             $quillDelta = $this->request->getData('delta');
-            $lexer = new Lexer($quillDelta);
-            $lexer->registerListener(new CodeBlock);
-            $lexer->escapeInput = true;
+            $lexer = $this->getLexer($quillDelta);
             $post->content = str_replace('<p><br></p>', '', $lexer->render());
+            */
 
             if ($this->Posts->save($post)) {
                 if ($att = $this->request->getData('new_media')) {
@@ -150,13 +152,33 @@ class PostsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $post = $this->Posts->patchEntity($post, $this->request->getData());
 
-            $quillDelta = $this->request->getData('delta');
-            $lexer = new Lexer($quillDelta);
-            $lexer->registerListener(new CodeBlock);
-            $lexer->escapeInput = true;
-            $post->content = str_replace('<p><br></p>', '', $lexer->render());
+            if (!$this->request->getData('medias')) {
+                $post->medias = [];
+            }
 
+            /*
+            $quillDelta = $this->request->getData('delta');
+            $lexer = $this->getLexer($quillDelta);
+            $post->content = str_replace('<p><br></p>', '', $lexer->render());
+            */
             if ($this->Posts->save($post)) {
+                if ($att = $this->request->getData('new_media')) {
+                    foreach ($att as $attId) {
+                        $media = $this->Posts->Medias->find()
+                            ->where([
+                                'Medias.id' => $attId,
+                                'Medias.post_id IS NULL'
+                            ])
+                            ->first();
+
+                        if (!$media) {
+                            continue;
+                        }
+
+                        $this->Posts->Medias->link($post, [$media]);
+                    }
+                }
+
                 $this->Flash->success(__('The post has been saved.'));
 
                 return $this->redirect(['_name' => 'viewPost', $post->id]);
@@ -336,5 +358,27 @@ class PostsController extends AppController
         }
 
         return $jsonFeedPosts;
+    }
+
+    private function getLexer($quillDelta)
+    {
+        $lexer = new Lexer($quillDelta);
+        $lexer->escapeInput = true;
+
+        // setup listeners
+        $lexer->registerListener(new CodeBlock);
+        // $lexer->registerListener(new CustomImage);
+
+        // fix image wrapper
+        $image = new Image();
+        $image->wrapper = '<img src="{src}" />';
+        $lexer->registerListener($image);
+
+        // fix video wrapper
+        $video = new Video();
+        $video->wrapper = '<figure class="image is-16by9"><iframe src="{url}" class="has-ratio" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></figure>';
+        $lexer->registerListener($video);
+
+        return $lexer;
     }
 }

@@ -1,3 +1,6 @@
+<?php
+$Parsedown = new ParsedownExtra();
+?>
 <div class="box">
     <article class="media">
         <div class="media-content">
@@ -15,7 +18,7 @@
                 <?php endif; ?>
             </h5>
             <p>
-                <?= $post->content; ?>
+                <?= $Parsedown->text($post->content); ?>
             </p>
             <?php if ($post->medias): ?>
                 <?php foreach ($post->medias as $media): ?>

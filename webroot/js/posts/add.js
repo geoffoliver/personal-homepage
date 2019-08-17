@@ -40,50 +40,129 @@
     }
   });
 
+  document.addEventListener('click', function(e) {
+
+    if (e.target.classList.contains('delete-post-attachment')) {
+      if (confirm('Are you sure you want to remove this file from the post?')) {
+        var remove = e.target.closest('.add-post-attachment-item');
+        remove.parentNode.removeChild(remove);
+      }
+      e.preventDefault();
+      return;
+    }
+
+    if (e.target.classList.contains('edit-post-attachment')) {
+      alert('edit');
+      e.preventDefault();
+      return;
+    }
+  });
+
+  /*
   var content = document.querySelector('#content');
 
-  // implement uploads from here...
-  // https://github.com/quilljs/quill/issues/1089#issuecomment-510084530
+  var uploading = false;
+
+  var uploadAndReplaceImage = function (image) {
+    uploading = true;
+
+    var dataURI = image.src;
+    var imageBase64 = atob(dataURI.split(',')[1]);
+    var mimeType = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    var ia = new Uint8Array(imageBase64.length);
+
+    for (var i = 0; i < imageBase64.length; i++) {
+        ia[i] = imageBase64.charCodeAt(i);
+    }
+
+    var fileBlob = new Blob([ia], {type: mimeType});
+    var uploadData = new FormData();
+    var filename = 'dragged-file-' + new Date().getTime();
+
+    switch (mimeType) {
+      case 'image/jpeg':
+        filename += '.jpg';
+        break;
+      case 'image/png':
+        filename += '.png';
+        break;
+      case 'image/gif':
+        filename += '.gif';
+        break;
+      case 'video/mp4':
+        filename += '.mp4';
+        break;
+      case 'video/mov':
+        filename += '.mov';
+        break;
+    }
+
+    uploadData.append('file', fileBlob, filename);
+
+    nanoajax.ajax({
+      url: '/medias/upload.json',
+      method: 'POST',
+      responseType: 'json',
+      body: uploadData,
+      headers: {
+        "X-CSRF-Token": document.querySelector('[name="_csrfToken"]').value
+      },
+      onprogress: function(a) {
+        console.log('a', a);
+      }
+    }, function(code, response) {
+      uploading = false;
+
+      if (code !== 200) {
+        return;
+      }
+
+      if (!response.success) {
+        return;
+      }
+
+      image.src = '/media/' + response.data.media.thumbnail;
+      image.setAttribute('data-original', '/media/' + response.data.media.local_filename);
+
+      var newAttachment = document.importNode(attachmentTpl.content, true);
+
+      newAttachment.querySelector('img[data-thumbnail]').src = '/media/' + response.data.media.square_thumbnail;
+      newAttachment.querySelector('input[data-media-id]').value = response.data.media.id;
+      attachmentsContainer.appendChild(newAttachment);
+    });
+  }
+
   var quill = new Quill('#content', {
     modules: {
       toolbar: [
         [{ header: [1, 2, false] }],
-        ['bold', 'italic', 'underline',],
-        ['blockquote'],
+        ['bold', 'italic', 'underline', 'blockquote'],
+        ['image', 'video'],
         ['link', 'code-block']
       ]
     },
-    formats: [
-      'background',
-      'bold',
-      'color',
-      'font',
-      'code',
-      'italic',
-      'link',
-      'size',
-      'strike',
-      'script',
-      'underline',
-      'blockquote',
-      'header',
-      'indent',
-      'list',
-      'align',
-      'direction',
-      'code-block',
-      'formula'
-    ],
     placeholder: content.attributes.getNamedItem("data-placeholder").value,
     theme: 'bubble'
   });
 
   quill.on('text-change', function(delta, old, src) {
-    // console.log('d', delta);
-    // console.log('o', old);
-    // console.log('s', src);
-
     console.log('content', quill.getContents());
+
+    if (uploading) {
+      return;
+    }
+
+    var images = quill.root.querySelectorAll('img');
+    var img, src;
+    for (let i = 0; i < images.length; i++) {
+      img = images[i];
+      src = img.src;
+      if (img.src && img.src[0] === 'd') {
+        uploading = true;
+        uploadAndReplaceImage(img);
+      }
+    }
   });
 
   var postForm = document.getElementById('postForm');
@@ -99,5 +178,5 @@
 
     postForm.querySelector('div').appendChild(contentInput);
   });
-
+  */
 })();

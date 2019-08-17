@@ -105,8 +105,6 @@ $this->append('css', $this->Html->css('feed.css'));
 
             element.classList.add('is-loading');
 
-            //element.closest('div').innerHTML = loadingMessage;
-
             e.preventDefault();
 
             return false;

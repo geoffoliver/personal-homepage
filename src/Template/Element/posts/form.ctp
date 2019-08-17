@@ -8,6 +8,12 @@ echo $this->Form->create($post, ['id' => 'postForm']);
         'maxlength' => 255,
     ]);
 
+    echo $this->Form->control('content', [
+        'type' => 'textarea',
+        'label' => __('Body'),
+        'placeholder' => __('What do you want to say?'),
+    ]);
+    /*
     echo $this->Html->div('field', implode('', [
         $this->Html->tag('label', __('Body'), [
             'for' => 'content',
@@ -24,6 +30,7 @@ echo $this->Form->create($post, ['id' => 'postForm']);
             )
         )
     ]));
+    */
 ?>
     <div id="add-post-attachments-container">
         <div class="field">

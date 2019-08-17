@@ -55,6 +55,9 @@
   height: 27px;
 }
 
+.add-post-attachment-item-controls svg {
+  pointer-events: none;
+}
 
 .add-post-attachment-item-controls {
   opacity: 0.7;
@@ -117,6 +120,13 @@
 #content .ql-editor ul,
 #content .ql-editor ol {
   margin-bottom: 1em;
+}
+
+#content .ql-editor img,
+#content .ql-editor video,
+#content .ql-editor figure img,
+#content .ql-editor figure video {
+  width: 100%;
 }
 
 .add-post-checkboxes {

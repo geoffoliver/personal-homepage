@@ -1,4 +1,5 @@
 <?php
+$Parsedown = new ParsedownExtra();
 $this->assign('title', $post->name);
 $this->append('css', $this->Html->css('posts/view.css'));
 $this->append('script', $this->Html->script('posts/view.js'));
@@ -50,7 +51,7 @@ $this->append('script', $this->Html->script('posts/view.js'));
                 <div class="column is-10 is-offset-1">
                     <div class="box">
                         <div class="post-content content">
-                            <?= $post->content; ?>
+                            <?= $Parsedown->text($post->content); ?>
                         </div>
                         <?php if ($post->medias): ?>
                         <div class="post-media">
