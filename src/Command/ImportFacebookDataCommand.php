@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Command;
 
 use Cake\Console\Arguments;
@@ -14,11 +15,12 @@ use Cake\Filesystem\Folder;
 class ImportFacebookDataCommand extends Command
 {
 
+    private $user;
     private $path;
     private $photosDir;
     private $albumsDir;
     private $videosDir;
-    private $user;
+    private $postsDir;
 
     public function initialize()
     {
@@ -100,15 +102,16 @@ class ImportFacebookDataCommand extends Command
         $this->photosDir = $this->path . DS . 'photos_and_videos';
         $this->albumsDir = $this->photosDir . DS . 'album';
         $this->videosDir = $this->photosDir . DS . 'videos';
+        $this->postsDir = $this->path . DS . 'posts';
 
         // give a little output
         $io->out(__('Processing data...'));
 
         // import albums
-        $this->importAlbums($path, $io);
+        //$this->importAlbums($path, $io);
 
         // import videos
-        $this->importVideos($path, $io);
+        //$this->importVideos($path, $io);
 
         // import posts
         $this->importPosts($path, $io);
@@ -139,8 +142,13 @@ class ImportFacebookDataCommand extends Command
 
         // loop over the albums and import them
         foreach ($albums as $aFile) {
+            $albumFile = $this->albumsDir . DS . $aFile;
+            if (!$this->checkFile($albumFile, $io)) {
+                continue;
+            }
+
             // pull the album data out of the JSON file
-            $album = json_decode(file_get_contents($this->albumsDir . DS . $aFile));
+            $album = json_decode(file_get_contents($albumFile));
 
             $io->out(__('Creating album "{0}"', $album->name));
 
@@ -293,7 +301,99 @@ class ImportFacebookDataCommand extends Command
 
     private function importPosts($path, ConsoleIo $io)
     {
+        // tell the user what's happening
+        $io->out(__('Importing posts'));
 
+        if (!$this->checkPath($this->postsDir, $io)) {
+            return;
+        }
+
+        // get a handle on the directory where posts live
+        $postDir = new Folder($this->postsDir);
+        $postFiles = $postDir->find('^your_posts.*\.json$');
+
+        // find post files
+        if (!$postFiles) {
+            $io->out(__('There are no post files to process'));
+            return;
+        }
+
+        // loop over the post files and create the posts!!
+        foreach ($postFiles as $pFile) {
+            $io->out(__('Processing post file "{0}"', basename($pFile)));
+
+            // the JSON file with the post data
+            $postFile = $this->postsDir . DS . $pFile;
+
+            // make sure we can access the post file
+            if (!$this->checkFile($postFile, $io)) {
+                continue;
+            }
+
+            // try to decode the posts
+            $posts = json_decode(file_get_contents($postFile));
+
+            // well that sucks... oh well.
+            if (!$posts) {
+                $io->out(__('No posts in file "{0}"', basename($pFile)));
+                continue;
+            }
+
+            // loop over the posts and create them
+            foreach ($posts as $post) {
+                // figure out when the post was created
+                $created = date('Y-m-d H:i:s');
+                if (isset($post->timestamp) && $post->timestamp) {
+                    $created = date('Y-m-d H:i:s', $post->timestamp);
+                }
+
+                // grab/generate a title for the post
+                $title = isset($post->title) ? $post->title : __('Untitled Post');
+                $content = [];
+
+                // are there comments on the post?
+                if (isset($post->comments) && $post->comments) {
+                    $entity['comments'] = $this->generateComments($post->comments);
+                }
+
+                var_dump($post);
+                die();
+
+                // this is where post content and other stuff lives
+                if (isset($post->data) && $post->data) {
+                    foreach ($post->data as $pKey => $pVal) {
+                        var_dump(['key' => $pKey, 'val' => $pVal]);
+                    }
+                }
+
+                die();
+
+                // basically everything is a fucking attachment... this is going to suck
+                if (isset($post->attachments) && $post->attachments) {
+
+                }
+
+                // create the post entity
+                $entity = [
+                    'user_id' => $this->user->id,
+                    'created' => $created,
+                    'modified' => $created,
+                    'title' => $title,
+                    'content' => implode("\n", $content)
+                ];
+
+                $postEntity = $this->Posts->newEntity($entity);
+
+                if ($errors = $postEntity->getErrors()) {
+                    $io->error(print_r($errors, true));
+                    continue;
+                }
+
+                if ($this->Posts->save($postEntity)) {
+
+                }
+            }
+        }
     }
 
     private function generateComments($comments, $io)
