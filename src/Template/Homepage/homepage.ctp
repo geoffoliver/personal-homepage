@@ -11,7 +11,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
       <div class="box">
         <h3>
           <a href="/about">
-            <i class="fas fa-fw fa-address-card"></i>
+            <span class="fas fa-fw fa-address-card"></span>
             <strong>About Me</strong>
           </a>
         </h3>
@@ -23,7 +23,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
           <hr />
           <h3>
             <a href="/friends">
-              <i class="fas fa-fw fa-user-friends"></i>
+              <span class="fas fa-fw fa-user-friends"></span>
               <strong>My Friends</strong>
             </a>
           </h3>
@@ -38,7 +38,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
       <div class="box">
         <h3>
           <a href="/photos">
-            <i class="fas fa-fw fa-camera"></i>
+            <span class="fas fa-fw fa-camera"></span>
             <strong>Photos</strong>
           </a>
         </h3>

@@ -9,7 +9,7 @@ $this->append('css', $this->Html->css('feed.css'));
                 <div class="box">
                     <h3>
                         <a href="/friends">
-                            <i class="fas fa-fw fa-user-friends"></i>
+                            <span class="fas fa-fw fa-user-friends"></span>
                             <strong><?= __('My Friends'); ?></strong>
                         </a>
                     </h3>
@@ -46,7 +46,7 @@ $this->append('css', $this->Html->css('feed.css'));
             </div>
             <div id="feedItems">
                 <div class="box">
-                    <i class="fas fa-spin fa-spinner"></i> <?= __('Loading Feed...'); ?>
+                    <span class="fas fa-spin fa-spinner"></span> <?= __('Loading Feed...'); ?>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@ $this->append('css', $this->Html->css('feed.css'));
 <script>
 (function() {
     var feed = document.getElementById('feedItems');
-    var loadingMessage = "<i class='fas fa-spin fa-spinner'></i> <?= __('Loading...'); ?>";
+    var loadingMessage = "<span class='fas fa-spin fa-spinner'></span> <?= __('Loading...'); ?>";
     var loadErrorMessage = "<?= __('Error loading feed'); ?>";
 
     var loadFeed = function(page) {

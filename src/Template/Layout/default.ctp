@@ -21,12 +21,18 @@
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
             <?php
+                echo $this->Html->link(
+                    __('Friends'),
+                    ['controller' => 'Friends', 'action' => 'index'],
+                    ['class' => 'navbar-item']
+                );
+            ?>
+            <a href="#" class="navbar-item"><?= __('About'); ?></a>
+            <a href="#" class="navbar-item"><?= __('Photos'); ?></a>
+            <a href="#" class="navbar-item"><?= __('Videos'); ?></a>
+            <div class="nav-divider"></div>
+            <?php
                 if ($this->Identity->isLoggedIn()) {
-                    echo $this->Html->div('navbar-item', $this->Html->link(
-                        __('Add Post'),
-                        ['controller' => 'Posts', 'action' => 'add'],
-                        ['class' => 'button is-white']
-                    ));
                     echo $this->Html->link(
                         __('Feed'),
                         ['controller' => 'Homepage', 'action' => 'index'],
@@ -46,18 +52,12 @@
                 }
             ?>
             <?php
-                echo $this->Html->link(
-                    __('Friends'),
-                    ['controller' => 'Friends', 'action' => 'index'],
-                    ['class' => 'navbar-item']
-                );
-            ?>
-            <a href="#" class="navbar-item"><?= __('About'); ?></a>
-            <a href="#" class="navbar-item"><?= __('Photos'); ?></a>
-            <a href="#" class="navbar-item"><?= __('Videos'); ?></a>
-            <div class="nav-divider"></div>
-            <?php
                 if($this->Identity->isLoggedIn()) {
+                    echo $this->Html->div('navbar-item', $this->Html->link(
+                        __('Add Post'),
+                        ['controller' => 'Posts', 'action' => 'add'],
+                        ['class' => 'button is-white']
+                    ));
                     echo $this->Form->create(null, [
                         'id' => 'nav-logout-form',
                         'url' => [
@@ -66,7 +66,7 @@
                         ]
                     ]);
                         echo $this->Form->button(
-                            '<strong>' . __('Logout') .' <i class="fas fa-sign-out-alt"></i></strong>',
+                            '<strong>' . __('Logout') .' <span class="fas fa-sign-out-alt"></span></strong>',
                             [
                                 'type' => 'submit'
                             ]
@@ -74,7 +74,7 @@
                     echo $this->Form->end();
                 } else {
                     echo $this->Html->link(
-                        __('Login') . '&nbsp;<i class="fas fa-sign-in-alt"></i>',
+                        __('Login') . '&nbsp;<span class="fas fa-sign-in-alt"></span>',
                         ['controller' => 'Users', 'action' => 'login'],
                         ['class' => 'navbar-item', 'escape' => false]
                     );
