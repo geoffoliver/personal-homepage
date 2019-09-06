@@ -34,7 +34,7 @@ return [
     // Submit input element.
     'inputSubmit' => '<input type="{{type}}"{{attrs}}/>',
     // Container element used by control().
-    'inputContainer' => '<div class="field {{required}}">{{content}}</div>',
+    'inputContainer' => '<div class="field {{required}}">{{content}}{{help}}</div>',
     // Container element used by control() when a field has an error.
     'inputContainerError' => '<div class="field {{type}}{{required}} is-danger">{{content}}{{error}}</div>',
     // Label element when inputs are not nested inside the label.

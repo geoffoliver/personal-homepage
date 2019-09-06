@@ -1,67 +1,85 @@
 <?php
 $this->assign('title', __('Add Friend'));
+$this->assign('css', $this->Html->css('friends/add.css'));
 $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 ?>
-<div id="addFriendPage">
+<section class="section" id="addFriendPage">
     <div class="container">
         <div class="columns">
-            <div class="column">
-                <h1 class="is-size-2"><?= __('Add Friend'); ?></h1>
-                <?php
-                    echo $this->Form->create();
-                        echo $this->Form->control(
-                            'url',
-                            [
-                                'label' => __('Website URL'),
-                                'type' => 'url',
-                                'required' => true
-                            ]
-                        );
-                        echo $this->Form->control(
-                            'name',
-                            [
-                                'label' => __('Name'),
-                                'type' => 'text',
-                                'required' => true
-                            ]
-                        );
-                        echo $this->Form->control(
-                            'description',
-                            [
-                                'label' => __('Description'),
-                                'type' => 'textarea'
-                            ]
-                        );
-                        echo $this->Form->control(
-                            'feed_url',
-                            [
-                                'label' => __('Feed URL'),
-                                'type' => 'select',
-                                'required' => true,
-                                'options' => []
-                            ]
-                        );
-                        echo $this->Form->control(
-                            'icon',
-                            [
-                                'label' => __('Icon'),
-                                'type' => 'select',
-                                'options' => []
-                            ]
-                        );
-                        echo $this->Form->button(
-                            __('Add Friend'),
-                            [
-                                'type' => 'submit',
-                                'class' => 'button is-primary'
-                            ]
-                        );
-                    echo $this->Form->end();
-                ?>
+            <div class="column is-three-fifths is-offset-one-fifth">
+                <h1 class="is-size-3"><?= __('Add Friend'); ?></h1>
+                <div class="box">
+                    <?php
+                        echo $this->Form->create();
+                            echo $this->Form->control(
+                                'url',
+                                [
+                                    'label' => __('Website URL'),
+                                    'type' => 'url',
+                                    'required' => true,
+                                    'templateVars' => [
+                                        'help' => $this->Html->para(
+                                            'help',
+                                            __('Paste/enter the URL to your friend\'s website and we will try to fill out the rest of the fields automatically.')
+                                        )
+                                    ]
+                                ]
+                            );
+                    ?>
+                    <div class="add-friend-fields">
+                    <?php
+                            echo $this->Form->control(
+                                'name',
+                                [
+                                    'label' => __('Name'),
+                                    'type' => 'text',
+                                    'required' => true
+                                ]
+                            );
+                            echo $this->Form->control(
+                                'description',
+                                [
+                                    'label' => __('Description'),
+                                    'type' => 'textarea'
+                                ]
+                            );
+                            echo $this->Form->control(
+                                'feed_url',
+                                [
+                                    'label' => __('Feed URL'),
+                                    'type' => 'select',
+                                    'required' => true,
+                                    'options' => []
+                                ]
+                            );
+                            echo $this->Form->control(
+                                'icon',
+                                [
+                                    'label' => __('Icon'),
+                                    'type' => 'select',
+                                    'options' => []
+                                ]
+                            );
+                    ?>
+                        <div id="addFriendFieldOverlay" style="display: none;">
+                            <span class="fas fa-spin fa-spinner"></span> Loading...
+                        </div>
+                    </div>
+                    <?php
+                            echo $this->Form->button(
+                                __('Add Friend'),
+                                [
+                                    'type' => 'submit',
+                                    'class' => 'button is-link'
+                                ]
+                            );
+                        echo $this->Form->end();
+                    ?>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 <script type="text/javascript">
 (function() {
     var $ = function(id) {
@@ -69,12 +87,15 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
     };
 
     var url = $('url');
+    var overlay = $('addFriendFieldOverlay');
 
     url.addEventListener('blur', function() {
         var urlValue = url.value.trim();
         if (!urlValue || urlValue.indexOf('http') !== 0) {
             return;
         }
+
+        overlay.style.display = null;
 
         nanoajax.ajax({
             url: "/friends/fetch-details.json",
@@ -85,6 +106,8 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
                 "X-CSRF-Token": "<?= $this->request->getParam('_csrfToken'); ?>"
             }
         }, function (code, response) {
+            overlay.style.display = 'none';
+
             if (code !== 200) {
                 return;
             }

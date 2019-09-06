@@ -1,6 +1,6 @@
 <?php
 $this->assign('title', __('Friends'));
-$this->assign('css', $this->Html->css('friends-list.css'));
+$this->assign('css', $this->Html->css('friends/index.css'));
 ?>
 <div id="friendsPage">
     <div class="container">
