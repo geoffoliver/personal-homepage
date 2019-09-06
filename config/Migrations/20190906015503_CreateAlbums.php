@@ -20,10 +20,18 @@ class CreateAlbums extends AbstractMigration
             'default' => null,
             'null' => false,
         ]);
+        $table->addColumn('user_id', 'uuid', [
+            'default' => null,
+            'null' => false,
+        ]);
         $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
+        ]);
+        $table->addColumn('description', 'text', [
+            'default' => null,
+            'null' => true,
         ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
@@ -36,6 +44,7 @@ class CreateAlbums extends AbstractMigration
         $table->addPrimaryKey([
             'id',
         ]);
+        $table->addIndex(['user_id']);
         $table->create();
     }
 }

@@ -33,14 +33,18 @@ class Media extends Entity
     protected $_accessible = [
         'post_id' => true,
         'mime' => true,
+        'name' => true,
+        'description' => true,
         'thumbnail' => true,
         'square_thumbnail' => true,
         'local_filename' => true,
         'original_filename' => true,
+        'size' => true,
         'user_id' => true,
         'created' => true,
         'modified' => true,
         'post' => true,
-        'user' => true
+        'user' => true,
+        'comments' => true
     ];
 }

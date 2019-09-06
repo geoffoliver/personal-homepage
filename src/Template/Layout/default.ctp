@@ -33,31 +33,37 @@
             <div class="nav-divider"></div>
             <?php
                 if ($this->Identity->isLoggedIn()) {
+                    /*
+                    echo $this->Html->div('navbar-item', $this->Html->link(
+                        __('Add Post') . '&nbsp;<span class="fas fa-plus"></span>',
+                        ['controller' => 'Posts', 'action' => 'add'],
+                        ['class' => 'button is-white', 'escape' => false]
+                    ));
+                    */
                     echo $this->Html->link(
-                        __('Feed'),
+                        '<span class="fas fa-plus-square"></span>&nbsp;' . __('Add Post'),
+                        ['controller' => 'Posts', 'action' => 'add'],
+                        ['class' => 'navbar-item', 'title' => __('Add Post'), 'escape' => false]
+                    );
+                    echo $this->Html->link(
+                        '<span class="fas fa-rss"></span>',
                         ['controller' => 'Homepage', 'action' => 'index'],
-                        ['class' => 'navbar-item']
+                        ['class' => 'navbar-item', 'title' => __('Feed'), 'escape' => false]
                     );
-                    echo $this->Html->link(
-                        __('Posts'),
-                        ['controller' => 'Homepage', 'action' => 'index', 'homepage'],
-                        ['class' => 'navbar-item']
-                    );
-                    echo $this->Html->link(
-                        __('Settings'),
-                        ['controller' => 'Settings', 'action' => 'index'],
-                        ['class' => 'navbar-item']
-                    );
-                    echo '<div class="nav-divider"></div>';
                 }
             ?>
             <?php
                 if($this->Identity->isLoggedIn()) {
-                    echo $this->Html->div('navbar-item', $this->Html->link(
-                        __('Add Post'),
-                        ['controller' => 'Posts', 'action' => 'add'],
-                        ['class' => 'button is-white']
-                    ));
+                    echo $this->Html->link(
+                        '<span class="fas fa-file-alt"></span>',
+                        ['controller' => 'Homepage', 'action' => 'index', 'homepage'],
+                        ['class' => 'navbar-item', 'title' => __('My Posts'), 'escape' => false]
+                    );
+                    echo $this->Html->link(
+                        '<span class="fas fa-cog"></span>',
+                        ['controller' => 'Settings', 'action' => 'index'],
+                        ['class' => 'navbar-item', 'title' => __('Settings'), 'escape' => false]
+                    );
                     echo $this->Form->create(null, [
                         'id' => 'nav-logout-form',
                         'url' => [
@@ -66,9 +72,10 @@
                         ]
                     ]);
                         echo $this->Form->button(
-                            '<strong>' . __('Logout') .' <span class="fas fa-sign-out-alt"></span></strong>',
+                            '<span class="fas fa-sign-out-alt"></span>',
                             [
-                                'type' => 'submit'
+                                'type' => 'submit',
+                                'title' => __('Logout')
                             ]
                         );
                     echo $this->Form->end();

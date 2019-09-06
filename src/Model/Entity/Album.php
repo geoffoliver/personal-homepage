@@ -4,21 +4,16 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Post Entity
+ * Album Entity
  *
  * @property string $id
- * @property string $url_alias
  * @property string $name
- * @property string $content
- * @property bool $public
- * @property string $user_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Media[] $media
+ * @property \App\Model\Entity\Media[] $medias
  */
-class Post extends Entity
+class Album extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -30,14 +25,10 @@ class Post extends Entity
      * @var array
      */
     protected $_accessible = [
-        'title' => true,
-        'content' => true,
-        'public' => true,
-        'allow_comments' => true,
-        'user_id' => true,
+        'name' => true,
         'created' => true,
+        'cover_photo' => true,
         'modified' => true,
-        'user' => true,
         'medias' => true,
         'comments' => true
     ];

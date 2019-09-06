@@ -26,6 +26,12 @@ class CommentsTable extends Table
       'foreignKey' => 'model_id',
       'joinType' => 'INNER',
     ]);
+
+    $this->belongsTo('Albums', [
+      'foreignKey' => 'model_id',
+      'joinType' => 'INNER',
+    ]);
+
   }
 
   public function validationDefault(Validator $validator)
