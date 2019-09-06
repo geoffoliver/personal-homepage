@@ -317,7 +317,7 @@ class PostsController extends AppController
             $postItem = [
                 'id' => $post->id,
                 'url' => $post->url_alias,
-                'title' => $post->name,
+                'title' => $post->title,
                 'content_html' => $post->content,
                 'content_text' => $contentText,
                 'summary' => substr($contentText, 0, 512),
@@ -342,7 +342,7 @@ class PostsController extends AppController
                     $postItem['attachments'][]= [
                         'url' => 'att-url',
                         'mime_type' => $media->mime,
-                        'title' => $media->name,
+                        'title' => $media->title,
                         'size_in_bytes' => $media->size
                     ];
                 }

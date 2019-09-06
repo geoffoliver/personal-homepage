@@ -238,6 +238,4 @@ class MediasController extends AppController
 
         return false;
     }
-
-
 }

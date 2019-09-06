@@ -1,6 +1,6 @@
 <?php
 echo $this->Form->create($post, ['id' => 'postForm']);
-    echo $this->Form->control('name', [
+    echo $this->Form->control('title', [
         'type' => 'text',
         'label' => __('Title'),
         'placeholder' => __('Give your post a title'),

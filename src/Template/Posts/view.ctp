@@ -1,6 +1,6 @@
 <?php
 $Parsedown = new ParsedownExtra();
-$this->assign('title', $post->name);
+$this->assign('title', $post->title);
 $this->append('css', $this->Html->css('posts/view.css'));
 $this->append('script', $this->Html->script('posts/view.js'));
 ?>
@@ -9,7 +9,7 @@ $this->append('script', $this->Html->script('posts/view.js'));
         <div class="post-title">
             <div class="columns">
                 <div class="column is-10 is-offset-1">
-                    <h1 class="is-size-2"><?= $post->name; ?></h1>
+                    <h1 class="is-size-2"><?= $post->title; ?></h1>
                     <div class="level is-mobile">
                         <h3 class="is-size-6 has-text-grey level-left">
                             <?= __('Posted'); ?>&nbsp;<time><?= $post->created->format('F j, Y \a\t g:i a'); ?></time>

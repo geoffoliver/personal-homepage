@@ -7,7 +7,7 @@ $Parsedown = new ParsedownExtra();
         <div class="content">
             <h1 class="is-marginless is-size-4">
                 <?= $this->Html->link(
-                    $post->name,
+                    $post->title,
                     ['_name' => 'viewPost', $post->id]
                 ); ?>
             </h1>
