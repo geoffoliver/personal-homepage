@@ -56,7 +56,7 @@
         </div>
         <hr />
         <div class="feed-post-item-footer">
-            <nav class="level is-mobile">
+            <nav class="level is-mobile is-size-7">
                 <div class="level-left">
                     <?= $this->Html->link(
                         $this->Html->tag('i', '', ['class' => 'fas fa-external-link-alt']) . '&nbsp;' . __('View Original'),
