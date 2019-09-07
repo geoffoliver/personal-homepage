@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Cake\Utility\Hash;
@@ -22,8 +23,9 @@ class HomepageController extends AppController
                 ]
             ],
             'order' => [
-              'Posts.created' => 'DESC'
-            ]
+                'Posts.created' => 'DESC'
+            ],
+            'limit' => 50
         ]
     ];
 
@@ -87,12 +89,17 @@ class HomepageController extends AppController
 
         $posts = $this->paginate('Posts');
 
-        $medias = $this->Medias->find()
-          ->order(['Medias.created' => 'DESC'])
-          ->limit(12);
+        $photos = $this->Medias->find()
+            ->where(['Medias.mime LIKE' => 'image/%'])
+            ->order(['Medias.created' => 'DESC'])
+            ->limit(12)
+            ->all();
 
-        $photos = $medias->where(['Medias.mime LIKE' => 'image/%'])->all();
-        $videos = $medias->where(['Medias.mime LIKE' => 'video/%'])->all();
+        $videos = $this->Medias->find()
+            ->where(['Medias.mime LIKE' => 'video/%'])
+            ->order(['Medias.created' => 'DESC'])
+            ->limit(12)
+            ->all();
 
         $friends = $this->Friends->find()
             ->order(['Friends.created' => 'DESC'])
@@ -139,12 +146,12 @@ class HomepageController extends AppController
             if ($feed && isset($feed->items) && $feed->items) {
                 foreach ($feed->items as $item) {
                     $item->friend = $friend;
-                    $posts[]= $item;
+                    $posts[] = $item;
                 }
             }
         }
 
-        usort($posts, function($a, $b) {
+        usort($posts, function ($a, $b) {
             if (
                 !$a->date_published ||
                 !$b->date_published ||
@@ -162,7 +169,7 @@ class HomepageController extends AppController
             $page = $this->request->getQuery('page');
         }
 
-        $page = (int)$page;
+        $page = (int) $page;
 
         $paginated  = array_slice($posts, ($page - 1) * $limit, $limit);
 
@@ -186,5 +193,4 @@ class HomepageController extends AppController
             ]
         ]);
     }
-
 }

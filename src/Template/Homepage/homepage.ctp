@@ -34,34 +34,9 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
           </div>
         <?php endif; ?>
       </div>
-      <?php if ($photos->count()): ?>
-      <div class="box">
-        <h3>
-          <a href="/photos">
-            <span class="fas fa-fw fa-camera"></span>
-            <strong>Photos</strong>
-          </a>
-        </h3>
-        <div id="homepage-photos" class="sidebar-thumbnail-grid">
-          <?php foreach($photos as $photo): ?>
-            <img src="/media/<?= $photo->square_thumbnail; ?>" />
-          <?php endforeach; ?>
-        </div>
-      </div>
-      <?php endif; ?>
-      <?php if ($videos->count()): ?>
-      <div class="box">
-        <h3><strong>Videos</strong></h3>
-        <div id="homepage-videos" class="homepage-thumbnail-grid">
-          <?php foreach($videos as $video): ?>
-            <img src="/media/<?= $video->square_thumbnail; ?>" />
-          <?php endforeach; ?>
-        </div>
-      </div>
-      <?php endif; ?>
     </div>
   </div>
-  <div class="column">
+  <div class="column is-half">
     <?php if (count($posts) === 0): ?>
         <div class="box">
             <h4 class="is-size-4"><?= __('There is nothing to show here.'); ?></h4>
@@ -71,5 +46,43 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
     <?php foreach ($posts as $post): ?>
         <?= $this->element('homepage/post', ['post' => $post]); ?>
     <?php endforeach; ?>
+  </div>
+  <div class="column is-one-quarter">
+      <div class="sidebar sticky-sidebar">
+        <?php if ($photos->count()): ?>
+        <div class="box">
+            <h3>
+                <a href="/photos">
+                    <span class="fas fa-fw fa-camera"></span>
+                    <strong><?= __('Photos'); ?></strong>
+                </a>
+            </h3>
+            <div id="homepage-photos" class="sidebar-thumbnail-grid">
+            <?php foreach($photos as $photo): ?>
+                <a href="<?= $this->Url->build(['controller' => 'Medias', 'action' => 'view', $photo->id]) ?>">
+                    <img src="/media/<?= $photo->square_thumbnail; ?>" />
+                </a>
+            <?php endforeach; ?>
+            </div>
+        </div>
+        <?php endif; ?>
+        <?php if ($videos->count()): ?>
+        <div class="box">
+            <h3>
+                <a href="/videos">
+                    <span class="fas fa-fw fa-video"></span>
+                    <strong><?= __('Videos'); ?></strong>
+                </a>
+            </h3>
+            <div id="homepage-videos" class="sidebar-thumbnail-grid">
+            <?php foreach($videos as $video): ?>
+                <a href="<?= $this->Url->build(['controller' => 'Medias', 'action' => 'view', $video->id]) ?>">
+                    <img src="/media/<?= $video->square_thumbnail; ?>" />
+                </a>
+            <?php endforeach; ?>
+            </div>
+        </div>
+        <?php endif; ?>
+      </div>
   </div>
 </div>

@@ -32,6 +32,8 @@ class Post extends Entity
     protected $_accessible = [
         'title' => true,
         'content' => true,
+        'source' => true,
+        'import_source' => true,
         'public' => true,
         'allow_comments' => true,
         'user_id' => true,

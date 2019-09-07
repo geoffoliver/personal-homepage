@@ -22,6 +22,21 @@ class ImportFacebookDataCommand extends Command
     private $videosDir;
     private $postsDir;
 
+    private $stats = [
+        'media' => [
+            'success' => 0,
+            'fail' => 0
+        ],
+        'albums' => [
+            'success' => 0,
+            'fail' => 0
+        ],
+        'posts' => [
+            'success' => 0,
+            'fail' => 0
+        ],
+    ];
+
     public function initialize()
     {
         parent::initialize();
@@ -108,13 +123,28 @@ class ImportFacebookDataCommand extends Command
         $io->out(__('Processing data...'));
 
         // import albums
-        //$this->importAlbums($path, $io);
+        $this->importAlbums($path, $io);
 
         // import videos
-        //$this->importVideos($path, $io);
+        $this->importVideos($path, $io);
 
         // import posts
         $this->importPosts($path, $io);
+
+        // spit out a little report
+        $io->out('|----------------------------------|');
+        $io->out('| Item     | Successes  | Failures |');
+        $io->out('|----------------------------------|');
+        foreach ($this->stats as $type => $stats) {
+            $io->out(
+                '| ' .
+                str_pad(ucfirst($type), 9, ' ') . '| ' .
+                str_pad(number_format($stats['success']), 10, ' ') . '| ' .
+                str_pad(number_format($stats['fail']), 8, ' ') .
+                ' |'
+            );
+        }
+        $io->out('|----------------------------------|');
 
         // all done
         $io->success(__('Done!'));
@@ -148,7 +178,7 @@ class ImportFacebookDataCommand extends Command
             }
 
             // pull the album data out of the JSON file
-            $album = json_decode(file_get_contents($albumFile));
+            $album = json_decode(file_get_contents($albumFile), false, 512, JSON_UNESCAPED_UNICODE);
 
             $io->out(__('Creating album "{0}"', $album->name));
 
@@ -172,9 +202,9 @@ class ImportFacebookDataCommand extends Command
             // make the album entity
             $created = date('Y-m-d H:i:s', isset($album->last_modified_timestamp) ? $album->last_modified_timestamp : time());
             $entity = [
-                'name' => $album->name,
+                'name' => $this->fixBadUnicode($album->name),
                 'user_id' => $this->user->id,
-                'description' => $album->description,
+                'description' => $this->fixBadUnicode($album->description),
                 'created' => $created,
                 'modified' => $created,
             ];
@@ -211,6 +241,7 @@ class ImportFacebookDataCommand extends Command
 
             // try to save the album
             if ($this->Albums->save($albumObject)) {
+                $this->stats['albums']['success']++;
                 $io->success(__('Album "{0}" created', $albumObject->name));
                 // if the album had photos (which it really should, right?) link
                 // them to the album
@@ -221,6 +252,8 @@ class ImportFacebookDataCommand extends Command
                         $io->error(__('Unable to link photos'));
                     }
                 }
+            } else {
+                $this->stats['albums']['error']++;
             }
         }
 
@@ -245,7 +278,7 @@ class ImportFacebookDataCommand extends Command
             return;
         }
 
-        $videos = json_decode(file_get_contents($videosFile));
+        $videos = json_decode(file_get_contents($videosFile), false, 512, JSON_UNESCAPED_UNICODE);
 
         // file didn't decode, or didn't decode correctly. oh well.
         if (!$videos) {
@@ -331,7 +364,7 @@ class ImportFacebookDataCommand extends Command
             }
 
             // try to decode the posts
-            $posts = json_decode(file_get_contents($postFile));
+            $posts = json_decode(file_get_contents($postFile), false, 512, JSON_UNESCAPED_UNICODE);
 
             // well that sucks... oh well.
             if (!$posts) {
@@ -341,56 +374,142 @@ class ImportFacebookDataCommand extends Command
 
             // loop over the posts and create them
             foreach ($posts as $post) {
+                $io->out(__('Importing post...'));
                 // figure out when the post was created
                 $created = date('Y-m-d H:i:s');
                 if (isset($post->timestamp) && $post->timestamp) {
                     $created = date('Y-m-d H:i:s', $post->timestamp);
                 }
+                // some posts have an 'update_timestamp', which is maybe when
+                // the post was modified? :shrug:
+                $modified = $created;
+
+                // setup some variables
+                $source = null;
+                $medias = [];
+                $content = [];
+                $comments = [];
 
                 // grab/generate a title for the post
-                $title = isset($post->title) ? $post->title : __('Untitled Post');
-                $content = [];
+                $title = __('Untitled Post');
+                if (isset($post->title)) {
+                    // we can only store 255 characters on a title
+                    $title = mb_substr($post->title, 0, 255);
 
-                // are there comments on the post?
-                if (isset($post->comments) && $post->comments) {
-                    $entity['comments'] = $this->generateComments($post->comments);
-                }
-
-                var_dump($post);
-                die();
-
-                // this is where post content and other stuff lives
-                if (isset($post->data) && $post->data) {
-                    foreach ($post->data as $pKey => $pVal) {
-                        var_dump(['key' => $pKey, 'val' => $pVal]);
+                    // if the title is longer than 255, slap an ellipsis on it
+                    // and put the full title into the content
+                    if (mb_strlen($post->title) > 255) {
+                        $title = mb_substr($title, 0, 253) . '...';
+                        $content[]= $post->title;
                     }
                 }
 
-                die();
+                // are there comments on the post?
+                if (isset($post->comments) && $post->comments) {
+                    $comments = $this->generateComments($post->comments);
+                }
 
-                // basically everything is a fucking attachment... this is going to suck
-                if (isset($post->attachments) && $post->attachments) {
+                // this is where post content and other stuff lives
+                if (
+                    isset($post->data) &&
+                    $post->data &&
+                    is_array($post->data)
+                ) {
+                    $io->out(__('Processing post data...'));
+                    foreach ($post->data as $data) {
+                        $arrData = (array)$data;
+                        foreach ($arrData as $key => $value) {
+                            switch ($key) {
+                                case 'post':
+                                    // some post content
+                                    $content[]= $value;
+                                    break;
+                                case 'update_timestamp':
+                                    // whent he post was modified
+                                    $modified = date('Y-m-d H:i:s', $value);
+                                    break;
+                                default:
+                                    $io->error(__('Unhandled data key "{0}"', $key));
+                                    break;
+                            }
+                        }
+                    }
+                }
 
+                // and then they classify all sorts of shit as "attachments"... so dumb
+                if (
+                    isset($post->attachments) &&
+                    $post->attachments &&
+                    is_array($post->attachments) &&
+                    isset($post->attachments[0]) &&
+                    isset($post->attachments[0]->data)
+                ) {
+                    $io->out(__('Processing post attachments...'));
+                    foreach ($post->attachments[0]->data as $attachment) {
+                        foreach ($attachment as $key => $value) {
+                            switch ($key) {
+                                case 'external_context':
+                                    // external source
+                                    if (is_object($value) && isset($value->url) && $value->url) {
+                                        $source = $value->url;
+                                    }
+                                    break;
+                                case 'media':
+                                    // image/video attachment
+                                    if ($media = $this->importMedia($value, $io)) {
+                                        $medias[]= $media->id;
+                                    }
+                                    break;
+                                case 'text':
+                                    // just some random text that i guess should
+                                    // go into the post content? :shrug:
+                                    $content[]= $value;
+                                    break;
+                                case 'place':
+                                    // a location
+                                    break;
+                                default:
+                                    $io->error(__('Unhandled attachment key "{0}"', $key));
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                // if there's no content but there is a source, use that link
+                // as the post content... it just looks bad to have an empty post
+                if (!$content && $source) {
+                    $content[]= $source;
                 }
 
                 // create the post entity
                 $entity = [
                     'user_id' => $this->user->id,
                     'created' => $created,
-                    'modified' => $created,
-                    'title' => $title,
-                    'content' => implode("\n", $content)
+                    'modified' => $modified,
+                    'title' => $this->fixBadUnicode($title),
+                    'content' => $this->fixBadUnicode(implode("\n", $content)),
+                    'source' => $source,
+                    'import_source' => 'facebook',
+                    'medias' => $medias ? ['_ids' => $medias] : null,
+                    'comments' => $comments
                 ];
 
                 $postEntity = $this->Posts->newEntity($entity);
 
                 if ($errors = $postEntity->getErrors()) {
                     $io->error(print_r($errors, true));
+                    exit();
                     continue;
                 }
 
+                $io->out(__('Saving post...'));
                 if ($this->Posts->save($postEntity)) {
-
+                    $this->stats['posts']['success']++;
+                    $io->success(__('Post saved!'));
+                } else {
+                    $this->stats['posts']['success']++;
+                    $io->error(__('Unable to save post'));
                 }
             }
         }
@@ -414,10 +533,11 @@ class ImportFacebookDataCommand extends Command
             // this is the comment. easy peasy!
             $commentsArr[]= [
                 'posted_by' => 'facebook-data-import@internal',
-                'display_name' => $author,
-                'comment' => $comment->comment,
+                'display_name' => $this->fixBadUnicode($author),
+                'comment' => $this->fixBadUnicode($comment->comment),
                 'approved' => true,
                 'public' => true,
+                'import_source' => 'facebook',
                 'created' => date('Y-m-d H:i:s', $comment->timestamp),
                 'modified' => date('Y-m-d H:i:s', $comment->timestamp),
             ];
@@ -456,17 +576,18 @@ class ImportFacebookDataCommand extends Command
         $addlData = [
             'created' => $created,
             'modified' => $created,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'import_source' => 'facebook'
         ];
 
         // if there's a title, use it
         if (isset($media->title) && $media->title) {
-            $addlData['name'] = $media->title;
+            $addlData['name'] = $this->fixBadUnicode($media->title);
         }
 
         // if there's a description, use it
         if (isset($media->description) && $media->description) {
-            $addlData['description'] = $media->description;
+            $addlData['description'] = $this->fixBadUnicode($media->description);
         }
 
         // are there comments on the media?
@@ -478,8 +599,11 @@ class ImportFacebookDataCommand extends Command
         $io->out(__('Attempting to move and save media'));
         if ($media = $this->Medias->uploadAndCreate($create, false, $addlData)) {
             $io->success(__('Media saved'));
+            $this->stats['media']['success']++;
             // yay!!!
             return $media;
+        } else {
+            $this->stats['media']['fail']++;
         }
 
         return null;
@@ -509,4 +633,11 @@ class ImportFacebookDataCommand extends Command
 
         return true;
     }
+
+    private function fixBadUnicode($str) {
+        return utf8_decode(preg_replace_callback("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/", function($matches) {
+            return chr(hexdec($matches[0])) . chr(hexdec($matches[1]));
+        }, $str));
+    }
+
 }

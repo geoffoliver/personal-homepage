@@ -21,7 +21,27 @@ class MediasController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Authentication->allowUnauthenticated(['heroBackground', 'profilePhoto']);
+        $this->Authentication->allowUnauthenticated([
+            'view',
+            'heroBackground',
+            'profilePhoto'
+        ]);
+    }
+
+    public function view($id)
+    {
+        $media = $this->Medias->find()
+            ->where([
+                'Medias.id' => $id
+            ])
+            ->first();
+
+        if (!$media) {
+            $this->Flash->error(__('Invalid media item.'));
+            return $this->redirect('/');
+        }
+
+        dd($media);
     }
 
     public function upload()
