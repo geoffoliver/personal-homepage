@@ -34,6 +34,15 @@ class MediasController extends AppController
             ->where([
                 'Medias.id' => $id
             ])
+            ->contain([
+                'Albums',
+                'Users',
+                'Comments' => [
+                    'sort' => [
+                        'Comments.created' => 'DESC'
+                    ]
+                ]
+            ])
             ->first();
 
         if (!$media) {
@@ -41,7 +50,9 @@ class MediasController extends AppController
             return $this->redirect('/');
         }
 
-        dd($media);
+        $this->set([
+            'media' => $media
+        ]);
     }
 
     public function upload()

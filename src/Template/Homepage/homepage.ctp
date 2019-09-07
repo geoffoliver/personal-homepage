@@ -46,6 +46,16 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
     <?php foreach ($posts as $post): ?>
         <?= $this->element('homepage/post', ['post' => $post]); ?>
     <?php endforeach; ?>
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <?= $this->Paginator->prev(__('Newer')); ?>
+        <?= $this->Paginator->next(__('Older')); ?>
+        <ul class="pagination-list">
+            <?= $this->Paginator->numbers([
+                'modulus' => 4,
+                'first' => __('1')
+            ]); ?>
+        </ul>
+    </nav>
   </div>
   <div class="column is-one-quarter">
       <div class="sidebar sticky-sidebar">

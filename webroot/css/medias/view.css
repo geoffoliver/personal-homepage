@@ -1,0 +1,7 @@
+#viewMedia .media-container {
+  text-align: center;
+}
+
+#viewMedia .media-container img {
+  max-width: 100%;
+}

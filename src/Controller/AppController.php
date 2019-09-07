@@ -32,6 +32,9 @@ class AppController extends Controller
         'Authentication.Identity',
         'Form' => [
             'templates' => 'bulma_form'
+        ],
+        'Paginator' => [
+            'templates' => 'bulma_pagination'
         ]
     ];
 

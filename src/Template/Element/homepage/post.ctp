@@ -15,7 +15,7 @@ $Parsedown = new ParsedownExtra();
                 <?php if ($post->import_source): ?>
                     <span class="fab fa-<?= $post->import_source; ?>-square" aria-hidden="true"></span>
                 <?php endif; ?>
-                <?= $post->created->format('F j, Y \a\t g:i a'); ?>
+                <?= $post->created->setTimezone('America/Denver')->format('F j, Y \a\t g:i a'); ?>
                 <?php if ($post->created != $post->modified): ?>
                     &middot; <?= __('Updated'); ?>&nbsp;<?= $post->modified->format('F j, Y \a\t g:i a'); ?>
                 <?php endif; ?>

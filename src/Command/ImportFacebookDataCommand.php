@@ -202,9 +202,9 @@ class ImportFacebookDataCommand extends Command
             // make the album entity
             $created = date('Y-m-d H:i:s', isset($album->last_modified_timestamp) ? $album->last_modified_timestamp : time());
             $entity = [
-                'name' => $this->fixBadUnicode($album->name),
+                'name' => $this->fixText($album->name),
                 'user_id' => $this->user->id,
-                'description' => $this->fixBadUnicode($album->description),
+                'description' => $this->fixText($album->description),
                 'created' => $created,
                 'modified' => $created,
             ];
@@ -404,11 +404,6 @@ class ImportFacebookDataCommand extends Command
                     }
                 }
 
-                // are there comments on the post?
-                if (isset($post->comments) && $post->comments) {
-                    $comments = $this->generateComments($post->comments);
-                }
-
                 // this is where post content and other stuff lives
                 if (
                     isset($post->data) &&
@@ -440,37 +435,41 @@ class ImportFacebookDataCommand extends Command
                 if (
                     isset($post->attachments) &&
                     $post->attachments &&
-                    is_array($post->attachments) &&
-                    isset($post->attachments[0]) &&
-                    isset($post->attachments[0]->data)
+                    is_array($post->attachments)
                 ) {
                     $io->out(__('Processing post attachments...'));
-                    foreach ($post->attachments[0]->data as $attachment) {
-                        foreach ($attachment as $key => $value) {
-                            switch ($key) {
-                                case 'external_context':
-                                    // external source
-                                    if (is_object($value) && isset($value->url) && $value->url) {
-                                        $source = $value->url;
-                                    }
-                                    break;
-                                case 'media':
-                                    // image/video attachment
-                                    if ($media = $this->importMedia($value, $io)) {
-                                        $medias[]= $media->id;
-                                    }
-                                    break;
-                                case 'text':
-                                    // just some random text that i guess should
-                                    // go into the post content? :shrug:
-                                    $content[]= $value;
-                                    break;
-                                case 'place':
-                                    // a location
-                                    break;
-                                default:
-                                    $io->error(__('Unhandled attachment key "{0}"', $key));
-                                    break;
+                    foreach($post->attachments as $pAtt) {
+                        if (!isset($pAtt->data) || !$pAtt->data) {
+                            continue;
+                        }
+
+                        foreach ($pAtt->data as $attachment) {
+                            foreach ($attachment as $key => $value) {
+                                switch ($key) {
+                                    case 'external_context':
+                                        // external source
+                                        if (is_object($value) && isset($value->url) && $value->url) {
+                                            $source = $value->url;
+                                        }
+                                        break;
+                                    case 'media':
+                                        // image/video attachment
+                                        if ($media = $this->importMedia($value, $io)) {
+                                            $medias[]= $media->id;
+                                        }
+                                        break;
+                                    case 'text':
+                                        // just some random text that i guess should
+                                        // go into the post content? :shrug:
+                                        $content[]= $value;
+                                        break;
+                                    case 'place':
+                                        // a location
+                                        break;
+                                    default:
+                                        $io->error(__('Unhandled attachment key "{0}"', $key));
+                                        break;
+                                }
                             }
                         }
                     }
@@ -487,13 +486,18 @@ class ImportFacebookDataCommand extends Command
                     'user_id' => $this->user->id,
                     'created' => $created,
                     'modified' => $modified,
-                    'title' => $this->fixBadUnicode($title),
-                    'content' => $this->fixBadUnicode(implode("\n", $content)),
+                    'title' => $this->fixText($title),
+                    'content' => $this->fixText(implode("\n", $content)),
                     'source' => $source,
                     'import_source' => 'facebook',
                     'medias' => $medias ? ['_ids' => $medias] : null,
                     'comments' => $comments
                 ];
+
+                if (!$entity['content'] && !$entity['medias']) {
+                    $io->error(__('Post has no content or media, skipping'));
+                    continue;
+                }
 
                 $postEntity = $this->Posts->newEntity($entity);
 
@@ -525,7 +529,7 @@ class ImportFacebookDataCommand extends Command
 
         foreach ($comments as $comment) {
             // try to figure out the author name... sometimes it's not there
-            $author = null;
+            $author = __('Anonymous Coward');
             if (isset($comment->author) && $comment->author) {
                 $author = $comment->author;
             }
@@ -533,8 +537,8 @@ class ImportFacebookDataCommand extends Command
             // this is the comment. easy peasy!
             $commentsArr[]= [
                 'posted_by' => 'facebook-data-import@internal',
-                'display_name' => $this->fixBadUnicode($author),
-                'comment' => $this->fixBadUnicode($comment->comment),
+                'display_name' => $this->fixText($author),
+                'comment' => $this->fixText($comment->comment),
                 'approved' => true,
                 'public' => true,
                 'import_source' => 'facebook',
@@ -582,12 +586,12 @@ class ImportFacebookDataCommand extends Command
 
         // if there's a title, use it
         if (isset($media->title) && $media->title) {
-            $addlData['name'] = $this->fixBadUnicode($media->title);
+            $addlData['name'] = $this->fixText($media->title);
         }
 
         // if there's a description, use it
         if (isset($media->description) && $media->description) {
-            $addlData['description'] = $this->fixBadUnicode($media->description);
+            $addlData['description'] = $this->fixText($media->description);
         }
 
         // are there comments on the media?
@@ -634,10 +638,17 @@ class ImportFacebookDataCommand extends Command
         return true;
     }
 
-    private function fixBadUnicode($str) {
-        return utf8_decode(preg_replace_callback("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/", function($matches) {
+    private function fixText($str) {
+        // replace \uXXXX characters with actual UTF chatacters
+        $str = utf8_decode(preg_replace_callback("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/", function($matches) {
             return chr(hexdec($matches[0])) . chr(hexdec($matches[1]));
         }, $str));
+
+        // replace octothorpes with html entity version
+        $str = str_replace('#', '&#35;', $str);
+
+        // return the cleaned up string
+        return $str;
     }
 
 }
