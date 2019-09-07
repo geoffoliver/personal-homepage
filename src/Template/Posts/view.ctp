@@ -55,13 +55,11 @@ $this->append('script', $this->Html->script('posts/view.js'));
                         </div>
                         <?php if ($post->medias): ?>
                         <div class="post-media">
-                            <?php foreach ($post->medias as $media): ?>
-                                <img
-                                    src="/media/<?= $media->thumbnail; ?>"
-                                    data-original="/media/<?= $media->local_filename; ?>"
-                                    alt="<?= $media->name; ?>"
-                                />
-                            <?php endforeach; ?>
+                            <?php
+                                foreach ($post->medias as $media) {
+                                    echo $this->element('media', ['media' => $media]);
+                                }
+                            ?>
                         </div>
                         <?php endif; ?>
                     </div>

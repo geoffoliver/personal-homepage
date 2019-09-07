@@ -23,7 +23,7 @@ class HomepageController extends AppController
                 ]
             ],
             'order' => [
-                'Posts.created' => 'DESC'
+                'Posts.modified' => 'DESC'
             ],
             'limit' => 50
         ]

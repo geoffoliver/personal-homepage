@@ -2,14 +2,27 @@
     <div class="feed-post-item">
         <div class="feed-post-item-header">
             <figure class="image is-48x48">
-                <?= $this->Html->image(
-                    $post->friend->icon,
-                    ['class' => 'is-rounded friend-icon']
+                <?= $this->Html->link(
+                    $this->Html->image(
+                        $post->friend->icon,
+                        ['class' => 'is-rounded friend-icon']
+                    ),
+                    $post->friend->url,
+                    [
+                        'target' => '_blank',
+                        'escape' => false
+                    ]
                 ); ?>
             </figure>
             <div class="feed-post-item-friend-name">
                 <strong>
-                    <?= $post->friend->name; ?>
+                    <?= $this->Html->link(
+                        $post->friend->name,
+                        $post->friend->url,
+                        [
+                            'target' => '_blank'
+                        ]
+                    ); ?>
                     <?php if (isset($post->author) && isset($post->author->name) && $post->author->name): ?>
                         <span>
                         &mdash; by <?= $post->author->name; ?>

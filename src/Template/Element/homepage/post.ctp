@@ -27,7 +27,19 @@ $Parsedown = new ParsedownExtra();
                 <div class="post-media">
                     <?php foreach ($post->medias as $media): ?>
                         <?php if ($media->thumbnail): ?>
-                            <img src="/media/<?=$media->thumbnail;?>" />
+                            <?= $this->Html->link(
+                                $this->Html->image(
+                                    "/media/{$media->thumbnail}"
+                                ),
+                                [
+                                    'controller' => 'Medias',
+                                    'action' => 'view',
+                                    $media->id
+                                ],
+                                [
+                                    'escape' => false
+                                ]
+                            ); ?>
                         <?php else: ?>
                         ...
                         <?php endif;?>
@@ -35,7 +47,7 @@ $Parsedown = new ParsedownExtra();
                 </div>
             <?php endif;?>
             <hr />
-            <nav class="level is-mobile">
+            <nav class="level is-mobile is-size-7">
                 <div class="level-left">
                     <?= $this->Html->link(
                         '<span class="fas fa-comment" aria-hidden="true"></span>&nbsp' . __('{0} Comments', count($post->comments)),
