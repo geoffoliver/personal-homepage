@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Lib\ImportUtils;
+
 use Cake\Console\Arguments;
 use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
@@ -108,7 +110,7 @@ class ImportFacebookDataCommand extends Command
         $this->user = $user;
 
         // make sure the path exists
-        if (!$this->checkPath($path, $io)) {
+        if (!ImportUtils::checkPath($path, $io)) {
             return;
         }
 
@@ -123,13 +125,13 @@ class ImportFacebookDataCommand extends Command
         $io->out(__('Processing data...'));
 
         // import albums
-        $this->importAlbums($path, $io);
+        $this->importAlbums($io);
 
         // import videos
-        $this->importVideos($path, $io);
+        $this->importVideos($io);
 
         // import posts
-        $this->importPosts($path, $io);
+        $this->importPosts($io);
 
         // spit out a little report
         $io->out('|----------------------------------|');
@@ -150,13 +152,13 @@ class ImportFacebookDataCommand extends Command
         $io->success(__('Done!'));
     }
 
-    private function importAlbums($path, ConsoleIo $io)
+    private function importAlbums(ConsoleIo $io)
     {
         // tell the user what's happening
         $io->out(__('Importing albums'));
 
         // make sure the albums path is ok
-        if (!$this->checkPath($this->albumsDir, $io)) {
+        if (!ImportUtils::checkPath($this->albumsDir, $io)) {
             return;
         }
 
@@ -173,7 +175,7 @@ class ImportFacebookDataCommand extends Command
         // loop over the albums and import them
         foreach ($albums as $aFile) {
             $albumFile = $this->albumsDir . DS . $aFile;
-            if (!$this->checkFile($albumFile, $io)) {
+            if (!ImportUtils::checkFile($albumFile, $io)) {
                 continue;
             }
 
@@ -202,9 +204,9 @@ class ImportFacebookDataCommand extends Command
             // make the album entity
             $created = date('Y-m-d H:i:s', isset($album->last_modified_timestamp) ? $album->last_modified_timestamp : time());
             $entity = [
-                'name' => $this->fixText($album->name),
+                'name' => ImportUtils::fixText($album->name),
                 'user_id' => $this->user->id,
-                'description' => $this->fixText($album->description),
+                'description' => ImportUtils::fixText($album->description),
                 'created' => $created,
                 'modified' => $created,
             ];
@@ -260,13 +262,13 @@ class ImportFacebookDataCommand extends Command
         $io->success(__('Albums imported'));
     }
 
-    private function importVideos($path, ConsoleIo $io)
+    private function importVideos(ConsoleIo $io)
     {
         // tell the user what's going on
         $io->out(__('Importing videos'));
 
         // make sure the videos dir is ok
-        if (!$this->checkPath($this->videosDir, $io)) {
+        if (!ImportUtils::checkPath($this->videosDir, $io)) {
             return;
         }
 
@@ -274,7 +276,7 @@ class ImportFacebookDataCommand extends Command
         $videosFile = $this->photosDir . DS . 'your_videos.json';
 
         // make sure the JSON file actually exists and we can access it
-        if (!$this->checkFile($videosFile, $io)) {
+        if (!ImportUtils::checkFile($videosFile, $io)) {
             return;
         }
 
@@ -332,12 +334,12 @@ class ImportFacebookDataCommand extends Command
         $io->success(__('Done importing videos'));
     }
 
-    private function importPosts($path, ConsoleIo $io)
+    private function importPosts(ConsoleIo $io)
     {
         // tell the user what's happening
         $io->out(__('Importing posts'));
 
-        if (!$this->checkPath($this->postsDir, $io)) {
+        if (!ImportUtils::checkPath($this->postsDir, $io)) {
             return;
         }
 
@@ -359,7 +361,7 @@ class ImportFacebookDataCommand extends Command
             $postFile = $this->postsDir . DS . $pFile;
 
             // make sure we can access the post file
-            if (!$this->checkFile($postFile, $io)) {
+            if (!ImportUtils::checkFile($postFile, $io)) {
                 continue;
             }
 
@@ -486,8 +488,8 @@ class ImportFacebookDataCommand extends Command
                     'user_id' => $this->user->id,
                     'created' => $created,
                     'modified' => $modified,
-                    'title' => $this->fixText($title),
-                    'content' => $this->fixText(implode("\n", $content)),
+                    'title' => ImportUtils::fixText($title),
+                    'content' => ImportUtils::fixText(implode("\n", $content)),
                     'source' => $source,
                     'import_source' => 'facebook',
                     'medias' => $medias ? ['_ids' => $medias] : null,
@@ -537,8 +539,8 @@ class ImportFacebookDataCommand extends Command
             // this is the comment. easy peasy!
             $commentsArr[]= [
                 'posted_by' => 'facebook-data-import@internal',
-                'display_name' => $this->fixText($author),
-                'comment' => $this->fixText($comment->comment),
+                'display_name' => ImportUtils::fixText($author),
+                'comment' => ImportUtils::fixText($comment->comment),
                 'approved' => true,
                 'public' => true,
                 'import_source' => 'facebook',
@@ -586,12 +588,12 @@ class ImportFacebookDataCommand extends Command
 
         // if there's a title, use it
         if (isset($media->title) && $media->title) {
-            $addlData['name'] = $this->fixText($media->title);
+            $addlData['name'] = ImportUtils::fixText($media->title);
         }
 
         // if there's a description, use it
         if (isset($media->description) && $media->description) {
-            $addlData['description'] = $this->fixText($media->description);
+            $addlData['description'] = ImportUtils::fixText($media->description);
         }
 
         // are there comments on the media?
@@ -611,44 +613,6 @@ class ImportFacebookDataCommand extends Command
         }
 
         return null;
-    }
-
-    private function checkPath($path, $io)
-    {
-        if (!is_dir($path)) {
-            $io->error(__('Path {0} is not a directory', $path));
-            return false;
-        }
-
-        return $this->checkFile($path, $io);
-    }
-
-    private function checkFile($path, $io)
-    {
-        if (!file_exists($path)) {
-            $io->error(__('Invalid path: {0}', $path));
-            return false;
-        }
-
-        if (!is_readable($path)) {
-            $io->error(__('Path {0} is unreadable', $path));
-            return false;
-        }
-
-        return true;
-    }
-
-    private function fixText($str) {
-        // replace \uXXXX characters with actual UTF chatacters
-        $str = utf8_decode(preg_replace_callback("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/", function($matches) {
-            return chr(hexdec($matches[0])) . chr(hexdec($matches[1]));
-        }, $str));
-
-        // replace octothorpes with html entity version
-        $str = str_replace('#', '&#35;', $str);
-
-        // return the cleaned up string
-        return $str;
     }
 
 }
