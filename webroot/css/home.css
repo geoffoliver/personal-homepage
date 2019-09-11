@@ -1,7 +1,29 @@
 .homepage-post .post-media {
-  margin: 0 -20px;
+  margin: 0 -21px 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
 }
 
-.homepage-post .post-media img:first-child:last-child {
+.homepage-post .post-media + hr {
+  display: none;
+}
+
+.homepage-post .post-media a {
+  display: flex;
+  max-width: 50%;
+  min-width: 33%;
+  padding: 1px;
+  background: #e3e3e3;
+}
+
+.homepage-post .post-media a img {
+  width: 100%;
+  align-self: center;
+}
+
+.homepage-post .post-media a:first-child {
+  max-width: 100%;
   width: 100%;
 }

@@ -16,10 +16,8 @@ class ImportTwitterDataCommand extends Command
 {
     private $user;
     private $path;
-    private $photosDir;
-    private $albumsDir;
-    private $videosDir;
-    private $postsDir;
+    private $mediaZip;
+    private $album;
 
     private $stats = [
         'media' => [
@@ -156,6 +154,44 @@ class ImportTwitterDataCommand extends Command
             return;
         }
 
+        // this is the zip file that contains all the media for tweets
+        $mediaZipPath = $this->path . DS . 'tweet_media' . DS . 'tweet-media-part1.zip';
+
+        // make sure we can access the zip file
+        if (!ImportUtils::checkFile($mediaZipPath, $io)) {
+            return;
+        }
+
+        // get a handle on the zip file
+        $this->mediaZip = new \ZipArchive();
+        if ($this->mediaZip->open($mediaZipPath) !== true) {
+            $io->error(__('Unable to open media zip file'));
+            return;
+        };
+
+        // find/create an album for twitter media
+        $album = $this->Albums->find()
+            ->where([
+                'Albums.name' => __('Twitter Media')
+            ])
+            ->first();
+
+        if ($album) {
+            $this->album = $album;
+        } else {
+            $album = $this->Albums->newEntity([
+                'name' => __('Twitter Media'),
+                'user_id' => $this->user->id,
+            ]);
+
+            if (!$this->Albums->save($album)) {
+                $io->error(__('Unable to create album for twitter media'));
+                return;
+            }
+
+            $this->album = $album;
+        }
+
         // strip some bits away so we can decode the string into
         // a JSON object that we can do stuff with
         $io->out(__('Converting tweet file to JSON object...'));
@@ -218,10 +254,24 @@ class ImportTwitterDataCommand extends Command
             // and set the source to the original tweet (the one that was RTd)
 
             // set the title
-            $title = __('Replied to a tweet from @{0}', $tweet->in_reply_to_screen_name);
+            $screenName = '';
+            if (property_exists($tweet, 'in_reply_to_screen_name')) {
+                // the tweet has the screen name of the user we replied to, use it.
+                $screenName = $tweet->in_reply_to_screen_name;
+                $urlStr = $screenName;
+            } else {
+                // find an @ mention at the very beginning of the tweet
+                $screenName = __('Unknown');
+                $matches = [];
+                if (preg_match('/^@([^\s]+).+$/', $content, $matches)) {
+                    $screenName = $matches[1];
+                }
+                $urlStr = $tweet->in_reply_to_user_id_str;
+            }
 
+            $title = __('Replied to a tweet from @{0}', $screenName);
             // set the source to the tweet that was replied to
-            $source = "https://twitter.com/{$tweet->in_reply_to_user_id_str}/status/{$tweet->in_reply_to_status_id}";
+            $source = "https://twitter.com/{$urlStr}/status/{$tweet->in_reply_to_status_id}";
         } else if ($isRetweet) {
             // make a nice title using the screen name of the person that was RTd.
             // this is another dumb string match to pull out the name of the user
@@ -235,7 +285,7 @@ class ImportTwitterDataCommand extends Command
                     foreach ($tweet->entities->user_mentions as $uMention) {
                         // find a user mention that matches the RTd screen name
                         if ($uMention->screen_name === $rtMatch[1]) {
-                            $source = "https://twitter.com/{$uMention->id_str}/status/{$tweet->id_str}";
+                            $source = "https://twitter.com/{$uMention->screen_name}/status/{$tweet->id_str}";
                             break;
                         }
                     }
@@ -243,18 +293,18 @@ class ImportTwitterDataCommand extends Command
             }
         }
 
-        die('here');
-
         // replace user mentions (@...) with links to the person's twitter page
         if ($tweet->entities->user_mentions) {
             foreach ($tweet->entities->user_mentions as $uMention) {
-                $content = str_replace(
-                    "@{$uMention->screen_name}",
-                    "[https://twitter.com/{$uMention->id_str}](@{$uMention->screen_name})",
+                $content = preg_replace(
+                    "/@({$uMention->screen_name})(.*)/",
+                    '[@$1](https://twitter.com/$1)$2',
                     $content
                 );
             }
+            $io->out(__('Content: {0}', $content));
         }
+
 
         // figure out if there are any photos/videos we need to import
         $medias = [];
@@ -262,12 +312,23 @@ class ImportTwitterDataCommand extends Command
             property_exists($tweet, 'extended_entities') &&
             $tweet->extended_entities &&
             property_exists($tweet->extended_entities, 'media') &&
-            is_array($tweet->extended_entities) &&
-            $tweet->extended_entities
+            is_array($tweet->extended_entities->media) &&
+            $tweet->extended_entities->media
         ) {
             foreach ($tweet->extended_entities->media as $media) {
                 // what kind of media are we dealing with?
-                $type = $media->type;
+                if ($iMedia = $this->importMedia($media, $tweet, $io)) {
+                    $medias[]= $iMedia;
+                }
+            }
+        }
+
+        // get a list of media IDs if there's any media
+        $mediaIds = null;
+        if ($medias) {
+            $mediaIds = ['_ids' => []];
+            foreach ($medias as $m) {
+                $mediaIds['_ids'][]= $m->id;
             }
         }
 
@@ -275,69 +336,144 @@ class ImportTwitterDataCommand extends Command
             'created' => $created,
             'modified' => $created,
             'import_source' => 'twitter',
-            'title' => $title,
-            'content' => implode("\n", $content),
+            'title' => ImportUtils::fixText($title),
+            'content' => ImportUtils::fixText($content),
+            'user_id' => $this->user->id,
             'source' => $source,
-            'medias' => $medias
+            'medias' => $mediaIds,
         ];
 
-        $post = $this->Post->newEntity($entity);
+        $post = $this->Posts->newEntity($entity);
+
+        if ($errors = $post->getErrors()) {
+            $io->error(print_r($errors, true));
+            return;
+        }
+
+        if ($this->Posts->save($post)) {
+            $this->stats['posts']['success']++;
+            $io->success(__('Tweet saved!'));
+
+            if ($medias) {
+                if ($this->Albums->Medias->link($this->album, $medias)) {
+                    $io->success(__('Media linked to album'));
+                }
+            }
+
+        } else {
+            dump($post);
+            $this->stats['posts']['fail']++;
+            $io->error(__('Unable to save tweet'));
+        }
+
     }
 
-    private function importMedia($media, $io)
+    private function importMedia($media, $tweet, $io)
     {
         // tell the user what's going on
         $io->out(__('Importing media...'));
 
-        // create a data structure that the `uploadAndCreate` can work with
-        $create = [
-            'tmp_name' => $this->path . DS . $media->uri,
-            'name' => basename($media->uri),
-        ];
+        // figure out what type of media we're dealing with
+        $type = $media->type;
+
+        // this is where the filename will go
+        $mediaFile = null;
+
+        if ($type === "photo") {
+            // photos are easy, just the tweet id concated with a hyphen
+            // and the actual filename
+            $mediaFile = $tweet->id . '-' . basename($media->media_url);
+        } else if (
+            ($type === "video" || $type === "animated_gif") &&
+            property_exists($media, 'video_info') &&
+            $media->video_info &&
+            property_exists($media->video_info, 'variants') &&
+            is_array($media->video_info->variants) &&
+            $media->video_info->variants
+        ) {
+            // videos are tricky because they've got multiple resolutions and a
+            // playlist. we just want the highest resolution video we can get.
+            // also, sometimes the bitrate can be 0 (wtf?!) thus, the -1 here.
+            $bitrate = -1;
+
+            foreach ($media->video_info->variants as $variant) {
+                if (!property_exists($variant, 'bitrate')) {
+                    // this is the playlist, skip it
+                    continue;
+                }
+                // convert the bitrate to a number so we can compare it..
+                $br = (int)$variant->bitrate;
+                if ($br > $bitrate) {
+                    // bigger bitrate on the video, so use it
+                    $mediaFile = $tweet->id . '-' . basename($variant->url);
+                    $br = $bitrate;
+                }
+            }
+        } else {
+            $io->error(__('Unhandled media type "{0}"', $type));
+        }
+
+        if (!$mediaFile) {
+            $io->error(__('Unable to locate file for media type {0}', $type));
+            return;
+        }
+
+        // if there's a querystring on the filename, remove it
+        if (strpos($mediaFile, '?') !== false) {
+            list($mediaFile, ) = explode('?', $mediaFile);
+        }
 
         // if we've already imported this media item, just use that
         $existing = $this->Medias->find()
             ->where([
-                'original_filename' => $create['name']
+                'original_filename' => $mediaFile,
+                'import_source' => 'twitter'
             ])
             ->first();
 
         if ($existing) {
-            $io->out(__('Media {0} exists in database', $create['name']));
+            $io->out(__('Media {0} exists in database', $existing->name));
             return $existing;
         }
 
+        // try to get the file out of the zip
+        $extracted = $this->mediaZip->getFromName($mediaFile);
+
+        if (!$extracted) {
+            $io->error(__('Unable to find file named "{0}" in media archive', $mediaFile));
+        }
+
+        // this is where the file will live for a moment
+        $tmpName = TMP . DS . 'import-' . $mediaFile;
+
+        if (!file_put_contents($tmpName, $extracted)) {
+            $io->error(__('Unable to create temporary file from "{0}"', $mediaFile));
+            return;
+        }
+
+        // create a data structure that the `uploadAndCreate` can work with
+        $create = [
+            'tmp_name' => $tmpName,
+            'name' => $mediaFile,
+        ];
+
         // some extra bits of data for the media
-        $now = time();
-        $created = date('Y-m-d H:i:s', isset($media->creation_timestamp) ? $media->creation_timestamp : $now);
+        $created = date('Y-m-d H:i:s', strtotime($tweet->created_at));
 
         $addlData = [
             'created' => $created,
             'modified' => $created,
             'user_id' => $this->user->id,
-            'import_source' => 'facebook'
+            'import_source' => 'twitter'
         ];
-
-        // if there's a title, use it
-        if (isset($media->title) && $media->title) {
-            $addlData['name'] = ImportUtils::fixText($media->title);
-        }
-
-        // if there's a description, use it
-        if (isset($media->description) && $media->description) {
-            $addlData['description'] = ImportUtils::fixText($media->description);
-        }
-
-        // are there comments on the media?
-        if (isset($media->comments) && $media->comments) {
-            $addlData['comments'] = $this->generateComments($media->comments, $io);
-        }
 
         // finally, try to do something with the media
         $io->out(__('Attempting to move and save media'));
         if ($media = $this->Medias->uploadAndCreate($create, false, $addlData)) {
             $io->success(__('Media saved'));
             $this->stats['media']['success']++;
+            // delete the temporary file
+            unlink($tmpName);
             // yay!!!
             return $media;
         } else {

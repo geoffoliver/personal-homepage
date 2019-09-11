@@ -505,7 +505,6 @@ class ImportFacebookDataCommand extends Command
 
                 if ($errors = $postEntity->getErrors()) {
                     $io->error(print_r($errors, true));
-                    exit();
                     continue;
                 }
 
@@ -514,7 +513,7 @@ class ImportFacebookDataCommand extends Command
                     $this->stats['posts']['success']++;
                     $io->success(__('Post saved!'));
                 } else {
-                    $this->stats['posts']['success']++;
+                    $this->stats['posts']['fail']++;
                     $io->error(__('Unable to save post'));
                 }
             }
@@ -566,7 +565,8 @@ class ImportFacebookDataCommand extends Command
         // if we've already imported this media item, just use that
         $existing = $this->Medias->find()
             ->where([
-                'original_filename' => $create['name']
+                'original_filename' => $create['name'],
+                'import_source' => 'facebook'
             ])
             ->first();
 
