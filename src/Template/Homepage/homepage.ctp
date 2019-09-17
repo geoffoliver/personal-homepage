@@ -62,7 +62,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         <?php if ($photos->count()): ?>
         <div class="box">
             <h3>
-                <a href="/photos">
+                <a href="<?= $this->Url->build(['_name' => 'photos']); ?>">
                     <span class="fas fa-fw fa-camera"></span>
                     <strong><?= __('Photos'); ?></strong>
                 </a>
@@ -79,7 +79,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         <?php if ($videos->count()): ?>
         <div class="box">
             <h3>
-                <a href="/videos">
+                <a href="<?= $this->Url->build(['_name' => 'videos']); ?>">
                     <span class="fas fa-fw fa-video"></span>
                     <strong><?= __('Videos'); ?></strong>
                 </a>

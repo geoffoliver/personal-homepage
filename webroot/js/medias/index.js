@@ -6,7 +6,6 @@
 
   // puts the data-lazy-src of an image into the src of itself
   function loadImage(image) {
-    console.log('i', image.dataset);
     image.src = image.dataset['lazySrc'];
     delete image.dataset['lazySrc'];
   }
@@ -14,6 +13,7 @@
   // loads images all at once in the instance that the browser doesn't support
   // the IntersectionObserver
   function loadImages() {
+    lazyImages = document.querySelectorAll('img[data-lazy-src]');
     for (let i = 0; i < lazyImages.length; i++) {
       loadImage(lazyImages.item(i));
     }
@@ -32,12 +32,18 @@
   }
 
   // setup the intersection observer and tell it to watch all the lazy images
-  function lazyLoadImages() {
+  function initLazyLoadImages() {
     lazyObserver = new IntersectionObserver(observeImage);
 
     lazyImages.forEach(function(image) {
       lazyObserver.observe(image);
     });
+
+    document.addEventListener("scroll", lazyload);
+    window.addEventListener("resize", lazyload);
+    window.addEventListener("orientationChange", lazyload);
+
+    lazyload();
   }
 
   // do the lazy loading of images
@@ -66,11 +72,10 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     if ("IntersectionObserver" in window) {
-      lazyLoadImages();
-      document.addEventListener("scroll", lazyload);
-      window.addEventListener("resize", lazyload);
-      window.addEventListener("orientationChange", lazyload);
+      console.log('Lazy loading images');
+      initLazyLoadImages();
     } else {
+      console.log('Loading all images at once. Oooof. Upgrade your browser!');
       loadImages();
     }
   });
