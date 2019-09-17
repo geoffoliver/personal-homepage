@@ -26,10 +26,22 @@
                     ['controller' => 'Friends', 'action' => 'index'],
                     ['class' => 'navbar-item']
                 );
+                echo $this->Html->link(
+                    __('About'),
+                    '#',
+                    ['class' => 'navbar-item']
+                );
+                echo $this->Html->link(
+                    __('Photos'),
+                    ['_name' => 'photos'],
+                    ['class' => 'navbar-item']
+                );
+                echo $this->Html->link(
+                    __('Videos'),
+                    ['_name' => 'videos'],
+                    ['class' => 'navbar-item']
+                );
             ?>
-            <a href="#" class="navbar-item"><?= __('About'); ?></a>
-            <a href="#" class="navbar-item"><?= __('Photos'); ?></a>
-            <a href="#" class="navbar-item"><?= __('Videos'); ?></a>
             <div class="nav-divider"></div>
             <?php
                 if ($this->Identity->isLoggedIn()) {

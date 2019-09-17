@@ -22,9 +22,50 @@ class MediasController extends AppController
     {
         parent::initialize();
         $this->Authentication->allowUnauthenticated([
+            'index',
             'view',
             'heroBackground',
-            'profilePhoto'
+            'profilePhoto',
+        ]);
+    }
+
+    public function index($type = false, $albumId = false)
+    {
+        $types = [
+            'photos' => [
+                'where' => 'image/%',
+                'title' => __('Photos')
+            ],
+            'videos' => [
+                'where' => 'video/%',
+                'title' => __('Videos')
+            ]
+        ];
+
+        $medias = [];
+        $title = __('Media');
+
+        if (array_key_exists($type, $types)) {
+            $title = $types[$type]['title'];
+
+            $medias = $this->Medias->find()
+                ->where([
+                    'Medias.mime LIKE' => $types[$type]['where']
+                ])
+                ->order([
+                    'Medias.created' => 'DESC'
+                ]);
+
+            if ($albumId) {
+                $medias = $medias->where([
+                    'Medias.album_id' => $albumId
+                ]);
+            }
+        }
+
+        $this->set([
+            'medias' => $medias->all(),
+            'title' => $title
         ]);
     }
 
@@ -37,6 +78,7 @@ class MediasController extends AppController
             ->contain([
                 'Albums',
                 'Users',
+                'Posts.Medias',
                 'Comments' => [
                     'sort' => [
                         'Comments.created' => 'DESC'

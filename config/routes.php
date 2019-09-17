@@ -1,4 +1,5 @@
 <?php
+
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
@@ -11,20 +12,118 @@ Router::scope('/', function (RouteBuilder $routes) {
         'httpOnly' => true
     ]));
 
-    $routes->setExtensions(['json','xml']);
+    $routes->setExtensions(['json', 'xml']);
 
     $routes->applyMiddleware('csrf');
 
-    $routes->connect('/', ['controller' => 'Homepage', 'action' => 'index']);
-    $routes->connect('/homepage', ['controller' => 'Homepage', 'action' => 'index', 'homepage']);
-    $routes->connect('/feed', ['controller' => 'Homepage', 'action' => 'index', 'feed']);
+    // the homepage, which could be posts from the website or a feed of posts
+    // from friend's websites, depending on if you're logged in
+    $routes->connect('/',
+        [
+            'controller' => 'Homepage',
+            'action' => 'index'
+        ]
+    );
 
-    $routes->connect('/page-feed', ['controller' => 'Posts', 'action' => 'feed']);
+    // really only used for when you're logged in and you want to see your homepage
+    // as visitors to your site see it
+    $routes->connect('/homepage',
+        [
+            'controller' => 'Homepage',
+            'action' => 'index', 'homepage'
+        ]
+    );
 
-    $routes->connect('/hero-background', ['controller' => 'Medias', 'action' => 'heroBackground']);
-    $routes->connect('/profile-photo', ['controller' => 'Medias', 'action' => 'profilePhoto']);
+    // the regular RSS feed for posts
+    $routes->connect('/feed',
+        [
+            'controller' => 'Homepage',
+            'action' => 'index', 'feed'
+        ]
+    );
 
-    $routes->connect('/view-post/:id', ['controller' => 'Posts', 'action' => 'view'], ['_name' => 'viewPost'])->setPass(['id']);
+    // the JSON feed for posts
+    $routes->connect('/page-feed',
+        [
+            'controller' => 'Posts',
+            'action' => 'feed'
+        ]
+    );
+
+    // make it easy to get the hero background
+    $routes->connect('/hero-background',
+        [
+            'controller' => 'Medias',
+            'action' => 'heroBackground'
+        ]
+    );
+
+    // make it easy to get the profile photo
+    $routes->connect('/profile-photo',
+        [
+            'controller' => 'Medias',
+            'action' => 'profilePhoto'
+        ]
+    );
+
+    // view a post
+    $routes->connect('/view-post/:id',
+        [
+            'controller' => 'Posts',
+            'action' => 'view'
+        ],
+        [
+            '_name' => 'viewPost'
+        ]
+    )->setPass(['id']);
+
+    // shortcut for viewing photos (/medias/photos)
+    $routes->connect('/photos',
+        [
+            'controller' => 'Medias',
+            'action' => 'index',
+            'photos'
+        ],
+        [
+            '_name' => 'photos'
+        ]
+    );
+
+    // shortcut for viewing photo album (/medias/videos/{albumId})
+    $routes->connect('/photos/:albumId',
+        [
+            'controller' => 'Medias',
+            'action' => 'index',
+            'photos'
+        ],
+        [
+            '_name' => 'photoAlbum'
+        ]
+    )->setPass(['albumId']);
+
+    // shortcut for viewing videos (/medias/videos)
+    $routes->connect('/videos',
+        [
+            'controller' => 'Medias',
+            'action' => 'index',
+            'videos'
+        ],
+        [
+            '_name' => 'videos'
+        ]
+    );
+
+    // shortcut for viewing video album (/medias/photos/{albumId})
+    $routes->connect('/videos/:albumId',
+        [
+            'controller' => 'Medias',
+            'action' => 'index',
+            'videos'
+        ],
+        [
+            '_name' => 'videoAlbum'
+        ]
+    )->setPass(['albumId']);
 
     $routes->fallbacks(DashedRoute::class);
 });
