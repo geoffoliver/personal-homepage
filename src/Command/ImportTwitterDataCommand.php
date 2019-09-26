@@ -444,7 +444,7 @@ class ImportTwitterDataCommand extends Command
         }
 
         // this is where the file will live for a moment
-        $tmpName = TMP . DS . 'import-' . $mediaFile;
+        $tmpName = TMP . 'import-' . $mediaFile;
 
         if (!file_put_contents($tmpName, $extracted)) {
             $io->error(__('Unable to create temporary file from "{0}"', $mediaFile));
