@@ -19,25 +19,6 @@ if (!$isPost && !$isMedia) {
 // keep the list of links here
 $links = [];
 
-// do we want to show the 'comments' link?
-if (!isset($comments)) {
-    $comments = true;
-}
-
-if ($comments) {
-    $links[]= $this->Html->link(
-        '<span class="fas fa-comment" aria-hidden="true"></span>&nbsp;' . __('{0} Comments', count($item->comments)),
-        [
-            '_name' => $isPost ? 'viewPost' : 'viewMedia',
-            $item->id . '#comments',
-        ],
-        [
-            'escape' => false,
-            'class' => 'level-item'
-        ]
-    );
-}
-
 // do we want to show the 'share' link?
 if (!isset($share)) {
     $share = true;
@@ -74,6 +55,25 @@ if ($isPost) {
             ]
         );
     }
+}
+
+// do we want to show the 'comments' link?
+if (!isset($comments)) {
+    $comments = true;
+}
+
+if ($comments) {
+    $links[]= $this->Html->link(
+        '<span class="fas fa-comment" aria-hidden="true"></span>&nbsp;' . __('{0} Comments', count($item->comments)),
+        [
+            '_name' => $isPost ? 'viewPost' : 'viewMedia',
+            $item->id . '#comments',
+        ],
+        [
+            'escape' => false,
+            'class' => 'level-item'
+        ]
+    );
 }
 
 ?>

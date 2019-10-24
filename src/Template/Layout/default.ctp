@@ -8,9 +8,10 @@
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item" href="/" title="Home">
-          <span class="fas fa-home"></span>
-          &nbsp;
-          Site Name
+            <figure class="image is-24x24">
+                <img class="is-rounded" src="/profile-photo" />
+            </figure>
+            Geoffrey Oliver
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
@@ -62,14 +63,10 @@
                         ['controller' => 'Homepage', 'action' => 'index'],
                         ['class' => 'navbar-item', 'title' => __('Feed'), 'escape' => false]
                     );
-                }
-            ?>
-            <?php
-                if($this->Identity->isLoggedIn()) {
                     echo $this->Html->link(
-                        '<span class="fas fa-file-alt"></span>',
+                        '<span class="fas fa-home"></span>',
                         ['controller' => 'Homepage', 'action' => 'index', 'homepage'],
-                        ['class' => 'navbar-item', 'title' => __('My Posts'), 'escape' => false]
+                        ['class' => 'navbar-item', 'title' => __('My Homepage'), 'escape' => false]
                     );
                     echo $this->Html->link(
                         '<span class="fas fa-cog"></span>',

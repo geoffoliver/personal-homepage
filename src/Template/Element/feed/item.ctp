@@ -59,6 +59,16 @@
             <nav class="level is-mobile is-size-7">
                 <div class="level-left">
                     <?= $this->Html->link(
+                        $this->Html->tag('i', '', ['class' => 'fas fa-share']) . '&nbsp;' . __('Share'),
+                        '#',
+                        [
+                            'escape' => false,
+                            'target' => '_blank',
+                            'rel' => 'noopener noreferrer',
+                            'class' => 'level-item'
+                        ]
+                    ); ?>
+                    <?= $this->Html->link(
                         $this->Html->tag('i', '', ['class' => 'fas fa-external-link-alt']) . '&nbsp;' . __('View Original'),
                         $post->url,
                         [
