@@ -14,20 +14,17 @@
   margin-bottom: 10px;
   align-items: center;
 }
-.feed-post-item-friend-name {
+.feed-post-item-friend-name-container {
   padding-left: 15px;
-  display: flex;
-  flex-direction: column;
 }
 
-.feed-post-item-friend-name span {
-  font-weight: lighter;
-  opacity: 0.75;
-}
-
-.feed-post-item-friend-name time {
+.feed-post-item-friend-name-and-time {
   font-size: 0.75rem;
-  opacity: 0.75;
+  color: #666;
+}
+
+.feed-post-item-title {
+  font-weight: bold;
 }
 
 .friend-icon {

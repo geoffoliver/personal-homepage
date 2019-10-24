@@ -14,34 +14,8 @@
                     ]
                 ); ?>
             </figure>
-            <div class="feed-post-item-friend-name">
-                <strong>
-                    <?= $this->Html->link(
-                        $post->friend->name,
-                        $post->friend->url,
-                        [
-                            'target' => '_blank'
-                        ]
-                    ); ?>
-                    <?php if (isset($post->author) && isset($post->author->name) && $post->author->name): ?>
-                        <span>
-                        &mdash; by <?= $post->author->name; ?>
-                        </span>
-                    <?php endif; ?>
-                </strong><br />
-                <time>
-                    <?= $post->date_published->nice('America/Denver'); ?>
-                    <?php if ($post->date_published != $post->date_modified): ?>
-                        <span class="updated-time">
-                            (Updated <?= $post->date_modified->nice('America/Denver'); ?>)
-                        </span>
-                    <?php endif; ?>
-                </time>
-            </div>
-        </div>
-        <div class="feed-post-item-content">
-            <h3 class="is-size-5">
-                <strong>
+            <div class="feed-post-item-friend-name-container">
+                <h1 class="is-size-5 feed-post-item-title">
                     <?= $this->Html->link(
                         $post->title,
                         $post->url,
@@ -50,8 +24,34 @@
                             'rel' => 'noopener noreferrer'
                         ]
                     ); ?>
-                </strong>
-            </h3>
+                </h1>
+                <div class="feed-post-item-friend-name-and-time">
+                    <?= $this->Html->link(
+                        $post->friend->name,
+                        $post->friend->url,
+                        [
+                            'target' => '_blank',
+                            'class' => 'feed-post-item-friend-name'
+                        ]
+                    ); ?>
+                    <?php if (isset($post->author) && isset($post->author->name) && $post->author->name): ?>
+                        <span>
+                        &mdash; by <?= $post->author->name; ?>
+                        </span>
+                    <?php endif; ?>
+                    &middot;
+                    <time>
+                        <?= $post->date_published->nice('America/Denver'); ?>
+                        <?php if ($post->date_published != $post->date_modified): ?>
+                            <span class="updated-time">
+                                (Updated <?= $post->date_modified->nice('America/Denver'); ?>)
+                            </span>
+                        <?php endif; ?>
+                    </time>
+                </div>
+            </div>
+        </div>
+        <div class="feed-post-item-content">
             <div><?= $post->summary; ?></div>
         </div>
         <hr />
