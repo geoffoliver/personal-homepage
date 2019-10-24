@@ -1,7 +1,7 @@
 <?php
-
 $this->assign('title', $media->name);
 $this->append('css', $this->Html->css('medias/view.css'));
+$Parsedown = new ParsedownExtra();
 ?>
 <section class="section" id="viewMedia">
     <article>
@@ -30,12 +30,14 @@ $this->append('css', $this->Html->css('medias/view.css'));
                                 <?= nl2br(h($media->description)); ?>
                             </div>
                         <?php endif; ?>
-                        <?php if ($media->post): ?>
+                        <?php if ($media->post && $media->post->content): ?>
                             <hr />
-                            <div class="media-post">
-                                <?= $this->element('homepage/post', ['post' => $media->post]); ?>
-                            </div>
+                            <p>
+                                <?= $Parsedown->text($media->post->content); ?>
+                            </p>
                         <?php endif; ?>
+                        <hr />
+                        <?= $this->element('item-footer', ['item' => $media, 'comments' => false]); ?>
                     </div>
                 </div>
             </div>

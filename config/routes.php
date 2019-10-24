@@ -125,5 +125,15 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     )->setPass(['albumId']);
 
+    $routes->connect('/medias/view/:id',
+        [
+            'controller' => 'Medias',
+            'action' => 'view'
+        ],
+        [
+            '_name' => 'viewMedia'
+        ]
+    )->setPass(['id']);
+
     $routes->fallbacks(DashedRoute::class);
 });

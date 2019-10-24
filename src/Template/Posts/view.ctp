@@ -14,34 +14,6 @@ $this->append('script', $this->Html->script('posts/view.js'));
                         <h3 class="is-size-6 has-text-grey level-left">
                             <?= __('Posted'); ?>&nbsp;<time><?= $post->created->format('F j, Y \a\t g:i a'); ?></time>
                         </h3>
-                        <?php if ($this->Identity->isLoggedIn()) :?>
-                            <div class="level-right">
-                                <?= $this->Html->link(
-                                    '<span class="fas fa-edit" aria-hidden="true"></span>&nbsp;' . __('Edit'),
-                                    [
-                                        'controller' => 'Posts',
-                                        'action' => 'edit',
-                                        $post->id
-                                    ],
-                                    [
-                                        'class' => 'level-item',
-                                        'escape' => false
-                                    ]
-                                ); ?>
-                                <?= $this->Form->postLink(
-                                    '<span class="fas fa-trash" aria-hidden="true"></span>&nbsp;' . __('Delete'),
-                                    [
-                                        'controller' => 'Posts',
-                                        'action' => 'delete',
-                                        $post->id
-                                    ],
-                                    [
-                                        'confirm' => __('Are you sure you want to delete this post?'),
-                                        'escape' => false
-                                    ]
-                                ); ?>
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -62,6 +34,8 @@ $this->append('script', $this->Html->script('posts/view.js'));
                             ?>
                         </div>
                         <?php endif; ?>
+                        <hr />
+                        <?= $this->element('item-footer', ['item' => $post, 'comments' => false]); ?>
                     </div>
                 </div>
             </div>
