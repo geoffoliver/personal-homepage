@@ -9,7 +9,18 @@ $Parsedown = new ParsedownExtra();
             <div class="columns">
                 <div class="column is-10 is-offset-1">
                     <?php if ($media->name): ?>
-                    <h1 class="is-size-2"><?= $media->name; ?></h1>
+                        <h1 class="is-size-2"><?= $media->name; ?></h1>
+                    <?php endif; ?>
+                    <?php if ($media->album): ?>
+                        <h2 class="is-size-5">
+                            <?= $this->Html->link(
+                                __('View Album'),
+                                [
+                                    '_name' => 'viewAlbum',
+                                    $media->album->id
+                                ]
+                            ); ?>
+                        </h2>
                     <?php endif; ?>
                     <div class="level is-mobile">
                         <h3 class="is-size-6 has-text-grey level-left">

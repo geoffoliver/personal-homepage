@@ -26,8 +26,11 @@ class Album extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'created' => true,
+        'user_id' => true,
+        'description' => true,
         'cover_photo' => true,
+        'type' => true,
+        'created' => true,
         'modified' => true,
         'medias' => true,
         'comments' => true

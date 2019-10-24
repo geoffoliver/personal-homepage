@@ -48,7 +48,7 @@ class AlbumsTable extends Table
             'foreignKey' => 'model_id'
         ]);
 
-        $this->hasOne('CoverMedia', [
+        $this->belongsTo('CoverMedias', [
             'className' => 'Medias',
             'foreignKey' => 'cover_photo'
         ]);
@@ -71,6 +71,12 @@ class AlbumsTable extends Table
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
+
+        $validator
+            ->scalar('type')
+            ->maxLength('type', 255)
+            ->requirePresence('type', 'create')
+            ->notEmptyString('type');
 
         return $validator;
     }

@@ -89,18 +89,6 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    // shortcut for viewing photo album (/medias/videos/{albumId})
-    $routes->connect('/photos/:albumId',
-        [
-            'controller' => 'Medias',
-            'action' => 'index',
-            'photos'
-        ],
-        [
-            '_name' => 'photoAlbum'
-        ]
-    )->setPass(['albumId']);
-
     // shortcut for viewing videos (/medias/videos)
     $routes->connect('/videos',
         [
@@ -113,18 +101,6 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    // shortcut for viewing video album (/medias/photos/{albumId})
-    $routes->connect('/videos/:albumId',
-        [
-            'controller' => 'Medias',
-            'action' => 'index',
-            'videos'
-        ],
-        [
-            '_name' => 'videoAlbum'
-        ]
-    )->setPass(['albumId']);
-
     $routes->connect('/medias/view/:id',
         [
             'controller' => 'Medias',
@@ -134,6 +110,28 @@ Router::scope('/', function (RouteBuilder $routes) {
             '_name' => 'viewMedia'
         ]
     )->setPass(['id']);
+
+
+    $routes->connect('/view-album/:id',
+        [
+            'controller' => 'Albums',
+            'action' => 'view',
+        ],
+        [
+            '_name' => 'viewAlbum'
+        ]
+    )->setPass(['id']);
+
+    // shortcut for viewing albums
+    $routes->connect('/albums/:type',
+        [
+            'controller' => 'Albums',
+            'action' => 'index'
+        ],
+        [
+            '_name' => 'listAlbums'
+        ]
+    )->setPass(['type']);
 
     $routes->fallbacks(DashedRoute::class);
 });

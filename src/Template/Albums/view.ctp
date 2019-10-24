@@ -1,39 +1,26 @@
 <?php
-$this->assign('title', $title);
+$this->assign('title', $album->name);
 $this->append('css', $this->Html->css('medias/index.css'));
+$this->append('css', $this->Html->css('albums/view.css'));
 $this->append('script', $this->Html->script('util/lazyload.js'));
 ?>
-<section class="section" id="viewMedias">
+<section class="section" id="viewAlbum">
     <div class="columns">
         <div class="column">
-            <div class="level">
-                <div class="level-left">
-                    <h1 class="is-size-2"><?= $title; ?>
-                </div>
-                <div class="level-right">
-                    <?php if ($type): ?>
-                        <?= $this->Html->link(
-                            '<span class="fas fa-book-open"></span>&nbsp;' . __('View Albums'),
-                            [
-                                '_name' => 'listAlbums',
-                                $type
-                            ],
-                            [
-                                'class' => 'is-size-5',
-                                'escape' => false
-                            ]
-                        ); ?>
-                    <?php endif; ?>
-                </div>
-            </div>
+            <h1 class="is-size-2">
+                <?= $album->name; ?>
+            </h1>
+            <?php if ($album->description): ?>
+                <p class="is-size-4"><?= h($album->description); ?></p>
+            <?php endif; ?>
             <div class="box">
                 <div class="content">
-                    <div class="medias">
+                    <div class="album-entries medias">
                         <?php
-                        foreach ($medias as $media) {
+                        foreach ($album->medias as $media) {
                             echo $this->Html->link(
                                 $this->Html->image(
-                                    null,
+                                    '#',
                                     [
                                         'data-lazy-src' => "/media/{$media->thumbnail}",
                                     ]

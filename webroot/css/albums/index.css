@@ -1,0 +1,55 @@
+.albums {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.album-link {
+  flex: auto;
+  height: 250px;
+  width: 50%;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  padding: 5px;
+}
+
+.album-link > span {
+  display: flex;
+  flex: auto;
+  background: #3273dc;
+  color: #fff;
+  transition: all 0.2s;
+  position: relative;
+  height: 100%;
+}
+
+.album-link span span {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  text-align: center
+}
+
+.album-link:hover > span,
+.album-link:focus > span,
+.album-link:active > span {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  color: #fff;
+  z-index: 1;
+  background: #2366d1;
+}
+
+.album-link img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: all 0.2s;
+}
+
+.album-link:hover img,
+.album-link:focus img,
+.album-link:active img {
+  opacity: 0.3;
+}

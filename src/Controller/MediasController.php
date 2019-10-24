@@ -18,6 +18,8 @@ class MediasController extends AppController
         ],
     ];
 
+    private $types = [];
+
     public function initialize()
     {
         parent::initialize();
@@ -27,11 +29,7 @@ class MediasController extends AppController
             'heroBackground',
             'profilePhoto',
         ]);
-    }
-
-    public function index($type = false, $albumId = false)
-    {
-        $types = [
+        $this->types = [
             'photos' => [
                 'where' => 'image/%',
                 'title' => __('Photos')
@@ -41,32 +39,34 @@ class MediasController extends AppController
                 'title' => __('Videos')
             ]
         ];
+    }
 
+    public function index($type = false)
+    {
         $medias = [];
         $title = __('Media');
 
-        if (array_key_exists($type, $types)) {
-            $title = $types[$type]['title'];
+        if (array_key_exists($type, $this->types)) {
+            $title = $this->types[$type]['title'];
 
             $medias = $this->Medias->find()
                 ->where([
-                    'Medias.mime LIKE' => $types[$type]['where']
+                    'Medias.mime LIKE' => $this->types[$type]['where']
                 ])
                 ->order([
                     'Medias.created' => 'DESC'
                 ]);
-
-            if ($albumId) {
-                $medias = $medias->where([
-                    'Medias.album_id' => $albumId
-                ]);
-            }
         }
 
         $this->set([
             'medias' => $medias->all(),
+            'type' => $type,
             'title' => $title
         ]);
+    }
+
+    public function albums($type = 'photos')
+    {
     }
 
     public function view($id)
@@ -78,7 +78,6 @@ class MediasController extends AppController
             ->contain([
                 'Albums',
                 'Users',
-                'Posts.Medias',
                 'Comments' => [
                     'sort' => [
                         'Comments.created' => 'DESC'
