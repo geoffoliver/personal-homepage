@@ -189,12 +189,12 @@ pre .hljs {
 .comments-container {
   flex-grow: 1;
   border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.4);
   overflow: auto;
 }
 
 .comment {
   padding: 15px 20px 10px;
-  background: rgba(255, 255, 255, 0.4);
   position: relative;
   font-size: 0.8rem;
 }
@@ -232,7 +232,7 @@ pre .hljs {
   background: #fff;
 }
 
-.comments-list + .comment-form {
+.comments-container + .comment-form {
   border-top: 0;
 }
 
