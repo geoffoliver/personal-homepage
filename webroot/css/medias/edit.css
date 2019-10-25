@@ -1,0 +1,36 @@
+.thumbnails {
+  display: flex;
+  flex-direction: row;
+}
+
+.preview {
+  text-align: center;
+}
+
+.preview figcaption {
+  padding-top: 5px;
+  font-size: 0.8rem;
+}
+
+.preview:first-child {
+  padding-right: 10px;
+}
+
+.permissions-checkboxes {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.75rem;
+}
+
+.permissions-checkboxes > div > label {
+  display: flex;
+  align-items: center;
+}
+
+.permissions-checkboxes > div + div {
+  margin-left: 10px;
+}
+
+.permissions-checkboxes input {
+  margin-right: 5px;
+}

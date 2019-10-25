@@ -62,7 +62,7 @@ class MediasController extends AppController
                 ]);
 
             // only logged in users can see private media
-            if (!$this->Auth->identify()) {
+            if (!$this->Authentication->getIdentity()) {
                 $medias = $medias->where([
                     'Medias.public' => true
                 ]);
@@ -101,7 +101,7 @@ class MediasController extends AppController
             ]);
 
         // if we're not logged in, we can only see public media
-        if (!$this->Auth->identify()) {
+        if (!$this->Authentication->getIdentity()) {
             $media = $media->where([
                 'Medias.public' => true
             ]);
@@ -116,6 +116,50 @@ class MediasController extends AppController
         }
 
         // still here? show the media item
+        $this->set([
+            'media' => $media
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $media = $this->Medias->find()
+            ->where([
+                'Medias.id' => $id
+            ])
+            ->contain([
+                'Posts',
+                'Albums',
+                'Comments' => [
+                    'sort' => [
+                        'Comments.created' => 'DESC'
+                    ]
+                ]
+            ])
+            ->first();
+
+        if (!$media) {
+            $this->Flash->error(__('Invalid media item.'));
+            return $this->redirect('/');
+        }
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $media = $this->Medias->patchEntity($media, [
+                'name' => $this->request->getData('name'),
+                'description' => $this->request->getData('description'),
+                'public' => $this->request->getData('public'),
+                'allow_comments' => $this->request->getData('allow_comments'),
+            ]);
+
+            if ($this->Medias->save($media)) {
+                $this->Flash->success(__('The media has been saved.'));
+
+                return $this->redirect(['_name' => 'viewMedia', $media->id]);
+            }
+
+            $this->Flash->error(__('The media could not be saved. Please, try again.'));
+        }
+
         $this->set([
             'media' => $media
         ]);

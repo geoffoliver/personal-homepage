@@ -117,7 +117,7 @@ if ($isMedia) {
             <?= $this->Html->link(
                 '<span class="fas fa-edit" aria-hidden="true"></span>&nbsp;' . __('Edit'),
                 [
-                    'controller' => $isPost ? 'Posts' : 'Media',
+                    'controller' => $isPost ? 'Posts' : 'Medias',
                     'action' => 'edit',
                     $item->id
                 ],
