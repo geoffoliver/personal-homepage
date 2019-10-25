@@ -7,7 +7,7 @@ $this->append('css', $this->Html->css('feed.css'));
         <div class="column is-one-quarter">
             <div class="sidebar sticky-sidebar">
                 <div class="box">
-                    <h3>
+                    <h3 class="title is-6">
                         <a href="/friends">
                             <span class="fas fa-fw fa-user-friends"></span>
                             <strong><?= __('My Friends'); ?></strong>

@@ -9,10 +9,10 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
   <div class="column is-one-quarter">
     <div class="sidebar sticky-sidebar">
       <div class="box">
-        <h3>
+        <h3 class="title is-6">
           <a href="/about">
             <span class="fas fa-fw fa-address-card"></span>
-            <strong>About Me</strong>
+            <strong><?= __('About Me'); ?></strong>
           </a>
         </h3>
         <p>
@@ -21,10 +21,10 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         </p>
         <?php if ($friends->count()): ?>
           <hr />
-          <h3>
+          <h3 class="title is-6">
             <a href="/friends">
               <span class="fas fa-fw fa-user-friends"></span>
-              <strong>My Friends</strong>
+              <strong><?= __('My Friends'); ?></strong>
             </a>
           </h3>
           <div id="homepage-friends" class="sidebar-thumbnail-grid">
@@ -39,7 +39,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
   <div class="column is-half">
     <?php if (count($posts) === 0): ?>
         <div class="box">
-            <h4 class="is-size-4"><?= __('There is nothing to show here.'); ?></h4>
+            <h4 class="title is-6"><?= __('There is nothing to show here.'); ?></h4>
             <p><?= __('If you are the site owner, you should add your first post!'); ?></p>
         </div>
     <?php endif; ?>
@@ -61,7 +61,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
       <div class="sidebar sticky-sidebar">
         <?php if ($photos->count()): ?>
         <div class="box">
-            <h3>
+            <h3 class="title is-6">
                 <a href="<?= $this->Url->build(['_name' => 'photos']); ?>">
                     <span class="fas fa-fw fa-camera"></span>
                     <strong><?= __('Photos'); ?></strong>
@@ -78,7 +78,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         <?php endif; ?>
         <?php if ($videos->count()): ?>
         <div class="box">
-            <h3>
+            <h3 class="title is-6">
                 <a href="<?= $this->Url->build(['_name' => 'videos']); ?>">
                     <span class="fas fa-fw fa-video"></span>
                     <strong><?= __('Videos'); ?></strong>

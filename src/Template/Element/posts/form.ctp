@@ -1,9 +1,9 @@
 <?php
 echo $this->Form->create($post, ['id' => 'postForm']);
-    echo $this->Form->control('title', [
+    echo $this->Form->control('name', [
         'type' => 'text',
-        'label' => __('Title'),
-        'placeholder' => __('Give your post a title'),
+        'label' => __('Name'),
+        'placeholder' => __('Give your post a name.'),
         'required' => true,
         'maxlength' => 255,
     ]);

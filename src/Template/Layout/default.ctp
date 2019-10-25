@@ -128,7 +128,9 @@
           </div>
         </section>
       <?php endif;?>
-      <?=$this->fetch('content')?>
+      <div class="content">
+        <?=$this->fetch('content')?>
+      </div>
     </div>
   </main>
   <?= $this->element('Layout/footer'); ?>

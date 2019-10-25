@@ -336,7 +336,7 @@ class ImportTwitterDataCommand extends Command
             'created' => $created,
             'modified' => $created,
             'import_source' => 'twitter',
-            'title' => ImportUtils::fixText($title),
+            'name' => ImportUtils::fixText($title),
             'content' => ImportUtils::fixText($content),
             'user_id' => $this->user->id,
             'source' => $source,

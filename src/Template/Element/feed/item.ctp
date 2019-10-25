@@ -1,11 +1,11 @@
 <div class="box">
     <div class="feed-post-item">
         <div class="feed-post-item-header">
-            <figure class="image is-48x48">
+            <figure class="image is-48x48 is-rounded friend-icon">
                 <?= $this->Html->link(
                     $this->Html->image(
                         $post->friend->icon,
-                        ['class' => 'is-rounded friend-icon']
+                        ['class' => 'is-rounded']
                     ),
                     $post->friend->url,
                     [

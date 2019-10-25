@@ -129,12 +129,7 @@ class MediasController extends AppController
             ])
             ->contain([
                 'Posts',
-                'Albums',
-                'Comments' => [
-                    'sort' => [
-                        'Comments.created' => 'DESC'
-                    ]
-                ]
+                'Albums'
             ])
             ->first();
 

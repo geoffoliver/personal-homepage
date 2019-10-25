@@ -244,7 +244,7 @@ class PostsController extends AppController
 
     private function postsToRssFeedItems($posts)
     {
-
+        die('Not implemented');
     }
 
     /**
@@ -317,7 +317,7 @@ class PostsController extends AppController
             $postItem = [
                 'id' => $post->id,
                 'url' => $post->url_alias,
-                'title' => $post->title,
+                'title' => $post->name,
                 'content_html' => $post->content,
                 'content_text' => $contentText,
                 'summary' => substr($contentText, 0, 512),
@@ -342,7 +342,7 @@ class PostsController extends AppController
                     $postItem['attachments'][]= [
                         'url' => 'att-url',
                         'mime_type' => $media->mime,
-                        'title' => $media->title,
+                        'title' => $media->name,
                         'size_in_bytes' => $media->size
                     ];
                 }
@@ -358,27 +358,5 @@ class PostsController extends AppController
         }
 
         return $jsonFeedPosts;
-    }
-
-    private function getLexer($quillDelta)
-    {
-        $lexer = new Lexer($quillDelta);
-        $lexer->escapeInput = true;
-
-        // setup listeners
-        $lexer->registerListener(new CodeBlock);
-        // $lexer->registerListener(new CustomImage);
-
-        // fix image wrapper
-        $image = new Image();
-        $image->wrapper = '<img src="{src}" />';
-        $lexer->registerListener($image);
-
-        // fix video wrapper
-        $video = new Video();
-        $video->wrapper = '<figure class="image is-16by9"><iframe src="{url}" class="has-ratio" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></figure>';
-        $lexer->registerListener($video);
-
-        return $lexer;
     }
 }

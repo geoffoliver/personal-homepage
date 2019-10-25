@@ -6,6 +6,7 @@
   max-width: 100%;
   height: auto;
 }
+
 .feed-post-item-header {
   display: flex;
   flex-direction: row;
@@ -14,6 +15,7 @@
   margin-bottom: 10px;
   align-items: center;
 }
+
 .feed-post-item-friend-name-container {
   padding-left: 15px;
 }
@@ -27,6 +29,6 @@
   font-weight: bold;
 }
 
-.friend-icon {
-  position: relative;
+.feed-post-item-header .friend-icon {
+  margin: 0 !important;
 }

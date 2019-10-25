@@ -488,7 +488,7 @@ class ImportFacebookDataCommand extends Command
                     'user_id' => $this->user->id,
                     'created' => $created,
                     'modified' => $modified,
-                    'title' => ImportUtils::fixText($title),
+                    'name' => ImportUtils::fixText($title),
                     'content' => ImportUtils::fixText(implode("\n", $content)),
                     'source' => $source,
                     'import_source' => 'facebook',

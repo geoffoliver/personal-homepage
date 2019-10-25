@@ -25,7 +25,7 @@ class CreatePosts extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
-        $table->addColumn('title', 'string', [
+        $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,

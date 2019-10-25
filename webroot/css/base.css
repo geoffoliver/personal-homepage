@@ -170,93 +170,85 @@ pre .hljs {
 /**
  * Comments
  */
+ #comments {
+  position: relative;
+  height: 100%;
+  padding-top: 20px;
+}
+
 .comments-list {
-  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  top: 20px;
+  right: 0;
+  bottom: 0;
 }
 
-.comments-list .no-comments {
-  margin-top: 0.75rem;
-}
-
-.comments-list h3 {
-  /* border-bottom: 2px solid #ddd; */
-  padding-bottom: 10px;
-}
-
-.comments-list .content {
-  padding: 0 1px;
+.comments-container {
+  flex-grow: 1;
+  border: 1px solid #ddd;
+  overflow: auto;
 }
 
 .comment {
   padding: 15px 20px 10px;
   background: rgba(255, 255, 255, 0.4);
-  border: 1px solid #ddd;
   position: relative;
-}
-
-.comment::before {
-  position: absolute;
-  display: block;
-  content: '';
-  left: -21px;
-  top: 20px;
-  border-right: 20px solid #ddd;
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-}
-
-.comment::after {
-  position: absolute;
-  display: block;
-  content: '';
-  left: -20px;
-  top: 20px;
-  border-right: 20px solid #F9F9F9;
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
+  font-size: 0.8rem;
 }
 
 .comment + .comment {
-  margin-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.comment:last-child {
+  border-bottom: 0;
 }
 
 .comment-info {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+}
+
+.comment-info time {
+  color: #666;
+  font-size: 0.7rem;
 }
 
 .commenter-name {
   font-weight: bold;
-  padding-right: 10px;
 }
 
 .comment-content {
-  padding-top: 20px;
+  padding-top: 10px;
   padding-bottom: 10px;
 }
 
-.comment .level {
-  border-top: 1px solid #eee;
-  padding-top: 10px;
-  margin-top: 10px;
+.comment-form {
+  padding: 15px 20px;
+  border: 1px solid #ddd;
+  background: #fff;
 }
 
-.comment-form {
-  padding: 15px 20px 20px;
-  border: 1px solid #ddd;
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+.comments-list + .comment-form {
+  border-top: 0;
+}
+
+.comment-form label,
+.comment-form input,
+.comment-form textarea,
+.comment-form button {
+  font-size: 0.8rem;
 }
 
 .comment-form h4 {
-  font-weight: bold;
+  margin-bottom: 0;
 }
 
-.comment-form p {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
+.comment-form form {
+  margin-top: .8em;
 }
 
 /**

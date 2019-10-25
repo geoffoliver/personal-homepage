@@ -30,29 +30,43 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
             ]);
         ?>
     </div>
-    <div class="field">
-        <label class="label">
-            <?= __('Preview'); ?>
-        </label>
-        <div class="thumbnails">
-            <figure class="preview">
-                <?= $this->Html->image(
-                    "/media/{$media->thumbnail}"
-                ); ?>
-                <figcaption><?= __('Fullsize Thumbnail'); ?></figcaption>
-            </figure>
-            <figure class="preview">
-                <?= $this->Html->image(
-                    "/media/{$media->square_thumbnail}"
-                ); ?>
-                <figcaption><?= __('Square Thumbnail'); ?></figcaption>
-            </figure>
-        </div>
+<?php
+    echo $this->Form->button(
+        __('Save Media'),
+        [
+            'type' => 'submit',
+            'class' => 'button is-link'
+        ]
+    );
+
+echo $this->Form->end();
+?>
+    <hr />
+    <h2 class="title is-5"><?= __('Thumbnails'); ?></h2>
+    <div class="thumbnails">
+        <figure class="preview">
+            <?= $this->Html->image(
+                "/media/{$media->thumbnail}"
+            ); ?>
+            <figcaption><?= __('Fullsize'); ?></figcaption>
+        </figure>
+        <figure class="preview">
+            <?= $this->Html->image(
+                "/media/{$media->square_thumbnail}"
+            ); ?>
+            <figcaption><?= __('Square'); ?></figcaption>
+        </figure>
     </div>
     <hr />
     <h2 class="title is-5"><?= __('Additional Information'); ?></h2>
     <div class="columns">
         <div class="column">
+            <div class="field">
+                <label class="label"><?= __('Uploaded'); ?></label>
+                <div>
+                    <?= $media->created->format('F j, Y g:i A'); ?>
+                </div>
+            </div>
             <div class="field">
                 <label class="label"><?= __('MIME Type'); ?></label>
                 <div>
@@ -65,6 +79,8 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
                     <?= $this->Number->toReadableSize($media->size); ?>
                 </div>
             </div>
+        </div>
+        <div class="column">
             <div class="field">
                 <label class="label"><?= __('Original Filename'); ?></label>
                 <div>
@@ -78,8 +94,6 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
                     ); ?>
                 </div>
             </div>
-        </div>
-        <div class="column">
             <?php if ($media->album): ?>
                 <div class="field">
                     <label class="label"><?= __('Album'); ?></label>
@@ -87,8 +101,7 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
                         <?= $this->Html->link(
                             $media->album->name . '&nbsp;<span class="fas fa-external-link-alt"><span>',
                             [
-                                'controller' => 'Albums',
-                                'action' => 'edit',
+                                '_name' => 'viewAlbum',
                                 $media->album->id
                             ],
                             [
@@ -104,10 +117,9 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
                     <label class="label"><?= __('Post'); ?></label>
                     <div>
                         <?= $this->Html->link(
-                            $media->post->title . '&nbsp;<span class="fas fa-external-link-alt"><span>',
+                            $media->post->name . '&nbsp;<span class="fas fa-external-link-alt"><span>',
                             [
-                                'controller' => 'Posts',
-                                'action' => 'edit',
+                                '_name' => 'viewPost',
                                 $media->post->id
                             ],
                             [
@@ -120,14 +132,3 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
             <?php endif; ?>
         </div>
     </div>
-<?php
-    echo $this->Form->button(
-        __('Save Media'),
-        [
-            'type' => 'submit',
-            'class' => 'button is-link'
-        ]
-    );
-
-echo $this->Form->end();
-?>
