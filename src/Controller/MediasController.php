@@ -6,29 +6,21 @@ use App\Controller\AppController;
 
 class MediasController extends AppController
 {
-    public $paginate = [
-        'Posts' => [
-            'limit' => 10000,
-            'conditions' => [
-                'public' => true,
-            ],
-            'contain' => [
-                'Medias',
-            ],
-        ],
-    ];
-
     private $types = [];
 
     public function initialize()
     {
         parent::initialize();
+
+        // let everybody access a few methods
         $this->Authentication->allowUnauthenticated([
             'index',
             'view',
             'heroBackground',
             'profilePhoto',
         ]);
+
+        // these are the types in the `index` function we're capable of displaying
         $this->types = [
             'photos' => [
                 'where' => 'image/%',
@@ -41,14 +33,26 @@ class MediasController extends AppController
         ];
     }
 
+    /**
+     * Displays a list of media items. Pretty simple.
+     *
+     * @param $type string The type of media you want to view. Must be one of the
+     * options from $this->types.
+     */
     public function index($type = false)
     {
+        // assume this will fail
         $medias = [];
+
+        // give the page a default title
         $title = __('Media');
 
+        // make sure we're only handling something we know how to deal with
         if (array_key_exists($type, $this->types)) {
+            // set a better title
             $title = $this->types[$type]['title'];
 
+            // lookup some media
             $medias = $this->Medias->find()
                 ->where([
                     'Medias.mime LIKE' => $this->types[$type]['where']
@@ -56,8 +60,16 @@ class MediasController extends AppController
                 ->order([
                     'Medias.created' => 'DESC'
                 ]);
+
+            // only logged in users can see private media
+            if (!$this->Auth->identify()) {
+                $medias = $medias->where([
+                    'Medias.public' => true
+                ]);
+            }
         }
 
+        // all done!
         $this->set([
             'medias' => $medias->all(),
             'type' => $type,
@@ -65,63 +77,87 @@ class MediasController extends AppController
         ]);
     }
 
-    public function albums($type = 'photos')
-    {
-    }
-
+    /**
+     * Display an individual media item.
+     *
+     * @param $id uuid The ID of the media item you want to display
+     */
     public function view($id)
     {
+        // try to find a media entry based on the ID
         $media = $this->Medias->find()
             ->where([
                 'Medias.id' => $id
             ])
             ->contain([
-                'Albums',
                 'Users',
+                'Albums',
+                'Posts',
                 'Comments' => [
                     'sort' => [
                         'Comments.created' => 'DESC'
                     ]
                 ]
-            ])
-            ->first();
+            ]);
 
+        // if we're not logged in, we can only see public media
+        if (!$this->Auth->identify()) {
+            $media = $media->where([
+                'Medias.public' => true
+            ]);
+        }
+
+        $media = $media->first();
+
+        // can't find the media? oh well, bye!
         if (!$media) {
             $this->Flash->error(__('Invalid media item.'));
             return $this->redirect('/');
         }
 
+        // still here? show the media item
         $this->set([
             'media' => $media
         ]);
     }
 
+    /**
+     * Upload a media item
+     */
     public function upload()
     {
+        // only allow posts to upload files
         $this->request->allowMethod(['post']);
 
+        // always so pessimistic, this one
         $success = false;
         $media = null;
 
+        // the user who is uploading the file
         $user = $this->request->getAttribute('identity');
 
+        // the file being uploaded
         $file = $this->request->getData('file');
 
+        // well, what the shit?
         if (!$file) {
             throw new \Exception(__('Missing upload'));
         }
 
+        // make some data that the media table can handle and upload the file
         $data = [
             'name' => $this->request->getData('name'),
             'description' => $this->request->getData('description'),
             'user_id' => $user->id,
         ];
 
+        // try to upload the file, anyway
         if ($created = $this->Medias->uploadAndCreate($file, false, $data)) {
             $media = $created;
             $success = true;
         }
 
+        // all done, bye!
         $this->set([
             'success' => $success,
             'data' => [
@@ -134,43 +170,90 @@ class MediasController extends AppController
         ]);
     }
 
+    /**
+     * Responds with the hero background image for the public homepage and maybe
+     * other stuff, who knows.
+     */
     public function heroBackground()
     {
+        // we need settings because that's where this data is stored
         $this->loadModel('Settings');
-        $hero = $this->Settings->find()->where(['Settings.name' => 'site.hero-background'])->first();
+
+        // the default hero background
         $file = WWW_ROOT . 'img' . DS . 'default-hero-background.jpg';
 
-        if ($hero) {
-            $media = $this->Medias->find()->where(['Medias.id' => $hero->value])->first();
+        // try to find the hero background setting media
+        if ($hero = $this->getSettingMedia('site.hero-background')) {
+            $file = $hero;
+        }
 
-            if ($media) {
-                $mFile = WWW_ROOT . 'media' . DS . $media->value;
-                if (file_exists($mFile) && is_readable($mFile)) {
-                    $file = $mFile;
-                }
-            }
+        // we're all done here, send the file out
+        return $this->response->withFile($file);
+    }
+
+    /**
+     * Responds with the profile photo for the public homepage and other stuff.
+     */
+    public function profilePhoto()
+    {
+        // the default profile photo
+        $file = WWW_ROOT . 'img' . DS . 'default-profile-photo.jpg';
+
+        // try to find the profile photo background media
+        if ($photo = $this->getSettingMedia('site.profile-photo')) {
+            $file = $photo;
         }
 
         return $this->response->withFile($file);
     }
 
-    public function profilePhoto()
+    /**
+     * Finds a media item from a settings entry.
+     *
+     * @param $settingName string The name of the setting you want to find a media
+     * item for
+     *
+     * @return $file mixed On failure, null. On success, a (full path) filename
+     */
+    private function getSettingMedia($settingName = '')
     {
+        // get the settings, because that's where this information lives
         $this->loadModel('Settings');
-        $profile = $this->Settings->find()->where(['Settings.name' => 'site.profile-photo'])->first();
-        $file = WWW_ROOT . 'img' . DS . 'default-profile-photo.jpg';
 
-        if ($profile) {
-            $media = $this->Medias->find()->where(['Medias.id' => $profile->value])->first();
+        // try to find the profile photo setting
+        $setting = $this->Settings->find()
+            ->where([
+                'Settings.name' => $settingName
+            ])
+            ->first();
 
-            if ($media) {
-                $mFile = WWW_ROOT . 'media' . DS . $media->value;
-                if (file_exists($mFile) && is_readable($mFile)) {
-                    $file = $mFile;
-                }
-            }
+        // no setting? can't help you. later!
+        if (!$setting) {
+            return null;
         }
 
-        return $this->response->withFile($file);
+        // try to find the media for the setting
+        $media = $this->Medias->find()
+            ->where([
+                'Medias.id' => $setting->value
+            ])
+            ->first();
+
+        // no media? no dice. bail out.
+        if (!$media) {
+            return null;
+        }
+
+        // this is where the file actually lives
+        $mFile = WWW_ROOT . 'media' . DS . $media->value;
+
+        // check that the file exists and we can access it
+        if (file_exists($mFile) && is_readable($mFile)) {
+            // we're all good here
+            return $mFile;
+        }
+
+        // if we've made it this far, that sucks.
+        return false;
     }
 }

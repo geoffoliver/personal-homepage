@@ -8,25 +8,10 @@ $Parsedown = new ParsedownExtra();
         <div class="media-title">
             <div class="columns">
                 <div class="column is-10 is-offset-1">
-                    <?php if ($media->name): ?>
-                        <h1 class="is-size-2"><?= $media->name; ?></h1>
-                    <?php endif; ?>
-                    <?php if ($media->album): ?>
-                        <h2 class="is-size-5">
-                            <?= $this->Html->link(
-                                __('View Album'),
-                                [
-                                    '_name' => 'viewAlbum',
-                                    $media->album->id
-                                ]
-                            ); ?>
-                        </h2>
-                    <?php endif; ?>
-                    <div class="level is-mobile">
-                        <h3 class="is-size-6 has-text-grey level-left">
-                            <?= __('Posted'); ?>&nbsp;<time><?= $media->created->format('F j, Y \a\t g:i a'); ?></time>
-                        </h3>
-                    </div>
+                    <h1 class="is-size-2"><?= $media->name ? $media->name : __('Untitled Upload'); ?></h1>
+                    <h2 class="is-size-6 has-text-grey level-left">
+                        <?= __('Posted'); ?>&nbsp;<time><?= $media->created->format('F j, Y \a\t g:i a'); ?></time>
+                    </h2>
                 </div>
             </div>
         </div>
@@ -43,6 +28,18 @@ $Parsedown = new ParsedownExtra();
                         <?php endif; ?>
                         <?php if ($media->post && $media->post->content): ?>
                             <hr />
+                            <h4 class="is-size-5">
+                                <?= $this->Html->link(
+                                    __('Original Post &raquo;'),
+                                    [
+                                        '_name' => 'viewPost',
+                                        $media->post->id
+                                    ],
+                                    [
+                                        'escape' => false
+                                    ]
+                                ); ?>
+                            </h4>
                             <p>
                                 <?= $Parsedown->text($media->post->content); ?>
                             </p>

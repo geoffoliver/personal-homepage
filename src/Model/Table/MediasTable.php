@@ -47,15 +47,12 @@ class MediasTable extends Table
 
         $this->belongsTo('Posts', [
             'foreignKey' => 'post_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Albums', [
             'foreignKey' => 'album_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
         ]);
         $this->hasMany('Comments', [
             'foreignKey' => 'model_id'

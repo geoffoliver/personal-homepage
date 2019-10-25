@@ -76,6 +76,37 @@ if ($comments) {
     );
 }
 
+// this only applies to media items
+if ($isMedia) {
+    if ($item->album) {
+        $links[]= $this->Html->link(
+            '<span class="fas fa-book-open" aria-hidden="true"></span>&nbsp;' . __('View Album'),
+            [
+                '_name' => 'viewAlbum',
+                $item->album->id
+            ],
+            [
+                'escape' => false,
+                'class' => 'level-item'
+            ]
+        );
+    }
+
+    if ($item->post) {
+        $links[]= $this->Html->link(
+            '<span class="fas fa-file-alt" aria-hidden="true"></span>&nbsp;' . __('View Post'),
+            [
+                '_name' => 'viewPost',
+                $item->post->id
+            ],
+            [
+                'escape' => false,
+                'class' => 'level-item'
+            ]
+        );
+    }
+}
+
 ?>
 <nav class="level is-mobile is-size-7">
     <div class="level-left">
