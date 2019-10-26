@@ -204,9 +204,9 @@ class ImportFacebookDataCommand extends Command
             // make the album entity
             $created = date('Y-m-d H:i:s', isset($album->last_modified_timestamp) ? $album->last_modified_timestamp : time());
             $entity = [
-                'name' => ImportUtils::fixText($album->name),
+                'name' => $this->fixText($album->name),
                 'user_id' => $this->user->id,
-                'description' => ImportUtils::fixText($album->description),
+                'description' => $this->fixText($album->description),
                 'created' => $created,
                 'modified' => $created,
                 'type' => 'photos'
@@ -404,7 +404,7 @@ class ImportFacebookDataCommand extends Command
                     // and put the full title into the content
                     if (mb_strlen($post->title) > 255) {
                         $title = mb_substr($title, 0, 253) . '...';
-                        $content[]= ImportUtils::fixText($post->title);
+                        $content[]= $this->fixText($post->title);
                     }
                 }
 
@@ -421,7 +421,7 @@ class ImportFacebookDataCommand extends Command
                             switch ($key) {
                                 case 'post':
                                     // some post content
-                                    $content[]= ImportUtils::fixText($value);
+                                    $content[]= $this->fixText($value);
                                     break;
                                 case 'update_timestamp':
                                     // whent he post was modified
@@ -465,7 +465,7 @@ class ImportFacebookDataCommand extends Command
                                     case 'text':
                                         // just some random text that i guess should
                                         // go into the post content? :shrug:
-                                        $content[]= ImportUtils::fixText($value);
+                                        $content[]= $this->fixText($value);
                                         break;
                                     case 'place':
                                         // a location
@@ -490,7 +490,7 @@ class ImportFacebookDataCommand extends Command
                     'user_id' => $this->user->id,
                     'created' => $created,
                     'modified' => $modified,
-                    'name' => ImportUtils::fixText($title),
+                    'name' => $this->fixText($title),
                     'content' => implode("\n", $content),
                     'source' => $source,
                     'import_source' => 'facebook',
@@ -502,6 +502,9 @@ class ImportFacebookDataCommand extends Command
                     $io->error(__('Post has no content or media, skipping'));
                     continue;
                 }
+
+                // replace octothorpes with HTML version
+                $entity['content'] = str_replace('#', '&#35;', $entity['content']);
 
                 $postEntity = $this->Posts->newEntity($entity);
 
@@ -540,8 +543,8 @@ class ImportFacebookDataCommand extends Command
             // this is the comment. easy peasy!
             $commentsArr[]= [
                 'posted_by' => 'facebook-data-import@internal',
-                'display_name' => ImportUtils::fixText($author),
-                'comment' => ImportUtils::fixText($comment->comment),
+                'display_name' => $this->fixText($author),
+                'comment' => $this->fixText($comment->comment),
                 'approved' => true,
                 'public' => true,
                 'import_source' => 'facebook',
@@ -590,12 +593,12 @@ class ImportFacebookDataCommand extends Command
 
         // if there's a title, use it
         if (isset($media->title) && $media->title) {
-            $addlData['name'] = ImportUtils::fixText($media->title);
+            $addlData['name'] = $this->fixText($media->title);
         }
 
         // if there's a description, use it
         if (isset($media->description) && $media->description) {
-            $addlData['description'] = ImportUtils::fixText($media->description);
+            $addlData['description'] = $this->fixText($media->description);
         }
 
         // are there comments on the media?
@@ -615,6 +618,10 @@ class ImportFacebookDataCommand extends Command
         }
 
         return null;
+    }
+
+    private function fixText($str) {
+        return utf8_decode(ImportUtils::fixText($str));
     }
 
 }

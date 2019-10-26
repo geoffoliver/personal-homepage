@@ -229,6 +229,9 @@ class ImportInstagramDataCommand extends Command
             'medias' => ['_ids' => [$media->id]],
         ];
 
+        // replace octothorpes with HTML version
+        $entity['content'] = str_replace('#', '&#35;', $entity['content']);
+
         $post = $this->Posts->newEntity($entity);
 
         if ($errors = $post->getErrors()) {

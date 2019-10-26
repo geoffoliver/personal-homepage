@@ -359,6 +359,9 @@ class ImportTwitterDataCommand extends Command
             'medias' => $mediaIds,
         ];
 
+        // replace octothorpes with HTML version
+        $entity['content'] = str_replace('#', '&#35;', $entity['content']);
+
         $post = $this->Posts->newEntity($entity);
 
         if ($errors = $post->getErrors()) {
@@ -521,8 +524,14 @@ class ImportTwitterDataCommand extends Command
         // do the "regular" UTF fixes
         $str = ImportUtils::fixText($str);
 
+        // escape quotes
+        $str = str_replace('"', '\"', $str);
+
+        // replace actual new lines with \n's
+        $str = str_replace("\n", '\n', $str);
+
         // this is how we have to handle some UTF codes from Twitter
-        $str = json_decode($str);
+        $str = json_decode('"' . $str . '"');
 
         return $str;
     }
