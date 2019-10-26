@@ -5,15 +5,16 @@ namespace App\Lib;
 class ImportUtils {
 
     public static function fixText($str) {
-        // replace \uXXXX characters with actual UTF chatacters
-        if (strpos($str, '\u') !== false) {
-            $str = utf8_decode(preg_replace_callback("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/", function($matches) {
-                return chr(hexdec($matches[0])) . chr(hexdec($matches[1]));
-            }, $str));
-        }
+        // replace octothorpes with UTF versions
+        $str = str_replace('#', '\u0023', $str);
 
-        // replace octothorpes with html entity version
-        $str = str_replace('#', '&#35;', $str);
+        // replace quotes with UTF quotes
+        $str = '"' . str_replace('"', '\u0022', $str) .'"';
+
+        // replace \uXXXX characters with actual UTF chatacters
+        $str = utf8_decode(preg_replace_callback("/\\\\u00([0-9a-f]{2})/i", function($matches) {
+            return chr(hexdec($matches[0]));
+        }, $str));
 
         // return the cleaned up string
         return $str;

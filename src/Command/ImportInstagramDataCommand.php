@@ -16,7 +16,8 @@ class ImportInstagramDataCommand extends Command
 {
     private $user;
     private $path;
-    private $album;
+    private $photosAlbum;
+    private $videosAlbum;
 
     private $stats = [
         'media' => [
@@ -107,27 +108,42 @@ class ImportInstagramDataCommand extends Command
         // setup some directories
         $this->path = $path;
 
-        // find/create an album for instagram media
-        $album = $this->Albums->find()
-            ->where([
-                'Albums.name' => __('Instagram Media')
-            ])
-            ->first();
+        $albums = [
+            [
+                'property' => 'photosAlbum',
+                'name' => __('Instagram Photos'),
+                'type' => 'photos'
+            ],
+            [
+                'property' => 'videosAlbum',
+                'name' => __('Instagram Videos'),
+                'type' => 'videos'
+            ],
+        ];
 
-        if ($album) {
-            $this->album = $album;
-        } else {
-            $album = $this->Albums->newEntity([
-                'name' => __('Instagram Media'),
-                'user_id' => $this->user->id,
-            ]);
+        foreach ($albums as $album) {
+            // find/create an album for twitter media
+            $alb = $this->Albums->find()
+                ->where([
+                    'Albums.name' => $album['name'],
+                    'Albums.type' => $album['type']
+                ])
+                ->first();
 
-            if (!$this->Albums->save($album)) {
-                $io->error(__('Unable to create album for instagram media'));
-                return;
+            if (!$alb) {
+                $alb = $this->Albums->newEntity([
+                    'name' => $album['name'],
+                    'type' => $album['type'],
+                    'user_id' => $this->user->id,
+                ]);
+
+                if (!$this->Albums->save($alb)) {
+                    $io->error(__('Unable to create album for instagram ' . $album['type']));
+                    return;
+                }
             }
 
-            $this->album = $album;
+            $this->{$album['property']} = $alb;
         }
 
         // give a little output
@@ -197,7 +213,7 @@ class ImportInstagramDataCommand extends Command
 
         $created = date('Y-m-d H:i:s', strtotime($igPost->taken_at));
 
-        $media = $this->importMedia($io, $title, $igPost);
+        $media = $this->importMedia($io, $title, $type, $igPost);
 
         if (!$media) {
             return;
@@ -224,15 +240,17 @@ class ImportInstagramDataCommand extends Command
             $this->stats['posts']['success']++;
             $io->success(__('Instagram post saved!'));
 
-            if ($this->Albums->Medias->link($this->album, [$media])) {
-                $io->success(__('Media linked to album'));
+            if ($type === 'photos' && $this->Albums->Medias->link($this->photosAlbum, [$media])) {
+                $io->success(__('Photo linked to album'));
+            } else if ($type === 'videos' && $this->Albums->Medias->link($this->videosAlbum, [$media])) {
+                $io->success(__('Video linked to album'));
             }
         } else {
             $this->stats['posts']['fail']++;
         }
     }
 
-    private function importMedia($io, $title, $igPost)
+    private function importMedia($io, $title, $type, $igPost)
     {
         // tell the user what's going on
         $io->out(__('Importing media...'));
@@ -272,7 +290,6 @@ class ImportInstagramDataCommand extends Command
             'modified' => $created,
             'user_id' => $this->user->id,
             'import_source' => 'instagram',
-            'album_id' => $this->album->id,
             'name' => $title
         ];
 

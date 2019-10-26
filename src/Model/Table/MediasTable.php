@@ -186,7 +186,7 @@ class MediasTable extends Table
                 $err = [];
                 foreach ($errors as $field => $ers) {
                     foreach ($ers as $e) {
-                        $err[]= "{$field}: {$e}";
+                        $err[]= "{$field}: " . print_r($e, true);
                     }
                 }
 

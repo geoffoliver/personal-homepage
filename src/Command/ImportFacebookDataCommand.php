@@ -209,6 +209,7 @@ class ImportFacebookDataCommand extends Command
                 'description' => ImportUtils::fixText($album->description),
                 'created' => $created,
                 'modified' => $created,
+                'type' => 'photos'
             ];
 
             // are there comments on the album?
@@ -317,6 +318,7 @@ class ImportFacebookDataCommand extends Command
         // try to create the video album
         $videosAlbum = $this->Albums->newEntity([
             'name' => __('Facebook Videos'),
+            'type' => 'videos',
             'user_id' => $this->user->id,
         ]);
 
@@ -402,7 +404,7 @@ class ImportFacebookDataCommand extends Command
                     // and put the full title into the content
                     if (mb_strlen($post->title) > 255) {
                         $title = mb_substr($title, 0, 253) . '...';
-                        $content[]= $post->title;
+                        $content[]= ImportUtils::fixText($post->title);
                     }
                 }
 
@@ -419,7 +421,7 @@ class ImportFacebookDataCommand extends Command
                             switch ($key) {
                                 case 'post':
                                     // some post content
-                                    $content[]= $value;
+                                    $content[]= ImportUtils::fixText($value);
                                     break;
                                 case 'update_timestamp':
                                     // whent he post was modified
@@ -463,7 +465,7 @@ class ImportFacebookDataCommand extends Command
                                     case 'text':
                                         // just some random text that i guess should
                                         // go into the post content? :shrug:
-                                        $content[]= $value;
+                                        $content[]= ImportUtils::fixText($value);
                                         break;
                                     case 'place':
                                         // a location
@@ -489,7 +491,7 @@ class ImportFacebookDataCommand extends Command
                     'created' => $created,
                     'modified' => $modified,
                     'name' => ImportUtils::fixText($title),
-                    'content' => ImportUtils::fixText(implode("\n", $content)),
+                    'content' => implode("\n", $content),
                     'source' => $source,
                     'import_source' => 'facebook',
                     'medias' => $medias ? ['_ids' => $medias] : null,

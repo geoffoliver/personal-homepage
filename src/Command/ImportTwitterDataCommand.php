@@ -17,7 +17,8 @@ class ImportTwitterDataCommand extends Command
     private $user;
     private $path;
     private $mediaZip;
-    private $album;
+    private $photosAlbum;
+    private $videosAlbum;
 
     private $stats = [
         'media' => [
@@ -169,27 +170,42 @@ class ImportTwitterDataCommand extends Command
             return;
         };
 
-        // find/create an album for twitter media
-        $album = $this->Albums->find()
-            ->where([
-                'Albums.name' => __('Twitter Media')
-            ])
-            ->first();
+        $albums = [
+            [
+                'property' => 'photosAlbum',
+                'name' => __('Twitter Photos'),
+                'type' => 'photos'
+            ],
+            [
+                'property' => 'videosAlbum',
+                'name' => __('Twitter Videos'),
+                'type' => 'videos'
+            ],
+        ];
 
-        if ($album) {
-            $this->album = $album;
-        } else {
-            $album = $this->Albums->newEntity([
-                'name' => __('Twitter Media'),
-                'user_id' => $this->user->id,
-            ]);
+        foreach ($albums as $album) {
+            // find/create an album for twitter media
+            $alb = $this->Albums->find()
+                ->where([
+                    'Albums.name' => $album['name'],
+                    'Albums.type' => $album['type']
+                ])
+                ->first();
 
-            if (!$this->Albums->save($album)) {
-                $io->error(__('Unable to create album for twitter media'));
-                return;
+            if (!$alb) {
+                $alb = $this->Albums->newEntity([
+                    'name' => $album['name'],
+                    'type' => $album['type'],
+                    'user_id' => $this->user->id,
+                ]);
+
+                if (!$this->Albums->save($alb)) {
+                    $io->error(__('Unable to create album for twitter ' . $album['type']));
+                    return;
+                }
             }
 
-            $this->album = $album;
+            $this->{$album['property']} = $alb;
         }
 
         // strip some bits away so we can decode the string into
@@ -336,8 +352,8 @@ class ImportTwitterDataCommand extends Command
             'created' => $created,
             'modified' => $created,
             'import_source' => 'twitter',
-            'name' => ImportUtils::fixText($title),
-            'content' => ImportUtils::fixText($content),
+            'name' => $this->fixText($title),
+            'content' => $this->fixText($content),
             'user_id' => $this->user->id,
             'source' => $source,
             'medias' => $mediaIds,
@@ -355,11 +371,28 @@ class ImportTwitterDataCommand extends Command
             $io->success(__('Tweet saved!'));
 
             if ($medias) {
-                if ($this->Albums->Medias->link($this->album, $medias)) {
-                    $io->success(__('Media linked to album'));
+                $photos = [];
+                $videos = [];
+                foreach ($medias as $media) {
+                    if (strpos($media->mime, 'image/') === 0) {
+                        $photos[]= $media;
+                    } elseif (strpos($media->mime, 'video/') === 0) {
+                        $videos[]= $media;
+                    }
+                }
+
+                if ($photos) {
+                    if ($this->Albums->Medias->link($this->photosAlbum, $photos)) {
+                        $io->success(__('Photos linked to album'));
+                    }
+                }
+
+                if ($videos) {
+                    if ($this->Albums->Medias->link($this->videosAlbum, $videos)) {
+                        $io->success(__('Videos linked to album'));
+                    }
                 }
             }
-
         } else {
             dump($post);
             $this->stats['posts']['fail']++;
@@ -481,5 +514,16 @@ class ImportTwitterDataCommand extends Command
         }
 
         return null;
+    }
+
+    private function fixText($str)
+    {
+        // do the "regular" UTF fixes
+        $str = ImportUtils::fixText($str);
+
+        // this is how we have to handle some UTF codes from Twitter
+        $str = json_decode($str);
+
+        return $str;
     }
 }
