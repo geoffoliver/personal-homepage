@@ -223,8 +223,8 @@ class ImportInstagramDataCommand extends Command
             'created' => $created,
             'modified' => $created,
             'import_source' => 'instagram',
-            'name' => ImportUtils::fixText($title),
-            'content' => ImportUtils::fixText($content),
+            'name' => $this->fixText($title),
+            'content' => $this->fixText($content),
             'user_id' => $this->user->id,
             'medias' => ['_ids' => [$media->id]],
         ];
@@ -314,4 +314,9 @@ class ImportInstagramDataCommand extends Command
 
         return null;
     }
+
+    private function fixText($str) {
+        return utf8_decode($this->fixText($str));
+    }
+
 }
