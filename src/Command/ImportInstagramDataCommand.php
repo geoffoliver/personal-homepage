@@ -316,7 +316,7 @@ class ImportInstagramDataCommand extends Command
     }
 
     private function fixText($str) {
-        return utf8_decode($this->fixText($str));
+        return utf8_decode(ImportUtils::fixText($str));
     }
 
 }
