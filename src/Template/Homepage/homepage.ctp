@@ -1,6 +1,7 @@
 <?php
 $this->assign('title', 'My Personal Homepage');
 $this->assign('css', $this->Html->css('home.css'));
+$this->append('script', $this->Html->script('util/lazyload.js'));
 
 $this->assign('hero', 'Welcome to my personal homepage');
 $this->assign('hero_subtitle', 'Thanks for visiting 😎');
@@ -29,7 +30,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
           </h3>
           <div id="homepage-friends" class="sidebar-thumbnail-grid">
             <?php foreach($friends as $friend): ?>
-              <img src="<?= $friend->icon; ?>" />
+              <img src="" data-lazy-src="<?= $friend->icon; ?>" />
             <?php endforeach; ?>
           </div>
         <?php endif; ?>
@@ -70,7 +71,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
             <div id="homepage-photos" class="sidebar-thumbnail-grid">
             <?php foreach($photos as $photo): ?>
                 <a href="<?= $this->Url->build(['controller' => 'Medias', 'action' => 'view', $photo->id]) ?>">
-                    <img src="/media/<?= $photo->square_thumbnail; ?>" />
+                    <?= $this->element('medias/square_thumbnail', ['media' => $photo]); ?>
                 </a>
             <?php endforeach; ?>
             </div>
@@ -87,7 +88,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
             <div id="homepage-videos" class="sidebar-thumbnail-grid">
             <?php foreach($videos as $video): ?>
                 <a href="<?= $this->Url->build(['controller' => 'Medias', 'action' => 'view', $video->id]) ?>">
-                    <img src="/media/<?= $video->square_thumbnail; ?>" />
+                    <?= $this->element('medias/square_thumbnail', ['media' => $video]); ?>
                 </a>
             <?php endforeach; ?>
             </div>

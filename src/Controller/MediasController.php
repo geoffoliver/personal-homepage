@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Http\Exception\NotFoundException;
 
 class MediasController extends AppController
 {
@@ -16,6 +17,7 @@ class MediasController extends AppController
         $this->Authentication->allowUnauthenticated([
             'index',
             'view',
+            'download',
             'heroBackground',
             'profilePhoto',
         ]);
@@ -119,6 +121,99 @@ class MediasController extends AppController
         $this->set([
             'media' => $media
         ]);
+    }
+
+    /**
+     * Downloads an individual media item to a client.
+     *
+     * @param $id uuid The ID of the media item you want to display
+     * @param $type string The type of media you want. Options are:
+     *                     - original
+     *                     - thumbnail
+     *                     - square_thumbnail
+     */
+    public function download($id, $type = 'original')
+    {
+        // try to find a media entry based on the ID
+        $media = $this->Medias->find()
+            ->where([
+                'Medias.id' => $id
+            ])
+            ->contain([
+                'Users',
+                'Albums',
+                'Posts',
+                'Comments' => [
+                    'sort' => [
+                        'Comments.created' => 'DESC'
+                    ]
+                ]
+            ]);
+
+        // if we're not logged in, we can only see public media
+        if (!$this->Authentication->getIdentity()) {
+            $media = $media->where([
+                'Medias.public' => true
+            ]);
+        }
+
+        $media = $media->first();
+
+        // can't find the media? oh well, bye!
+        if (!$media) {
+            throw new NotFoundException(__('Invalid media item'));
+        }
+
+        // this is where the file lives
+        $file = $this->Medias->mediaPath . DS;
+
+        switch ($type) {
+            case 'original':
+                $file .= $media->local_filename;
+                break;
+            case 'thumbnail':
+                $file .= $media->thumbnail;
+                break;
+            case 'square_thumbnail':
+                $file .= $media->square_thumbnail;
+                break;
+            default:
+                throw new NotFoundException(__('Invalid media type'));
+                break;
+        }
+
+        // make sure the file exists
+        if (!file_exists($file)) {
+            throw new NotFoundException(__('File not found'));
+        }
+
+        // make sure we can read the file
+        if (!is_readable($file)) {
+            throw new NotFoundException(__('Unable to read file'));
+        }
+
+        // let the browser cache this file
+        $this->response = $this->response
+            ->withCache(filemtime($file), '+1 year');
+
+        // generate an etag for the browser... don't hash the file for this
+        // because, right now, you can't update files, but maybe someday?
+        // so in case that happens, generate a hash of the modified timestamp
+        $response = $this->response->withEtag(md5($media->modified->timestamp));
+
+        // only send a new response if the file has changed (probably never)
+        if ($response->checkNotModified($this->request)) {
+            return $response;
+        }
+
+        // still here? ok, send a response with an etag
+        $this->response = $response;
+
+        // set the file in the response
+        $this->response->file($file);
+
+        // hand back a file response
+        return $this->response;
     }
 
     public function edit($id)

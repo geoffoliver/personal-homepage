@@ -26,23 +26,17 @@ $Parsedown = new ParsedownExtra();
                 <?php if ($post->medias): ?>
                     <div class="post-media">
                         <?php foreach ($post->medias as $media): ?>
-                            <?php if ($media->thumbnail): ?>
-                                <?= $this->Html->link(
-                                    $this->Html->image(
-                                        "/media/{$media->thumbnail}"
-                                    ),
-                                    [
-                                        'controller' => 'Medias',
-                                        'action' => 'view',
-                                        $media->id
-                                    ],
-                                    [
-                                        'escape' => false
-                                    ]
-                                ); ?>
-                            <?php else: ?>
-                            ...
-                            <?php endif;?>
+                            <?= $this->Html->link(
+                                $this->element('medias/thumbnail', ['media' => $media]),
+                                [
+                                    'controller' => 'Medias',
+                                    'action' => 'view',
+                                    $media->id
+                                ],
+                                [
+                                    'escape' => false
+                                ]
+                            ); ?>
                         <?php endforeach;?>
                     </div>
                 <?php endif;?>

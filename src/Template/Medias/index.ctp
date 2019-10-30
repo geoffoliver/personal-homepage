@@ -35,7 +35,12 @@ $this->append('script', $this->Html->script('util/lazyload.js'));
                                 $this->Html->image(
                                     null,
                                     [
-                                        'data-lazy-src' => "/media/{$media->thumbnail}",
+                                        'data-lazy-src' => $this->Url->build([
+                                            'controller' => 'Medias',
+                                            'action' => 'download',
+                                            $media->id,
+                                            'thumbnail'
+                                        ])
                                     ]
                                 ),
                                 [

@@ -1,13 +1,30 @@
+// TODO: Add functionality to display a throbber while the image is loading
+
 (function() {
   // setup some variables
   var lazyObserver;
   var lazyImages = [];
   var lazyloadThrottleTimeout;
 
-  // puts the data-lazy-src of an image into the src of itself
+  // puts the data-lazy-src of an image into the src of itself and then removes
+  // the data-lazy-src attribute
   function loadImage(image) {
-    image.src = image.dataset['lazySrc'];
-    delete image.dataset['lazySrc'];
+    // if the image is already loading, don't do jack shit
+    if (image.dataset.loading) {
+      return;
+    }
+
+    // so we don't try to load this image multiple times
+    image.dataset.loading = true;
+
+    // set the src attribute
+    image.src = image.dataset.lazySrc;
+
+    // when the image loads, remove the data-lazy-src and the data-loading attributes
+    image.onload = function() {
+      delete image.dataset.lazySrc;
+      image.dataset.loading = false;
+    };
   }
 
   // loads images all at once in the instance that the browser doesn't support
@@ -24,8 +41,7 @@
     images.forEach(function(image) {
       if (image.isIntersecting) {
         img = image.target;
-        img.src = img.dataset['lazySrc'];
-        delete img.dataset['lazySrc'];
+        loadImage(img);
         lazyObserver.unobserve(img);
       }
     });

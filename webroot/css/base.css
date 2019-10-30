@@ -285,3 +285,12 @@ pre .hljs {
 .content .pagination-list li + li {
   margin-top: 0;
 }
+
+img {
+  opacity: 1;
+  transition: 0.25s;
+}
+
+img[data-lazy-src] {
+  opacity: 0;
+}

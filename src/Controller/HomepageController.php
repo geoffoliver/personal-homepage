@@ -78,9 +78,13 @@ class HomepageController extends AppController
         $this->loadModel('Posts');
         $this->loadModel('Medias');
         $this->loadModel('Friends');
+        $authed = false;
 
         if ($this->Authentication->getIdentity()) {
+            $authed = true;
+
             unset($this->paginate['Posts']['conditions']);
+
             $this->paginate['Posts']['contain'] = [
                 'Medias',
                 'Comments'
@@ -91,15 +95,23 @@ class HomepageController extends AppController
 
         $photos = $this->Medias->find()
             ->where(['Medias.mime LIKE' => 'image/%'])
-            ->order(['Medias.created' => 'DESC'])
-            ->limit(12)
-            ->all();
+            ->order(['Medias.created' => 'DESC']);
+
+        if (!$authed) {
+            $photos = $photos->where(['Medias.public' => true]);
+        }
+
+        $photos = $photos->limit(12)->all();
 
         $videos = $this->Medias->find()
             ->where(['Medias.mime LIKE' => 'video/%'])
-            ->order(['Medias.created' => 'DESC'])
-            ->limit(12)
-            ->all();
+            ->order(['Medias.created' => 'DESC']);
+
+        if (!$authed) {
+            $videos = $videos->where(['Medias.public' => true]);
+        }
+
+        $videos = $videos->limit(12)->all();
 
         $friends = $this->Friends->find()
             ->order(['Friends.created' => 'DESC'])

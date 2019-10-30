@@ -29,6 +29,9 @@ use Cake\Utility\Text;
  */
 class MediasTable extends Table
 {
+
+    public $mediaPath = WWW_ROOT . 'media';
+
     /**
      * Initialize method
      *
@@ -127,7 +130,7 @@ class MediasTable extends Table
 
         $filename = Hash::get($file, 'name');
 
-        $uploadsRoot = WWW_ROOT . 'media';
+        $uploadsRoot = $this->mediaPath;
         $uploadFolder = date('Y') . DS . date('m') . DS . date('d');
 
         if ($extraData && isset($extraData['created']) && $extraData['created']) {
