@@ -88,10 +88,9 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     if ("IntersectionObserver" in window) {
-      console.log('Lazy loading images');
       initLazyLoadImages();
     } else {
-      console.log('Loading all images at once. Oooof. Upgrade your browser!');
+      console.info('Loading all images at once, that sucks. Upgrade your browser!');
       loadImages();
     }
   });

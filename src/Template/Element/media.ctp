@@ -3,15 +3,17 @@
         if (strpos($media->mime, 'video/') === 0) {
             echo $this->Html->div('video-container',
                 $this->Html->media(
-                    [
+                    $this->Url->build([
                         'controller' => 'Medias',
                         'action' => 'download',
                         $media->id
-                    ],
+                    ]),
                     [
                         'fullBase' => true,
                         'text' => $media->name . $media->description  ? (' - ' . $media->description) : '',
-                        'controls' => true
+                        'controls' => true,
+                        'tag' => 'video',
+                        'autoplay' => true
                     ]
                 )
             );

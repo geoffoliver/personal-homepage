@@ -5,6 +5,9 @@ namespace App\Lib;
 class ImportUtils {
 
     public static function fixText($str) {
+        // replace hashes with html entity version
+        $str = str_replace('#', '&#35;', $str);
+
         // replace quotes with UTF quotes
         $str = str_replace('"', '\u0022', $str);
 

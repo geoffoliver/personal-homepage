@@ -286,6 +286,9 @@ pre .hljs {
   margin-top: 0;
 }
 
+/**
+ * Lazyload images
+ */
 img {
   opacity: 1;
   transition: 0.25s;
@@ -294,3 +297,27 @@ img {
 img[data-lazy-src] {
   opacity: 0;
 }
+
+/**
+ * Media modal
+ */
+
+ .media-modal-container {
+   position: fixed;
+   left: 0;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   background: rgba(0, 0, 0, 0.8);
+   z-index: 20000;
+ }
+
+ .media-modal {
+   padding: 40px;
+   height: 100%;
+ }
+
+ .media-modal iframe {
+   width: 100%;
+   height: 100%;
+ }

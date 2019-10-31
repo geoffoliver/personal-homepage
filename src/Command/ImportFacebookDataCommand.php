@@ -482,7 +482,7 @@ class ImportFacebookDataCommand extends Command
                 // if there's no content but there is a source, use that link
                 // as the post content... it just looks bad to have an empty post
                 if (!$content && $source) {
-                    $content[]= $source;
+                    $content[]= $this->fixText($source);
                 }
 
                 // create the post entity
@@ -502,9 +502,6 @@ class ImportFacebookDataCommand extends Command
                     $io->error(__('Post has no content or media, skipping'));
                     continue;
                 }
-
-                // replace octothorpes with HTML version
-                $entity['content'] = str_replace('#', '&#35;', $entity['content']);
 
                 $postEntity = $this->Posts->newEntity($entity);
 

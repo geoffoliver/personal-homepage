@@ -98,6 +98,9 @@ class MediasController extends AppController
                 'Comments' => [
                     'sort' => [
                         'Comments.created' => 'DESC'
+                    ],
+                    'conditions' => [
+                        'Comments.approved' => true
                     ]
                 ]
             ]);
@@ -146,6 +149,9 @@ class MediasController extends AppController
                 'Comments' => [
                     'sort' => [
                         'Comments.created' => 'DESC'
+                    ],
+                    'conditions' => [
+                        'Comments.approved' => true
                     ]
                 ]
             ]);

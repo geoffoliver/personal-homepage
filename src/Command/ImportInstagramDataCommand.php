@@ -118,7 +118,7 @@ class ImportInstagramDataCommand extends Command
                 'property' => 'videosAlbum',
                 'name' => __('Instagram Videos'),
                 'type' => 'videos'
-            ],
+            ]
         ];
 
         foreach ($albums as $album) {
@@ -229,9 +229,6 @@ class ImportInstagramDataCommand extends Command
             'medias' => ['_ids' => [$media->id]],
         ];
 
-        // replace octothorpes with HTML version
-        $entity['content'] = str_replace('#', '&#35;', $entity['content']);
-
         $post = $this->Posts->newEntity($entity);
 
         if ($errors = $post->getErrors()) {
@@ -243,9 +240,21 @@ class ImportInstagramDataCommand extends Command
             $this->stats['posts']['success']++;
             $io->success(__('Instagram post saved!'));
 
-            if ($type === 'photos' && $this->Albums->Medias->link($this->photosAlbum, [$media])) {
+            $aType = $type;
+            // stories can contain photos or videos, so we've gotta handle it
+            if ($aType === 'stories') {
+                // figure out if this is a photo or a video
+                if (strpos($media->mime, 'image/') === 0) {
+                    $aType = 'photos';
+                } elseif (strpos($media->mime, 'video/') === 0) {
+                    $aType = 'videos';
+                }
+            }
+
+            // link the media to the appropriate album
+            if ($aType === 'photos' && $this->Albums->Medias->link($this->photosAlbum, [$media])) {
                 $io->success(__('Photo linked to album'));
-            } else if ($type === 'videos' && $this->Albums->Medias->link($this->videosAlbum, [$media])) {
+            } elseif ($aType === 'videos' && $this->Albums->Medias->link($this->videosAlbum, [$media])) {
                 $io->success(__('Video linked to album'));
             }
         } else {
@@ -316,7 +325,10 @@ class ImportInstagramDataCommand extends Command
     }
 
     private function fixText($str) {
-        return utf8_decode(ImportUtils::fixText($str));
+        // replace hash symbols with html encoded versions
+        $str = str_replace('#', '&#35;', $str);
+
+        return $str;
     }
 
 }

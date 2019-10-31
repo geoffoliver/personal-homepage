@@ -10,6 +10,10 @@
 <?php
     echo $this->Html->script('https://use.fontawesome.com/releases/v5.3.1/js/all.js', ['defer']);
     echo $this->Html->script('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js');
+
+    $this->append('script', $this->Html->script('util/lazyload.js'));
+    // $this->append('script', $this->Html->script('util/media-modal.js'));
+
     echo $this->fetch('script');
 ?>
 <script type="text/javascript">

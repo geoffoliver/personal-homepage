@@ -40,7 +40,8 @@ class AlbumsController extends AppController
                 'Albums.type' => $type
             ])
             ->contain([
-                'CoverMedias'
+                'CoverMedias',
+                'Medias'
             ])
             ->order([
                 'Albums.created' => 'DESC'

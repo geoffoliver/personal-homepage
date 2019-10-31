@@ -2,7 +2,6 @@
 $this->assign('title', $album->name);
 $this->append('css', $this->Html->css('medias/index.css'));
 $this->append('css', $this->Html->css('albums/view.css'));
-$this->append('script', $this->Html->script('util/lazyload.js'));
 ?>
 <section class="section" id="viewAlbum">
     <div class="columns">

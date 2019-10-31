@@ -1,7 +1,6 @@
 <?php
 $this->assign('title', $title);
 $this->append('css', $this->Html->css('medias/index.css'));
-$this->append('script', $this->Html->script('util/lazyload.js'));
 ?>
 <section class="section" id="viewMedias">
     <div class="columns">

@@ -5,7 +5,6 @@ $title = __("{0} Albums", Inflector::singularize($title));
 
 $this->assign('title', $title);
 $this->append('css', $this->Html->css('albums/index.css'));
-$this->append('script', $this->Html->script('util/lazyload.js'));
 
 $routeName = ($type === 'photos' ? 'photoAlbum' : 'videoAlbum');
 
@@ -21,10 +20,14 @@ $routeName = ($type === 'photos' ? 'photoAlbum' : 'videoAlbum');
                         foreach ($albums as $album) {
                             $cover = "<span>{$album->name}</span>";
 
-                            if ($album->cover_media) {
-                                $cover = $this->Html->image(
-                                    "/media/{$album->cover_media->thumbnail}"
-                                ) . $cover;
+                            $coverImage = $album->cover_media;
+
+                            if (!$coverImage && $album->medias) {
+                                $coverImage = $album->medias[0];
+                            }
+
+                            if ($coverImage) {
+                                $cover = $this->element('medias/thumbnail', ['media' => $coverImage]) . $cover;
                             }
 
                             echo $this->Html->link(

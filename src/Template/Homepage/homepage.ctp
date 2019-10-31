@@ -1,7 +1,6 @@
 <?php
 $this->assign('title', 'My Personal Homepage');
 $this->assign('css', $this->Html->css('home.css'));
-$this->append('script', $this->Html->script('util/lazyload.js'));
 
 $this->assign('hero', 'Welcome to my personal homepage');
 $this->assign('hero_subtitle', 'Thanks for visiting 😎');

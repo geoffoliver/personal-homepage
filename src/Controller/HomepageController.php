@@ -87,7 +87,11 @@ class HomepageController extends AppController
 
             $this->paginate['Posts']['contain'] = [
                 'Medias',
-                'Comments'
+                'Comments' => [
+                    'conditions' => [
+                        'Comments.approved' => true
+                    ]
+                ]
             ];
         }
 
