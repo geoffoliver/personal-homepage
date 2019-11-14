@@ -1,5 +1,17 @@
 <?php
-$Parsedown = new ParsedownExtra();
+use App\Lib\oEmbed;
+$oEmbed = new oEmbed();
+
+$content = $this->element(
+    'posts/content',
+    ['content' => $post->content],
+    ['cache' => [
+        'key' => "post_{$post->id}_{$post->modified->format('U')}",
+        'config' => 'homepage_posts'
+    ]]
+);
+
+$hasEmbed = strpos($content, 'pf-oembed') !== false;
 ?>
 <div class="box homepage-post">
     <article class="media">
@@ -21,9 +33,22 @@ $Parsedown = new ParsedownExtra();
                     <?php endif; ?>
                 </h5>
                 <p>
-                    <?= $Parsedown->text($post->content); ?>
+                    <?= $content; ?>
+                    <?php
+                        if (!$hasEmbed && $post->source) {
+                            $embed = $oEmbed->getEmbedInfo($post->source);
+                            if ($embed && $embed->code) {
+                                $hasEmbed = true;
+                                echo $oEmbed->wrapEmbed($embed->code);
+                            }
+                        }
+                    ?>
                 </p>
-                <?php if ($post->medias): ?>
+                <?php if (
+                    $post->medias && (
+                        $post->import_source !== 'twitter' || !$hasEmbed
+                    )
+                ): ?>
                     <div class="post-media">
                         <?php foreach ($post->medias as $media): ?>
                             <?= $this->Html->link(

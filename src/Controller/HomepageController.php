@@ -103,6 +103,7 @@ class HomepageController extends AppController
 
         if (!$authed) {
             $photos = $photos->where(['Medias.public' => true]);
+            $photos = $photos->cache('photos', 'homepage_assets');
         }
 
         $photos = $photos->limit(12)->all();
@@ -113,6 +114,7 @@ class HomepageController extends AppController
 
         if (!$authed) {
             $videos = $videos->where(['Medias.public' => true]);
+            $videos = $videos->cache('videos', 'homepage_assets');
         }
 
         $videos = $videos->limit(12)->all();
@@ -120,6 +122,7 @@ class HomepageController extends AppController
         $friends = $this->Friends->find()
             ->order(['Friends.created' => 'DESC'])
             ->limit(12)
+            ->cache('friends', 'homepage_assets')
             ->all();
 
         $this->set([

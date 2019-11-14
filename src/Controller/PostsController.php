@@ -1,16 +1,6 @@
 <?php
 namespace App\Controller;
 
-use Cake\Cache\Cache;
-use Cake\Utility\Text;
-
-use nadar\quill\Lexer;
-use nadar\quill\Debug;
-use nadar\quill\listener\Image;
-use nadar\quill\listener\Video;
-
-use App\Lib\Quill\Listeners\CodeBlock;
-// use App\Lib\Quill\Listeners\CustomImage;
 use App\Controller\AppController;
 
 /**
