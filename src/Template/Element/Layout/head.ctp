@@ -16,3 +16,4 @@
     echo $this->fetch('meta');
     echo $this->fetch('css');
 
+    echo "<link rel=\"dns-prefetch\" href=\"http://{$this->request->host()}/\">";

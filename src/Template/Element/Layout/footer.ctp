@@ -12,6 +12,7 @@
     echo $this->Html->script('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js');
 
     $this->append('script', $this->Html->script('util/lazyload.js'));
+    $this->append('script', $this->Html->script('util/fix-iframe-embeds.js'));
     // $this->append('script', $this->Html->script('util/media-modal.js'));
 
     echo $this->fetch('script');
