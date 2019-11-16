@@ -44,17 +44,7 @@ $this->assign('hero_subtitle', 'Thanks for visiting 😎');
         </div>
     <?php endif; ?>
     <?php foreach ($posts as $post): ?>
-        <?= $this->element(
-            'homepage/post',
-            [
-                'post' => $post
-            ],
-            [
-                'cache' => [
-                    'key' => "hp_{$post->id}_{$post->modified->format('U')}"
-                ]
-            ]
-        ); ?>
+        <?= $this->element('homepage/post', [ 'post' => $post ]); ?>
     <?php endforeach; ?>
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         <?= $this->Paginator->prev(__('Newer')); ?>

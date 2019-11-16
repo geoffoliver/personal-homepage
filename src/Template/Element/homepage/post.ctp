@@ -1,14 +1,14 @@
 <?php
 use App\Lib\oEmbed;
-$oEmbed = new oEmbed();
+$oEmbed = oEmbed::getInstance();
 
 $content = $this->element(
     'posts/content',
-    ['content' => $post->content],
+    ['content' => $post->content]/*,
     ['cache' => [
         'key' => "post_{$post->id}_{$post->modified->format('U')}",
-        'config' => 'homepage_posts'
-    ]]
+        'config' => 'posts'
+    ]]*/
 );
 
 $hasEmbed = strpos($content, 'pf-oembed') !== false;
@@ -35,13 +35,15 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                 <p>
                     <?= $content; ?>
                     <?php
-                        if (!$hasEmbed && $post->source) {
-                            $embed = $oEmbed->getEmbedInfo($post->source);
-                            if ($embed && $embed->code) {
-                                $hasEmbed = true;
-                                echo $oEmbed->wrapEmbed($embed->code);
+                        //echo $this->cache(function() use ($hasEmbed, $post, $oEmbed) {
+                            if (!$hasEmbed && $post->source) {
+                                $embed = $oEmbed->getEmbedInfo($post->source);
+                                if ($embed && $embed->code) {
+                                    $hasEmbed = true;
+                                    echo $oEmbed->wrapEmbed($embed->code);
+                                }
                             }
-                        }
+                        //}, ['key' => "embed_{$post->id}_{$post->modified->format('U')}"]);
                     ?>
                 </p>
                 <?php if (

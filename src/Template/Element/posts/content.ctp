@@ -7,7 +7,7 @@ if (!isset($content) || !$content) {
 }
 
 $Parsedown = new ParsedownExtra();
-$oEmbed = new oEmbed();
+$oEmbed = oEmbed::getInstance();
 $parsed = $Parsedown->text($content);
 
 echo $oEmbed->embed($parsed);

@@ -23,7 +23,7 @@
     // when the image loads, remove the data-lazy-src and the data-loading attributes
     image.onload = function() {
       delete image.dataset.lazySrc;
-      image.dataset.loading = false;
+      delete image.dataset.loading;
     };
   }
 

@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Lib;
+use Cake\Cache\Cache;
 
 use Embed\Embed;
 
 class oEmbed {
+
+    private static $instance = null;
 
     private $embeddable = [
         '/https:\/\/twitter\.com\/[^\/]+\/status\/[\d]+/',
@@ -12,9 +15,25 @@ class oEmbed {
         '/https:\/\/open\.spotify\.com\/.+/',
         '/https:\/\/\.flickr\.com\/photos\/.+/',
         '/https:\/\/www\.flickr\.com\/photos\/.+/',
-        '/https:\/\/t.co\/.+/'
+        '/https:\/\/t\.co\/.+/',
+        '/https:\/\/www\.reddit\.com\/.+/'
     ];
 
+    private $cacheName = 'oEmbed';
+
+    private function __construct()
+    {
+        // nothing happens here
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new oEmbed();
+        }
+
+        return self::$instance;
+    }
 
     public function embed($content)
     {
@@ -30,17 +49,21 @@ class oEmbed {
                     continue;
                 }
 
-                // if we get some embed info back...
-                if ($embedInfo =$this->getEmbedInfo($url)) {
-                    if ($embedInfo->url) {
-                        // replace any stupid short URLs with full URLs
-                        $content = str_replace($url, $embedInfo->url, $content);
-                    }
+                // get the embed info fresh
+                $embedInfo =$this->getEmbedInfo($url);
 
-                    if ($embedInfo->code) {
-                        // tack on the embedded thing
-                        $content .= $this->wrapEmbed($embedInfo->code);
-                    }
+                if (!$embedInfo) {
+                    continue;
+                }
+
+                if ($embedInfo->url) {
+                    // replace any stupid short URLs with full URLs
+                    $content = str_replace($url, $embedInfo->url, $content);
+                }
+
+                if ($embedInfo->code) {
+                    // tack on the embedded thing
+                    $content .= $this->wrapEmbed($embedInfo->code);
                 }
             }
         }
@@ -50,18 +73,33 @@ class oEmbed {
 
     public function getEmbedInfo($url)
     {
+        $cacheKey = md5($url);
+        $cached = Cache::read($cacheKey, $this->cacheName);
+
+        if ($cached !== false) {
+            // we've already worked with this URL, hand back the info we have
+            return $cached;
+        }
+
+        $result = null;
+
         foreach ($this->embeddable as $emb) {
             if (preg_match($emb, $url)) {
                 try {
-                    return Embed::create($url);
+                    $result = Embed::create($url);
                 } catch (\Exception $ex) {
                     // we don't really care if this fails, but we need to catch
                     // any exceptions that might be thrown
                 }
-                return null;
+
+                // save _whatever_ we got back into the cache
+                Cache::write($cacheKey, $result, $this->cacheName);
+                return $result;
             }
         }
 
+        // nothing matched, whatever, we don't care. cache that and move on
+        Cache::write($cacheKey, null, $this->cacheName);
         return null;
     }
 
