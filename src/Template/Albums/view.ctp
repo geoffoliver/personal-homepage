@@ -21,7 +21,12 @@ $this->append('css', $this->Html->css('albums/view.css'));
                                 $this->Html->image(
                                     '#',
                                     [
-                                        'data-lazy-src' => "/media/{$media->thumbnail}",
+                                        'data-lazy-src' => $this->Url->build([
+                                            'controller' => 'Medias',
+                                            'action' => 'download',
+                                            $media->id,
+                                            'thumbnail'
+                                        ])
                                     ]
                                 ),
                                 [

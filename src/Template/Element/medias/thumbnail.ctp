@@ -25,10 +25,10 @@
                         'controller' => 'Medias',
                         'action' => 'download',
                         $media->id,
-                        'square_thumbnail'
+                        'thumbnail'
                     ])
                 ]
-                    ),
+            ),
             [
                 'controller' => 'Medias',
                 'action' => 'view',

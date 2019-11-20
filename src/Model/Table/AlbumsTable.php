@@ -41,7 +41,10 @@ class AlbumsTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->hasMany('Medias', [
-            'foreignKey' => 'album_id'
+            'foreignKey' => 'album_id',
+            'order' => [
+                'Medias.created' => 'DESC'
+            ]
         ]);
 
         $this->hasMany('Comments', [
@@ -50,7 +53,10 @@ class AlbumsTable extends Table
 
         $this->belongsTo('CoverMedias', [
             'className' => 'Medias',
-            'foreignKey' => 'cover_photo'
+            'foreignKey' => 'cover_photo',
+            'order' => [
+                'CoverMedias.created' => 'DESC'
+            ]
         ]);
     }
 

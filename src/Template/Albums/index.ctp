@@ -27,7 +27,19 @@ $routeName = ($type === 'photos' ? 'photoAlbum' : 'videoAlbum');
                             }
 
                             if ($coverImage) {
-                                $cover = $this->element('medias/thumbnail', ['media' => $coverImage]) . $cover;
+                                $cover = $this->Html->image(
+                                        null,
+                                        [
+                                            'data-lazy-src' => $this->Url->build([
+                                                'controller' => 'Medias',
+                                                'action' => 'download',
+                                                $coverImage->id,
+                                                'square_thumbnail'
+                                            ])
+                                        ]
+                                    ) . $cover;
+
+                                // $cover = $this->element('medias/thumbnail', ['media' => $coverImage]) . $cover;
                             }
 
                             echo $this->Html->link(

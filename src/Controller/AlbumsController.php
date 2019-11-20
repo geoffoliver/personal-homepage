@@ -41,7 +41,11 @@ class AlbumsController extends AppController
             ])
             ->contain([
                 'CoverMedias',
-                'Medias'
+                'Medias' => [
+                    'sort' => [
+                        'Medias.created' => 'DESC'
+                    ]
+                ]
             ])
             ->order([
                 'Albums.created' => 'DESC'
@@ -76,7 +80,7 @@ class AlbumsController extends AppController
                         'Comments.created' => 'DESC'
                     ]
                 ]
-            ]
+                    ],
         ]);
 
         $this->set('album', $album);
