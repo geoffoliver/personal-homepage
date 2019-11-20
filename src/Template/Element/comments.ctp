@@ -1,4 +1,5 @@
 <?php
+use Cake\Utility\Hash;
 // let's figure out how many comments this thing has because we may or may not
 // actually display a list of comments and a form depending on that. the logic
 // here is, since you can enable/disable comments for something, and there may
@@ -26,7 +27,7 @@ $totalComments = count($post->comments);
                                 <?= $comment->display_name; ?>
                             </div>
                             <time>
-                                <?= $comment->created->format('F j, Y \a\t g:i a'); ?>
+                                <?= $comment->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?>
                             </time>
                         </div>
                         <div class="comment-content">

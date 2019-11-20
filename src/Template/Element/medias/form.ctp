@@ -1,4 +1,6 @@
 <?php
+use Cake\Utility\Hash;
+
 echo $this->Form->create($media, ['id' => 'mediaForm']);
     echo $this->Form->control('name', [
         'type' => 'text',
@@ -64,7 +66,7 @@ echo $this->Form->end();
             <div class="field">
                 <label class="label"><?= __('Uploaded'); ?></label>
                 <div>
-                    <?= $media->created->format('F j, Y g:i A'); ?>
+                    <?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y g:i A'); ?>
                 </div>
             </div>
             <div class="field">

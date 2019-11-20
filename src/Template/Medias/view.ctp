@@ -1,4 +1,5 @@
 <?php
+use Cake\Utility\Hash;
 $this->assign('title', $media->name);
 $this->append('css', $this->Html->css('medias/view.css'));
 $Parsedown = new ParsedownExtra();
@@ -10,7 +11,7 @@ $Parsedown = new ParsedownExtra();
                 <div class="media-title">
                     <h1 class="title is-3"><?= $media->name ? $media->name : __('Untitled Upload'); ?></h1>
                     <h2 class="subtitle is-6 has-text-grey">
-                        <?= __('Posted'); ?>&nbsp;<time><?= $media->created->format('F j, Y \a\t g:i a'); ?></time>
+                        <?= __('Posted'); ?>&nbsp;<time><?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
                     </h2>
                 </div>
                 <div class="media-body">

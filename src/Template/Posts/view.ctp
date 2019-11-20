@@ -1,5 +1,7 @@
 <?php
 use App\Lib\oEmbed;
+use Cake\Utility\Hash;
+
 $oEmbed = oEmbed::getInstance();
 
 $this->assign('title', $post->name);
@@ -25,7 +27,7 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                 <div class="post-name">
                     <h1 class="title is-3"><?= $post->name; ?></h1>
                     <h2 class="subtitle is-6 has-text-grey">
-                        <?= __('Posted'); ?>&nbsp;<time><?= $post->created->format('F j, Y \a\t g:i a'); ?></time>
+                        <?= __('Posted'); ?>&nbsp;<time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
                     </h2>
                 </div>
                 <div class="post-body">
@@ -34,15 +36,13 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                             <div class="post-content content">
                                 <?= $content; ?>
                                 <?php
-                                    //echo $this->cache(function() use ($hasEmbed, $post, $oEmbed) {
-                                        if (!$hasEmbed && $post->source) {
-                                            $embed = $oEmbed->getEmbedInfo($post->source);
-                                            if ($embed && $embed->code) {
-                                                $hasEmbed = true;
-                                                echo $oEmbed->wrapEmbed($embed->code);
-                                            }
+                                    if (!$hasEmbed && $post->source) {
+                                        $embed = $oEmbed->getEmbedInfo($post->source);
+                                        if ($embed && $embed->code) {
+                                            $hasEmbed = true;
+                                            echo $oEmbed->wrapEmbed($embed->code);
                                         }
-                                    //}, ['key' => "embed_{$post->id}_{$post->modified->format('U')}"]);
+                                    }
                                 ?>
                             </div>
                         <?php endif; ?>

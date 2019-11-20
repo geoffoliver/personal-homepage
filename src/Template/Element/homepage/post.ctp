@@ -1,5 +1,7 @@
 <?php
+use Cake\Utility\Hash;
 use App\Lib\oEmbed;
+
 $oEmbed = oEmbed::getInstance();
 
 $content = $this->element(
@@ -23,9 +25,9 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                     <?php if ($post->import_source): ?>
                         <span class="fab fa-<?= $post->import_source; ?>" aria-hidden="true"></span>
                     <?php endif; ?>
-                    <?= $post->created->format('F j, Y \a\t g:i a'); ?>
+                    <?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?>
                     <?php if ($post->created != $post->modified): ?>
-                        &middot; <?= __('Updated'); ?>&nbsp;<?= $post->modified->format('F j, Y \a\t g:i a'); ?>
+                        &middot; <?= __('Updated'); ?>&nbsp;<?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?>
                     <?php endif; ?>
                 </h5>
                 <p>
