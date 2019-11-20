@@ -36,7 +36,11 @@
 
         } else {
             echo $this->Html->image(
-                "/media/{$media->local_filename}"
+                [
+                    'controller' => 'Medias',
+                    'action' => 'download',
+                    $media->id
+                ]
             );
         }
     ?>
