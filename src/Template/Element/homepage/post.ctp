@@ -4,11 +4,7 @@ $oEmbed = oEmbed::getInstance();
 
 $content = $this->element(
     'posts/content',
-    ['content' => $post->content]/*,
-    ['cache' => [
-        'key' => "post_{$post->id}_{$post->modified->format('U')}",
-        'config' => 'posts'
-    ]]*/
+    ['content' => $post->content]
 );
 
 $hasEmbed = strpos($content, 'pf-oembed') !== false;
@@ -35,15 +31,13 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                 <p>
                     <?= $content; ?>
                     <?php
-                        //echo $this->cache(function() use ($hasEmbed, $post, $oEmbed) {
-                            if (!$hasEmbed && $post->source) {
-                                $embed = $oEmbed->getEmbedInfo($post->source);
-                                if ($embed && $embed->code) {
-                                    $hasEmbed = true;
-                                    echo $oEmbed->wrapEmbed($embed->code);
-                                }
+                        if (!$hasEmbed && $post->source) {
+                            $embed = $oEmbed->getEmbedInfo($post->source);
+                            if ($embed && $embed->code) {
+                                $hasEmbed = true;
+                                echo $oEmbed->wrapEmbed($embed->code);
                             }
-                        //}, ['key' => "embed_{$post->id}_{$post->modified->format('U')}"]);
+                        }
                     ?>
                 </p>
                 <?php if (
@@ -53,17 +47,7 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                 ): ?>
                     <div class="post-media">
                         <?php foreach ($post->medias as $media): ?>
-                            <?= $this->Html->link(
-                                $this->element('medias/thumbnail', ['media' => $media]),
-                                [
-                                    'controller' => 'Medias',
-                                    'action' => 'view',
-                                    $media->id
-                                ],
-                                [
-                                    'escape' => false
-                                ]
-                            ); ?>
+                            <?= $this->element('medias/thumbnail', ['media' => $media]); ?>
                         <?php endforeach;?>
                     </div>
                 <?php endif;?>

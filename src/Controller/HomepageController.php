@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Cake\Utility\Hash;
 use App\Controller\AppController;
 
 class HomepageController extends AppController

@@ -83,18 +83,21 @@ class PostsController extends AppController
         $user = $this->request->getAttribute('identity');
 
         if ($this->request->is('post')) {
+            $postData = [
+                'name' => $this->request->getData('name'),
+                'content' => $this->request->getData('content'),
+                'source' => $this->request->getData('source'),
+                'public' => $this->request->getData('public'),
+                'allow_comments' => $this->request->getData('allow_comments')
+            ];
+
             $post = $this->Posts->patchEntity(
                 $post,
-                $this->request->getData(),
+                $postData,
                 ['associated' => ['Medias']]
             );
 
             $post->user_id = $user->id;
-            /*
-            $quillDelta = $this->request->getData('delta');
-            $lexer = $this->getLexer($quillDelta);
-            $post->content = str_replace('<p><br></p>', '', $lexer->render());
-            */
 
             if ($this->Posts->save($post)) {
                 if ($att = $this->request->getData('new_media')) {
@@ -140,17 +143,17 @@ class PostsController extends AppController
         ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $post = $this->Posts->patchEntity($post, $this->request->getData());
+            $postData = [
+                'name' => $this->request->getData('name'),
+                'content' => $this->request->getData('content'),
+                'source' => $this->request->getData('source'),
+                'public' => $this->request->getData('public'),
+                'allow_comments' => $this->request->getData('allow_comments'),
+                'medias' => $this->request->getData('medias', [])
+            ];
 
-            if (!$this->request->getData('medias')) {
-                $post->medias = [];
-            }
+            $post = $this->Posts->patchEntity($post, $postData);
 
-            /*
-            $quillDelta = $this->request->getData('delta');
-            $lexer = $this->getLexer($quillDelta);
-            $post->content = str_replace('<p><br></p>', '', $lexer->render());
-            */
             if ($this->Posts->save($post)) {
                 if ($att = $this->request->getData('new_media')) {
                     foreach ($att as $attId) {

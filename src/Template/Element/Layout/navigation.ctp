@@ -1,3 +1,6 @@
+<?php
+use Cake\Utility\Hash;
+?>
 <nav class="navbar is-fixed-top is-link" aria-label="main navigation">
   <div class="container">
     <div class="navbar-brand">
@@ -5,7 +8,7 @@
         <figure class="image is-24x24">
           <img class="is-rounded" src="/profile-photo" />
         </figure>
-        Geoffrey Oliver
+        <?= Hash::get($settings, 'site-name'); ?>
       </a>
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="primaryNav">
         <span aria-hidden="true"></span>

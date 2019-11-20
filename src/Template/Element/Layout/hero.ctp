@@ -1,3 +1,6 @@
+<?php
+use Cake\Utility\Hash;
+?>
 <?php if ($this->fetch('hero')) : ?>
   <section class="hero is-light" id="hero" style="background-image: url('/hero-background');">
     <div class="hero-body">
@@ -10,11 +13,11 @@
           </div>
           <div id="hero-copy">
             <h1 class="title">
-              <?= $this->fetch('hero'); ?>
+              <?= Hash::get($settings, 'cover-title'); ?>
             </h1>
-            <?php if ($this->fetch('hero_subtitle')) : ?>
+            <?php if (Hash::get($settings, 'cover-subtitle')): ?>
               <h2 class="subtitle">
-                <?= $this->fetch('hero_subtitle'); ?>
+                <?= Hash::get($settings, 'cover-subtitle'); ?>
               </h2>
             <?php endif; ?>
           </div>

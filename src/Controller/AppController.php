@@ -38,6 +38,8 @@ class AppController extends Controller
         ]
     ];
 
+    protected $settings = [];
+
     public function initialize()
     {
         parent::initialize();
@@ -55,5 +57,21 @@ class AppController extends Controller
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
+    }
+
+    public function beforeFilter(Event $event)
+    {
+        $this->loadModel('Settings');
+
+        $set = $this->Settings->find()->all();
+
+        foreach ($set as $s) {
+            $this->settings[$s->name] = $s->value;
+        };
+
+        $this->set('settings', $this->settings);
+
+        return parent::beforeFilter($event);
+
     }
 }

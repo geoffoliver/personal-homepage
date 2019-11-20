@@ -129,6 +129,10 @@ class MediasTable extends Table
             throw new \Exception(__('Invalid upload'));
         }
 
+        if (!Hash::get($file, 'size')) {
+            throw new \Exception(__('Invalid file size'));
+        }
+
         $filename = Hash::get($file, 'name');
 
         $uploadsRoot = $this->mediaPath;

@@ -315,6 +315,10 @@ pre .hljs {
 /**
  * Audio display
  */
+.audio-container {
+  width: 100%;
+}
+
 .audio-container audio{
   width: 100%;
 }
@@ -330,6 +334,17 @@ pre .hljs {
 
 .content .pagination-list li + li {
   margin-top: 0;
+}
+
+/**
+ * Fix selects
+ */
+.select {
+  width: 100%;
+}
+
+.select select {
+  width: 100%;
 }
 
 /**

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Controller\AppController;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Utility\Hash;
+
+use App\Controller\AppController;
 
 class MediasController extends AppController
 {
@@ -171,21 +173,40 @@ class MediasController extends AppController
         }
 
         // this is where the file lives
-        $file = $this->Medias->mediaPath . DS;
+        $file = null;
+        $original = $this->Medias->mediaPath . DS . $media->local_filename;
 
         switch ($type) {
             case 'original':
-                $file .= $media->local_filename;
+                $file = $original;
                 break;
             case 'thumbnail':
-                $file .= $media->thumbnail;
+                if ($media->thumbnail) {
+                    $f = $this->Medias->mediaPath . DS . $media->thumbnail;
+                    $file = file_exists($f) ? $f : null;
+                }
                 break;
             case 'square_thumbnail':
-                $file .= $media->square_thumbnail;
+                if ($media->square_thumbnail) {
+                    $f = $this->Medias->mediaPath . DS . $media->square_thumbnail;
+                    $file = file_exists($f) ? $f : null;
+                }
                 break;
             default:
                 throw new NotFoundException(__('Invalid media type'));
                 break;
+        }
+
+        if (!$file && $original) {
+            $file = $original;
+        }
+
+        if (!$file) {
+            throw new NotFoundException(__('Invalid file'));
+        }
+
+        if (is_dir($file)) {
+            throw new NotFoundException(__('Invalid request'));
         }
 
         // make sure the file exists
@@ -343,7 +364,7 @@ class MediasController extends AppController
         $file = WWW_ROOT . 'img' . DS . 'default-hero-background.jpg';
 
         // try to find the hero background setting media
-        if ($hero = $this->getSettingMedia('site.hero-background')) {
+        if ($hero = $this->getSettingMedia('cover-photo')) {
             $file = $hero;
         }
 
@@ -360,7 +381,7 @@ class MediasController extends AppController
         $file = WWW_ROOT . 'img' . DS . 'default-profile-photo.jpg';
 
         // try to find the profile photo background media
-        if ($photo = $this->getSettingMedia('site.profile-photo')) {
+        if ($photo = $this->getSettingMedia('picture')) {
             $file = $photo;
         }
 
@@ -377,15 +398,7 @@ class MediasController extends AppController
      */
     private function getSettingMedia($settingName = '')
     {
-        // get the settings, because that's where this information lives
-        $this->loadModel('Settings');
-
-        // try to find the profile photo setting
-        $setting = $this->Settings->find()
-            ->where([
-                'Settings.name' => $settingName
-            ])
-            ->first();
+        $setting = Hash::get($this->settings, $settingName);
 
         // no setting? can't help you. later!
         if (!$setting) {
@@ -395,7 +408,7 @@ class MediasController extends AppController
         // try to find the media for the setting
         $media = $this->Medias->find()
             ->where([
-                'Medias.id' => $setting->value
+                'Medias.id' => $setting
             ])
             ->first();
 
@@ -405,7 +418,7 @@ class MediasController extends AppController
         }
 
         // this is where the file actually lives
-        $mFile = WWW_ROOT . 'media' . DS . $media->value;
+        $mFile = $this->Medias->mediaPath . DS . $media->local_filename;
 
         // check that the file exists and we can access it
         if (file_exists($mFile) && is_readable($mFile)) {

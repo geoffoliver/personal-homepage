@@ -13,6 +13,13 @@ echo $this->Form->create($post, ['id' => 'postForm']);
         'label' => __('Body'),
         'placeholder' => __('What do you want to say?'),
     ]);
+
+    echo $this->Form->control('source', [
+        'type' => 'text',
+        'label' => __('Source'),
+        'placeholder' => __('A URL where people can see the original content, if applicable. Include http(s)://...'),
+        'pattern' => 'https?://.+',
+    ]);
 ?>
     <div class="add-post-checkboxes">
         <?php
