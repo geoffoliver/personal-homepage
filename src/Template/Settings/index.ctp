@@ -51,8 +51,12 @@ $this->assign('title', __('Settings'));
                             );
                         }
 
+                        echo '<hr />';
+
+                        echo $this->Html->tag('h4', __('About'), ['class' => 'title is-4']);
+
                         echo $this->Form->input('homepage-about', [
-                            'label' => __('Homepage "About" blurb'),
+                            'label' => __('Homepage blurb'),
                             'type' => 'text',
                             'value' => Hash::get($settings, 'homepage-about')
                         ]);
@@ -65,7 +69,7 @@ $this->assign('title', __('Settings'));
 
                         echo '<hr />';
 
-                        echo $this->Html->tag('h4', __('Cover'), ['class' => 'title is-4']);
+                        echo $this->Html->tag('h4', __('Homepage Cover'), ['class' => 'title is-4']);
 
                         echo $this->Form->input('cover-title', [
                             'label' => __('Title'),
