@@ -262,6 +262,26 @@ class MediasController extends AppController
     }
 
     /**
+     * Delete method
+     *
+     * @param string|null $id Post id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $post = $this->Medias->get($id);
+        if ($this->Medias->delete($post)) {
+            $this->Flash->success(__('The media has been deleted.'));
+        } else {
+            $this->Flash->error(__('The media could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['_name' => 'photos']);
+    }
+
+    /**
      * Upload a media item
      */
     public function upload()

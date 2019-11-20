@@ -13,10 +13,27 @@
                         'text' => $media->name . $media->description  ? (' - ' . $media->description) : '',
                         'controls' => true,
                         'tag' => 'video',
-                        'autoplay' => true
+                        'autoplay' => false
                     ]
                 )
             );
+        } elseif (strpos($media->mime, 'audio/') === 0){
+            echo $this->Html->div('audio-container',
+                $this->Html->media(
+                    $this->Url->build([
+                        'controller' => 'Medias',
+                        'action' => 'download',
+                        $media->id
+                    ]),
+                    [
+                        'fullBase' => true,
+                        'controls' => true,
+                        'tag' => 'audio',
+                        'autoplay' => false
+                    ]
+                )
+            );
+
         } else {
             echo $this->Html->image(
                 "/media/{$media->local_filename}"

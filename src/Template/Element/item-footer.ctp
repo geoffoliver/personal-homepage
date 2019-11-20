@@ -129,7 +129,7 @@ if ($isMedia) {
             <?= $this->Form->postLink(
                 '<span class="fas fa-trash" aria-hidden="true"></span>&nbsp;' . __('Delete'),
                 [
-                    'controller' => $isPost ? 'Posts' : 'Media',
+                    'controller' => $isPost ? 'Posts' : 'Medias',
                     'action' => 'delete',
                     $item->id
                 ],

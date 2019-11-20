@@ -31,6 +31,15 @@ body {
   border: 1px solid #fff;
 }
 
+@media (min-width: 1024px) {
+  .navbar-menu a span:last-child,
+  .navbar-menu button span:last-child {
+    display: none;
+  }
+}
+
+
+
 /**
  * Hero, aka your cover photo
  */
@@ -93,6 +102,36 @@ footer.footer {
 
 #nav-logout-form button strong {
   color: #fff;
+}
+
+@media (max-width: 1024px) {
+  #nav-logout-form {
+    justify-content: flex-start;
+  }
+
+  #nav-logout-form button,
+  #nav-logout-form button strong {
+    color: #4a4a4a;
+  }
+
+  #nav-logout-form button {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  #nav-logout-form button:hover,
+  #nav-logout-form button:focus,
+  #nav-logout-form button:active {
+    background-color: #fafafa !important;
+    color: #3273dc;
+  }
+
+  #nav-logout-form button:hover strong,
+  #nav-logout-form button:focus strong,
+  #nav-logout-form button:active strong {
+    color: #3273dc;
+  }
 }
 
 #nav-logout-form button:hover,
@@ -271,6 +310,13 @@ pre .hljs {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+/**
+ * Audio display
+ */
+.audio-container audio{
+  width: 100%;
 }
 
 /**

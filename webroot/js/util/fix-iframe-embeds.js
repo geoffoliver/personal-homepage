@@ -10,5 +10,4 @@
     iframe = iframes.item(i);
     iframe.parentElement.classList.add('with-iframe');
   }
-
 })();

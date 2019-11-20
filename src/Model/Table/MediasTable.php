@@ -9,6 +9,7 @@ use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
+use Cake\Datasource\EntityInterface;
 
 /**
  * Medias Model
@@ -274,6 +275,36 @@ class MediasTable extends Table
         }
 
         return false;
+    }
+
+    public function delete(EntityInterface $entity, $options = [])
+    {
+        $deleted = parent::delete($entity, $options);
+
+        if ($deleted) {
+            $delete = [];
+
+            if ($entity->thumbnail) {
+                $delete[]= $entity->thumbnail;
+            }
+
+            if ($entity->square_thumbnail) {
+                $delete[]= $entity->square_thumbnail;
+            }
+
+            if ($entity->local_filename) {
+                $delete[]= $entity->local_filename;
+            }
+
+            foreach ($delete as $del) {
+                $del = $this->mediaPath . DS . $del;
+                if (file_exists($del) && is_readable($del)) {
+                    unlink($del);
+                }
+            }
+        }
+
+        return $deleted;
     }
 
 }

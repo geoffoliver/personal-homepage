@@ -1,6 +1,14 @@
 <div class="add-post-attachment-item">
     <?php if (isset($media) && isset($media->square_thumbnail) && $media->square_thumbnail): ?>
-        <img data-thumbnail src="/media/<?= $media->square_thumbnail; ?>" />
+        <img
+            data-thumbnail
+            src="<?= $this->Url->build([
+                'controller' => 'Medias',
+                'action' => 'download',
+                $media->id,
+                'square_thumbnail'
+            ]); ?>"
+        />
     <?php else: ?>
         <img data-thumbnail />
     <?php endif; ?>

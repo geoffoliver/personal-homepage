@@ -13,7 +13,7 @@
 
     $this->append('script', $this->Html->script('util/lazyload.js'));
     $this->append('script', $this->Html->script('util/fix-iframe-embeds.js'));
-    // $this->append('script', $this->Html->script('util/media-modal.js'));
+    $this->append('script', $this->Html->script('util/nav.js'));
 
     echo $this->fetch('script');
 ?>

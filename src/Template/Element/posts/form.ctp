@@ -13,25 +13,22 @@ echo $this->Form->create($post, ['id' => 'postForm']);
         'label' => __('Body'),
         'placeholder' => __('What do you want to say?'),
     ]);
-    /*
-    echo $this->Html->div('field', implode('', [
-        $this->Html->tag('label', __('Body'), [
-            'for' => 'content',
-            'class' => 'label'
-        ]),
-        $this->Html->div('control',
-            $this->Html->div(
-                'wysiwyg',
-                $post->content ? $post->content : ' ',
-                [
-                    'data-placeholder' => __('What do you want to say?'),
-                    'id' => 'content',
-                ]
-            )
-        )
-    ]));
-    */
 ?>
+    <div class="add-post-checkboxes">
+        <?php
+            echo $this->Form->control('public', [
+                'type' => 'checkbox',
+                'label' => __('Public'),
+                'checked' => $post->id ? $post->public : true
+            ]);
+
+            echo $this->Form->control('allow_comments', [
+                'type' => 'checkbox',
+                'label' => __('Allow Comments'),
+                'checked' => $post->id ? $post->allow_comments : true
+            ]);
+        ?>
+    </div>
     <div id="add-post-attachments-container">
         <div class="field">
             <label class="label">Upload Files</label>
@@ -48,22 +45,6 @@ echo $this->Form->create($post, ['id' => 'postForm']);
                 </div>
             </div>
         </div>
-    </div>
-    <div class="add-post-checkboxes">
-        <?php
-
-            echo $this->Form->control('public', [
-                'type' => 'checkbox',
-                'label' => __('Public'),
-                'checked' => $post->id ? $post->public : true
-            ]);
-
-            echo $this->Form->control('allow_comments', [
-                'type' => 'checkbox',
-                'label' => __('Allow Comments'),
-                'checked' => $post->id ? $post->allow_comments : true
-            ]);
-        ?>
     </div>
 <?php
     echo $this->Form->button(

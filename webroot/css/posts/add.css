@@ -30,11 +30,22 @@
   border: 3px dashed #dfdfdf;
   color: #dfdfdf;
   line-height: 1;
+  cursor: pointer;
 }
+
+#add-post-attachment-button:hover {
+  color: #aaa;
+  border-color: #aaa;
+}
+
 
 #add-post-attachment-button.dz-drag-hover {
   color: #448b44;
   border-color: #448b44;
+}
+
+#add-post-attachment-button svg {
+  pointer-events: none;
 }
 
 .add-post-attachment-item {
