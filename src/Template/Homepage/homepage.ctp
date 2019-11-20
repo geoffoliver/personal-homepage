@@ -72,7 +72,7 @@ $this->assign('hero', true);
           </h3>
           <div id="homepage-photos" class="sidebar-thumbnail-grid">
             <?php foreach ($photos as $photo) : ?>
-              <?= $this->element('medias/thumbnail', ['media' => $photo]); ?>
+              <?= $this->element('medias/thumbnail', ['media' => $photo, 'size' => 'square_thumbnail']); ?>
             <?php endforeach; ?>
           </div>
         </div>
@@ -87,7 +87,7 @@ $this->assign('hero', true);
           </h3>
           <div id="homepage-videos" class="sidebar-thumbnail-grid">
             <?php foreach ($videos as $video) : ?>
-              <?= $this->element('medias/thumbnail', ['media' => $video]); ?>
+              <?= $this->element('medias/thumbnail', ['media' => $video, 'size' => 'square_thumbnail']); ?>
             <?php endforeach; ?>
           </div>
         </div>

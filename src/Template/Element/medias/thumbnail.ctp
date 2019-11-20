@@ -25,7 +25,7 @@
                         'controller' => 'Medias',
                         'action' => 'download',
                         $media->id,
-                        'thumbnail'
+                        isset($size) ? $size : 'thumbnail'
                     ])
                 ]
             ),
