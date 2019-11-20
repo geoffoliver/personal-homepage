@@ -78,6 +78,7 @@ class SettingsController extends AppController
             }
 
             if ($this->Settings->saveMany($settings)) {
+                $this->Flash->success(__('Settings updated.'));
                 return $this->redirect(['controller' => 'Settings', 'action' => 'index']);
             }
         }
