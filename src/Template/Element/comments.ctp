@@ -26,7 +26,7 @@ $totalComments = count($post->comments);
                                 <?= $comment->display_name; ?>
                             </div>
                             <time>
-                                <?= $comment->created->setTimezone('America/Denver')->format('F j, Y \a\t g:i a'); ?>
+                                <?= $comment->created->format('F j, Y \a\t g:i a'); ?>
                             </time>
                         </div>
                         <div class="comment-content">
