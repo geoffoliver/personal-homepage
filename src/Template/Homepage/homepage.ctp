@@ -31,7 +31,7 @@ $this->start('main');
         nanoajax.ajax({
             url: url
         }, function(status, response) {
-            var pag = feed.querySelector('.homepage-pagination');
+            var pag = feed.querySelector('.load-next');
 
             if (status !== 200) {
                 if (pag) {
