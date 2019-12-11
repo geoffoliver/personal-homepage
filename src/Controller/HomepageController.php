@@ -32,47 +32,19 @@ class HomepageController extends AppController
     {
         parent::initialize();
 
-        $this->Authentication->allowUnauthenticated(['index']);
+        $this->Authentication->allowUnauthenticated(['index', 'ajaxHomepage']);
 
         $this->modelClass = false;
     }
 
     public function index($view = null)
     {
-        // is there a user logged in?
-        $user = $this->request->getAttribute('identity');
+        $this->setVarsForHomepageAndFeed();
 
-        // no user? nothing special to do. just show the homepage and be done.
-        if (!$user) {
-            return $this->homepage();
-        }
-
-        // make sure the view being requested is valid
-        $views = ['homepage', 'feed'];
-        if ($view && !in_array($view, $views)) {
-            throw new \Exception('Invalid request');
-        }
-
-        // if we're logged in and we haven't specified which page we want to see,
-        // then show the feed because why would you want to see your own
-        // homepage by default, right?
-        if (!$view) {
-            $view = 'feed';
-        }
-
-        // display something
-        switch ($view) {
-            case 'homepage':
-                return $this->homepage();
-            case 'feed':
-                return $this->feed();
-        }
-
-        // if we're still here things have gone terribly wrong.
-        throw new \Exception('Invalid request');
+        return $this->render('homepage');
     }
 
-    public function homepage()
+    private function setVarsForHomepageAndFeed()
     {
         $this->loadModel('Posts');
         $this->loadModel('Medias');
@@ -81,20 +53,7 @@ class HomepageController extends AppController
 
         if ($this->Authentication->getIdentity()) {
             $authed = true;
-
-            unset($this->paginate['Posts']['conditions']);
-
-            $this->paginate['Posts']['contain'] = [
-                'Medias',
-                'Comments' => [
-                    'conditions' => [
-                        'Comments.approved' => true
-                    ]
-                ]
-            ];
         }
-
-        $posts = $this->paginate('Posts');
 
         $photos = $this->Medias->find()
             ->where(['Medias.mime LIKE' => 'image/%'])
@@ -126,18 +85,43 @@ class HomepageController extends AppController
 
         $this->set([
             'user' => $this->request->getAttribute('identity'),
-            'posts' => $posts,
             'photos' => $photos,
             'videos' => $videos,
             'friends' => $friends
         ]);
+    }
 
-        return $this->render('homepage');
+    public function ajaxHomepage()
+    {
+        $this->viewBuilder()->setLayout('ajax');
+
+        $posts = $this->paginate('Posts');
+        $authed = false;
+
+        if ($this->Authentication->getIdentity()) {
+            $authed = true;
+
+            unset($this->paginate['Posts']['conditions']);
+
+            $this->paginate['Posts']['contain'] = [
+                'Medias',
+                'Comments' => [
+                    'conditions' => [
+                        'Comments.approved' => true
+                    ]
+                ]
+            ];
+        }
+
+        $this->set([
+            'posts' => $posts,
+            'authed' => $authed
+        ]);
     }
 
     public function feed()
     {
-        $this->loadModel('Friends');
+        $this->setVarsForHomepageAndFeed();
 
         $friends = $this->Friends->find()->order(['Friends.created' => 'DESC'])->all();
 
@@ -147,13 +131,13 @@ class HomepageController extends AppController
             'user' => $this->request->getAttribute('identity')
         ]);
 
-        return $this->render('feed');
+        // return $this->render('feed');
     }
 
     public function ajaxFeed()
     {
         $this->loadModel('Friends');
-        $this->layout = 'ajax';
+        $this->viewBuilder()->setLayout('ajax');
 
         $friends = $this->Friends->find()->all();
 

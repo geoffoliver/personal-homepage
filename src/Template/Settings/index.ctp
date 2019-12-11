@@ -56,7 +56,7 @@ $this->assign('title', __('Settings'));
                         echo $this->Html->tag('h4', __('About'), ['class' => 'title is-4']);
 
                         echo $this->Form->input('homepage-about', [
-                            'label' => __('Homepage blurb'),
+                            'label' => __('Homepage blurb/"About" page intro'),
                             'type' => 'text',
                             'value' => Hash::get($settings, 'homepage-about')
                         ]);

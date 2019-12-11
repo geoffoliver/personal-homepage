@@ -1,63 +1,25 @@
 <?php
 $this->assign('title', __('My Feed'));
 $this->append('css', $this->Html->css('feed.css'));
+
+$this->extend('/Homepage/shell');
+$this->start('main');
 ?>
-<div id="feedPage">
-    <div class="columns">
-        <div class="column is-one-quarter">
-            <div class="sidebar sticky-sidebar">
-                <div class="box">
-                    <h3 class="title is-6">
-                        <a href="/friends">
-                            <span class="fas fa-fw fa-user-friends"></span>
-                            <strong><?= __('My Friends'); ?></strong>
-                        </a>
-                    </h3>
-                    <?php if ($friends->count()): ?>
-                        <div class="sidebar-thumbnail-grid">
-                            <?php foreach ($friends as $friend): ?>
-                            <div class="friend-icon">
-                                <?= $this->Html->link(
-                                    $this->Html->image(
-                                        $friend->icon,
-                                        ['alt' => $friend->name]
-                                    ),
-                                    $friend->url,
-                                    [
-                                        'target' => '_blank',
-                                        'rel' => 'noopener noreferrer',
-                                        'title' => $friend->name,
-                                        'escape' => false
-                                    ]
-                                ); ?>
-                            </div>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php else: ?>
-                        <p>
-                            <?= __('You have not setup any friends yet.'); ?>
-                        </p>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div id="postingForm">
-            </div>
-            <div id="feedItems">
-                <div class="box">
-                    <span class="fas fa-spin fa-spinner"></span> <?= __('Loading Feed...'); ?>
-                </div>
+    <div class="column is-half">
+        <div id="feedItems">
+            <div class="box">
+                <span class="fas fa-spin fa-spinner"></span> <?= __('Loading Feed...'); ?>
             </div>
         </div>
     </div>
-</div>
-<?= $this->Html->script('lib/nanoajax/nanoajax.min.js', ['inline' => true]); ?>
+<?php
+    $this->end();
+    echo $this->Html->script('lib/nanoajax/nanoajax.min.js', ['inline' => true]);
+?>
 <script>
 (function() {
     var feed = document.getElementById('feedItems');
-    var loadingMessage = "<span class='fas fa-spin fa-spinner'></span> <?= __('Loading...'); ?>";
-    var loadErrorMessage = "<?= __('Error loading feed'); ?>";
+    var loadErrorMessage = "<div class='box'><?= __('Error loading feed'); ?></div>";
 
     var loadFeed = function(page) {
         var url = "/homepage/ajax-feed";

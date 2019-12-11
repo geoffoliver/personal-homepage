@@ -19,7 +19,7 @@ class oEmbed {
         '/https:\/\/www\.reddit\.com\/.+/'
     ];
 
-    private $cacheName = 'oEmbed';
+    private $cacheName = 'o_embed';
 
     private function __construct()
     {

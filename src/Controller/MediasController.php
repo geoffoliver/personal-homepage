@@ -139,24 +139,29 @@ class MediasController extends AppController
      */
     public function download($id, $type = 'original')
     {
+        $start = microtime(true);
+
         // try to find a media entry based on the ID
         $media = $this->Medias->find()
             ->where([
                 'Medias.id' => $id
-            ])
-            ->contain([
-                'Users',
-                'Albums',
-                'Posts',
-                'Comments' => [
-                    'sort' => [
-                        'Comments.created' => 'DESC'
-                    ],
-                    'conditions' => [
-                        'Comments.approved' => true
-                    ]
-                ]
             ]);
+            // not sure why this was here... probably some copy/pasta leftovers.
+            // i'll leave it for now until i'm sure it was just a dumb mistake
+            // TODO: delete this eventually
+            // ->contain([
+            //     'Users',
+            //     'Albums',
+            //     'Posts',
+            //     'Comments' => [
+            //         'sort' => [
+            //             'Comments.created' => 'DESC'
+            //         ],
+            //         'conditions' => [
+            //             'Comments.approved' => true
+            //         ]
+            //     ]
+            // ]);
 
         // if we're not logged in, we can only see public media
         if (!$this->Authentication->getIdentity()) {
@@ -205,6 +210,7 @@ class MediasController extends AppController
             throw new NotFoundException(__('Invalid file'));
         }
 
+        // a directory is being requested, wtf?
         if (is_dir($file)) {
             throw new NotFoundException(__('Invalid request'));
         }
@@ -224,7 +230,7 @@ class MediasController extends AppController
             ->withCache(filemtime($file), '+1 year');
 
         // generate an etag for the browser... don't hash the file for this
-        // because, right now, you can't update files, but maybe someday?
+        // because, right now, you can't replace files, but maybe someday?
         // so in case that happens, generate a hash of the modified timestamp
         $response = $this->response->withEtag(md5($media->modified->timestamp));
 
@@ -236,11 +242,12 @@ class MediasController extends AppController
         // still here? ok, send a response with an etag
         $this->response = $response;
 
-        // set the file in the response
-        $this->response->file($file);
+
+        $end = microtime(true);
+        $runtime = $end - $start;
 
         // hand back a file response
-        return $this->response;
+        return $this->response->withFile($file);
     }
 
     public function edit($id)

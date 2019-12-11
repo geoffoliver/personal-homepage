@@ -4,11 +4,14 @@ namespace App\Lib;
 
 use Cake\Http\Client;
 use Cake\I18n\Time;
+use Cake\Cache\Cache;
+use Cake\Utility\Hash;
 
 class FeedParser
 {
-    public function fetch($feedUrl, $encode = true)
+    public function fetch($feedUrl = null, $encode = true)
     {
+        // wtf are you even doing here?
         if (!$feedUrl) {
             throw new \Exception('Missing Feed URL');
         }
@@ -16,29 +19,112 @@ class FeedParser
         // fire up an HTTP client
         $client = new Client();
 
-        // try to get a response for the feed URL
-        $response = $client->get($feedUrl);
+        // we store last modified and etags so we can do partial gets and only
+        // get stuff since our last request
+        $cacheKey = md5($feedUrl);
+        $lastModified = null;
+        $eTag = null;
+        $expires = null;
+        $options = []; // this is where we'll stuff the last mod and etag values
 
+        // check the cache to see if we've already got this feed
+        $cached = Cache::read($cacheKey, 'feeds');
+
+        // we found meta info about the feed in the cache, awesome
+        if ($feedMeta = Cache::read($cacheKey, 'feed_meta')) {
+            if ($expires = Hash::get($feedMeta, 'Expires')) {
+                $expires = strtotime($expires[0]);
+            }
+
+            if ($lastModified = Hash::get($feedMeta, 'Last-Modified')) {
+                $lastModified = $lastModified[0];
+            }
+
+            if ($eTag = Hash::get($feedMeta, 'ETag')) {
+                $eTag = $eTag[0];
+            }
+        }
+
+        // figure out if we'll do a conditional get or if we'll return cached data
+        if ($lastModified && $eTag) {
+            // if we've got a last modified and an etag, we can use them to do
+            // a conditional get so we won't get any data that we already have
+            $options = [
+                'headers' => [
+                    'If-Modified-Since' => $lastModified,
+                    'If-None-Match' => $eTag
+                ]
+            ];
+        } elseif ($cached && $expires && $expires > time()) {
+            // the feed is already cached, the server doesn't support (no last mod
+            // or etag), but it _does_ send back an 'Expires' header, and the
+            // feed hasn't expired yet, so we can just hand back the cached feed.
+            return $cached;
+        }
+
+        // try to get a response for the feed URL
+        $response = $client->get($feedUrl, null, $options);
+
+        // response failed, bail out
         if (!$response) {
             throw new \Exception(__('Invalid response'));
         }
+
+        // cache meta info for the feed
+        Cache::write($cacheKey, $response->getHeaders(), 'feed_meta');
 
         // get the XML for the feed
         $feedXml = $response->getStringBody();
 
         // no XML to parse? later
         if (!$feedXml) {
+            // we have cached data, return that
+            if ($cached) {
+                return $cached;
+            }
+            // nothing we can do, bail out
             return null;
         }
 
+        // turn the feed into JSON, because it's better that way :)
         if ($feed = $this->jsonify($feedXml)) {
             $feed->feed_url = $feedUrl;
         }
 
+        if ($cached && !$feed) {
+            // if the feed was in the cache, but we didn't get any results back,
+            // use the cached feed.
+            return $cached;
+        }
+
+        // there is cached data _and_ new data from the server, so we need to
+        // merge the new data in
+        if ($cached && $feed) {
+            $items = array_merge($feed->items, $cached->items);
+            $feed->items = [];
+            $itemUrls = [];
+
+            // since some servers (codinghorror on feedburner) don't provide last
+            // modified _and_ etags, so we can't do conditional gets, and their
+            // 'Expires' might be very short lived, which means we could end up
+            // with duplicate data... so we need to fix that
+            foreach ($items as $item) {
+                if (!in_array($item->url, $itemUrls)) {
+                    $itemUrls[]= $item->url;
+                    $feed->items[]= $item;
+                }
+            }
+        }
+
+        // cache the feed
+        Cache::write($cacheKey, $feed, 'feeds');
+
+        // sometimes we want a string back, what's the big deal?
         if ($encode) {
             return json_encode($feed);
         }
 
+        // byeeee!
         return $feed;
     }
 

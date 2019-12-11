@@ -10,11 +10,7 @@ $this->append('script', $this->Html->script('posts/view.js'));
 
 $content = $this->element(
     'posts/content',
-    ['content' => $post->content]/*,
-    ['cache' => [
-        'key' => "post_{$post->id}_{$post->modified->format('U')}",
-        'config' => 'posts'
-    ]]*/
+    ['content' => $post->content]
 );
 
 $hasEmbed = strpos($content, 'pf-oembed') !== false;

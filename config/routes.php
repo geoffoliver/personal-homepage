@@ -16,21 +16,45 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->applyMiddleware('csrf');
 
-    // the homepage, which could be posts from the website or a feed of posts
-    // from friend's websites, depending on if you're logged in
+    // the homepage
     $routes->connect('/',
         [
             'controller' => 'Homepage',
             'action' => 'index'
+        ],
+        [
+            '_name' => 'homepage'
         ]
     );
 
-    // really only used for when you're logged in and you want to see your homepage
-    // as visitors to your site see it
-    $routes->connect('/homepage',
+    // news feed (posts from your friends)
+    $routes->connect('/feed',
         [
             'controller' => 'Homepage',
-            'action' => 'index', 'homepage'
+            'action' => 'feed'
+        ],
+        [
+            '_name' => 'feed'
+        ]
+    );
+
+    $routes->connect('/about',
+        [
+            'controller' => 'About',
+            'action' => 'index'
+        ],
+        [
+            '_name' => 'about',
+        ]
+    );
+
+    $routes->connect('/friends',
+        [
+            'controller' => 'Friends',
+            'action' => 'index'
+        ],
+        [
+            '_name' => 'friends',
         ]
     );
 

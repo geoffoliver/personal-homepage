@@ -14,17 +14,17 @@
       return;
     }
 
-    // so we don't try to load this image multiple times
-    image.dataset.loading = true;
-
-    // set the src attribute
-    image.src = image.dataset.lazySrc;
-
     // when the image loads, remove the data-lazy-src and the data-loading attributes
     image.onload = function() {
       delete image.dataset.lazySrc;
       delete image.dataset.loading;
     };
+
+    // so we don't try to load this image multiple times
+    image.dataset.loading = true;
+
+    // set the src attribute
+    image.src = image.dataset.lazySrc;
   }
 
   // loads images all at once in the instance that the browser doesn't support

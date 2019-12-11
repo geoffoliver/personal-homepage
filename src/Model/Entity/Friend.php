@@ -41,18 +41,10 @@ class Friend extends Entity
 
     public function getFeed($encode = true)
     {
+        // fire up a feeed parser
         $fp = new FeedParser();
 
-        $cached = Cache::read($this->id, 'feeds');
-
-        if ($cached) {
-            return $cached;
-        }
-
-        if ($feed = $fp->fetch($this->feed_url, $encode)) {
-            Cache::write($this->id, $feed, 'feeds');
-        }
-
-        return $feed;
+        // try to fetch the feed
+        return $fp->fetch($this->feed_url, $encode);
     }
 }

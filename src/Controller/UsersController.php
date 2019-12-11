@@ -121,7 +121,7 @@ class UsersController extends AppController
             $authService = $this->Authentication->getAuthenticationService();
             $redirect = $this->request->getQuery(
                 'redirect',
-                ['controller' => 'Homepage', 'action' => 'index']
+                ['controller' => 'Homepage', 'action' => 'feed']
             );
             return $this->redirect($redirect);
         }
