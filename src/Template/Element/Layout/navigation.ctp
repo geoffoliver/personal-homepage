@@ -41,14 +41,14 @@ use Cake\Utility\Hash;
 
                     if ($this->Identity->isLoggedIn()) {
                         echo $this->Html->link(
-                                '<span class="fas fa-fw fa-plus-square"></span>&nbsp;' . __('Add Post'),
-                                ['controller' => 'Posts', 'action' => 'add'],
-                                ['class' => 'navbar-item', 'title' => __('Add Post'), 'escape' => false]
-                        );
-                        echo $this->Html->link(
                                 '<span class="fas fa-fw fa-globe"></span>&nbsp;' . __('Feed'),
                                 ['_name' => 'feed'],
                                 ['class' => 'navbar-item', 'title' => __('Feed'), 'escape' => false]
+                        );
+                        echo $this->Html->link(
+                                '<span class="fas fa-fw fa-plus-square"></span>&nbsp;' . __('Add Post'),
+                                ['controller' => 'Posts', 'action' => 'add'],
+                                ['class' => 'navbar-item', 'title' => __('Add Post'), 'escape' => false]
                         );
                         /*
                         echo $this->Html->link(
