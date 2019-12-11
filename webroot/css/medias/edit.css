@@ -5,6 +5,7 @@
 
 .preview {
   text-align: center;
+  margin-top: 0 !important;
 }
 
 .preview figcaption {
