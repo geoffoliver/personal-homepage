@@ -48,13 +48,13 @@ echo $this->Form->end();
     <div class="thumbnails">
         <figure class="preview">
             <?= $this->Html->image(
-                "/media/{$media->thumbnail}"
+                "/medias/download/{$media->id}/thumbnail"
             ); ?>
             <figcaption><?= __('Fullsize'); ?></figcaption>
         </figure>
         <figure class="preview">
             <?= $this->Html->image(
-                "/media/{$media->square_thumbnail}"
+                "/medias/download/{$media->id}/square_thumbnail"
             ); ?>
             <figcaption><?= __('Square'); ?></figcaption>
         </figure>
@@ -88,7 +88,7 @@ echo $this->Form->end();
                 <div>
                     <?= $this->Html->link(
                         $media->original_filename . '&nbsp;<span class="fas fa-external-link-alt"></span>',
-                        "/media/{$media->local_filename}",
+                        "/medias/download/{$media->id}",
                         [
                             'target' => '_blank',
                             'escape' => false
