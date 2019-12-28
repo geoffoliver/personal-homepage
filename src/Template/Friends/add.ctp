@@ -36,13 +36,13 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
                                     'required' => true
                                 ]
                             );
-                            echo $this->Form->control(
-                                'description',
-                                [
-                                    'label' => __('Description'),
-                                    'type' => 'textarea'
-                                ]
-                            );
+                            // echo $this->Form->control(
+                            //     'description',
+                            //     [
+                            //         'label' => __('Description'),
+                            //         'type' => 'textarea'
+                            //     ]
+                            // );
                             echo $this->Form->control(
                                 'feed_url',
                                 [
@@ -70,7 +70,7 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
                                 __('Add Friend'),
                                 [
                                     'type' => 'submit',
-                                    'class' => 'button is-link'
+                                    'class' => 'button is-dark'
                                 ]
                             );
                         echo $this->Form->end();
@@ -113,7 +113,7 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
             }
 
             $('name').value = response.name;
-            $('description').value = response.description;
+            // $('description').value = response.description;
 
             var feedTags = [];
             if (response.feeds && response.feeds.length) {

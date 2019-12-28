@@ -37,7 +37,7 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
         __('Save Media'),
         [
             'type' => 'submit',
-            'class' => 'button is-link'
+            'class' => 'button is-dark'
         ]
     );
 

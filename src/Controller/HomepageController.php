@@ -40,8 +40,6 @@ class HomepageController extends AppController
     public function index($view = null)
     {
         $this->setVarsForHomepageAndFeed();
-
-        return $this->render('homepage');
     }
 
     private function setVarsForHomepageAndFeed()
@@ -78,7 +76,7 @@ class HomepageController extends AppController
         $videos = $videos->limit(12)->all();
 
         $friends = $this->Friends->find()
-            ->order(['Friends.created' => 'DESC'])
+            ->order(['Friends.name' => 'ASC'])
             ->limit(12)
             ->cache('friends', 'homepage_assets')
             ->all();
@@ -122,16 +120,6 @@ class HomepageController extends AppController
     public function feed()
     {
         $this->setVarsForHomepageAndFeed();
-
-        $friends = $this->Friends->find()->order(['Friends.created' => 'DESC'])->all();
-
-        $this->set([
-            'friends' => $friends,
-            'posts' => [],
-            'user' => $this->request->getAttribute('identity')
-        ]);
-
-        // return $this->render('feed');
     }
 
     public function ajaxFeed()

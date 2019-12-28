@@ -124,7 +124,7 @@ $this->assign('title', __('Settings'));
                             __('Save Settings'),
                             [
                                 'type' => 'submit',
-                                'class' => 'button is-link'
+                                'class' => 'button is-dark'
                             ]
                         );
 

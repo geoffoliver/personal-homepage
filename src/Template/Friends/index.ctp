@@ -16,7 +16,7 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                             ],
                             [
                                 'title' => __('Add Friend'),
-                                'class' => 'button is-link is-size-6',
+                                'class' => 'button is-dark is-size-6',
                                 'escape' => false
                             ]
                         ); ?>
@@ -59,7 +59,7 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                                             $friend->id
                                                         ],
                                                         [
-                                                            'class' => 'level-item button is-link is-outlined is-fullwidth',
+                                                            'class' => 'level-item button is-dark is-outlined is-fullwidth',
                                                         ]
                                                     ); ?>
                                                     <?php
@@ -92,7 +92,7 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                     </div>
                 <?php else: ?>
                     <?php if ($user): ?>
-                        <div class="message is-info">
+                        <div class="message is-dark">
                             <div class="message-body">
                                 <?= __('You have not setup any friends yet.'); ?>
                                 <br><br>
@@ -102,13 +102,13 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                         'action' => 'add'
                                     ],
                                     [
-                                        'class' => 'button is-link'
+                                        'class' => 'button is-dark'
                                     ]
                                 ); ?>
                             </div>
                         </div>
                     <?php else: ?>
-                        <div class="message is-info">
+                        <div class="message is-dark">
                             <div class="message-body">
                                 <?= __('There are no friends to display.'); ?>
                             </div>

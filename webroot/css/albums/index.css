@@ -14,7 +14,7 @@
 .album-link > span {
   display: flex;
   flex: auto;
-  background: #3273dc;
+  background: hsl(0, 0%, 21%);
   color: #fff;
   transition: all 0.2s;
   position: relative;
@@ -38,7 +38,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   color: #fff;
   z-index: 1;
-  background: #2366d1;
+  background: hsl(0, 0%, 21%);
 }
 
 .album-link img {

@@ -58,7 +58,7 @@ echo $this->Form->create($post, ['id' => 'postForm']);
         $post->id ? __('Save Post') : __('Add Post'),
         [
             'type' => 'submit',
-            'class' => 'button is-link'
+            'class' => 'button is-dark'
         ]
     );
 

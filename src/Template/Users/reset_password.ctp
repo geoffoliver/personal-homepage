@@ -22,7 +22,7 @@ $this->loadHelper('Form', [
 
                     echo $this->Form->button(__('Reset Password'), [
                         'type' => 'submit',
-                        'class' => 'button is-link'
+                        'class' => 'button is-dark'
                     ]);
 
                 echo $this->Form->end();

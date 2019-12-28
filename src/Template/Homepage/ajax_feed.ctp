@@ -17,7 +17,7 @@ foreach ($posts as $post) {
 }
 
 if ($pagination['prev'] || $pagination['next']) {
-    echo '<div class="feed-pagination">';
+    echo '<div class="load-next">';
         /*
         if ($this->request->is('ajax') && $pagination['prev']) {
             echo $this->Html->div('load-prev',
@@ -25,7 +25,7 @@ if ($pagination['prev'] || $pagination['next']) {
                     __('Newer Posts'),
                     "/?page={$pagination['prev']}",
                     [
-                        'class' => 'paginate button is-link is-full-width',
+                        'class' => 'paginate button is-dark is-full-width',
                         'data-page' => $pagination['prev']
                     ]
                 )
@@ -38,7 +38,7 @@ if ($pagination['prev'] || $pagination['next']) {
                     __('Older Posts'),
                     "/?page={$pagination['next']}",
                     [
-                        'class' => 'paginate button is-link is-fullwidth',
+                        'class' => 'paginate button is-dark is-fullwidth',
                         'data-page' => $pagination['next']
                     ]
                 )

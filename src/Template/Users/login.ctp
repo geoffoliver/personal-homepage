@@ -21,7 +21,7 @@
 
                     echo $this->Form->button(__('Login'), [
                         'type' => 'submit',
-                        'class' => 'button is-link'
+                        'class' => 'button is-dark'
                     ]);
 
                 echo $this->Form->end();

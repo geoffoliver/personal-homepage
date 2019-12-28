@@ -1,7 +1,9 @@
 <?php
 use Cake\Utility\Hash;
+
+$routeName = isset($this->request->params['_name']) ? $this->request->params['_name'] : null;
 ?>
-<nav class="navbar is-fixed-top is-link" aria-label="main navigation">
+<nav class="navbar is-fixed-top is-dark" aria-label="main navigation">
     <div class="container">
         <div class="navbar-brand">
             <a class="navbar-item" href="<?= $this->Url->build(['_name' => 'homepage']); ?>" title="Home">
@@ -16,25 +18,26 @@ use Cake\Utility\Hash;
             <div id="primaryNav" class="navbar-menu">
             <div class="navbar-end">
                 <?php
+
                     echo $this->Html->link(
                         __('Friends'),
-                        ['controller' => 'Friends', 'action' => 'index'],
-                        ['class' => 'navbar-item']
+                        ['_name' => 'friends'],
+                        ['class' => 'navbar-item ' . ($routeName === 'friends' ? 'is-active' : '')]
                     );
                     echo $this->Html->link(
                         __('About'),
                         ['_name' => 'about'],
-                        ['class' => 'navbar-item']
+                        ['class' => 'navbar-item ' . ($routeName === 'about' ? 'is-active' : '')]
                     );
                     echo $this->Html->link(
                         __('Photos'),
                         ['_name' => 'photos'],
-                        ['class' => 'navbar-item']
+                        ['class' => 'navbar-item ' . ($routeName === 'photos' ? 'is-active' : '')]
                     );
                     echo $this->Html->link(
                         __('Videos'),
                         ['_name' => 'videos'],
-                        ['class' => 'navbar-item']
+                        ['class' => 'navbar-item ' . ($routeName === 'videos' ? 'is-active' : '')]
                     );
 
                     echo '<div class="nav-divider"></div>';
@@ -43,12 +46,20 @@ use Cake\Utility\Hash;
                         echo $this->Html->link(
                                 '<span class="fas fa-fw fa-globe"></span>&nbsp;' . __('Feed'),
                                 ['_name' => 'feed'],
-                                ['class' => 'navbar-item', 'title' => __('Feed'), 'escape' => false]
+                                [
+                                    'class' => 'navbar-item ' . ($routeName === 'feed' ? 'is-active' : ''),
+                                    'title' => __('Feed'),
+                                    'escape' => false
+                                ]
                         );
                         echo $this->Html->link(
                                 '<span class="fas fa-fw fa-plus-square"></span>&nbsp;' . __('Add Post'),
-                                ['controller' => 'Posts', 'action' => 'add'],
-                                ['class' => 'navbar-item', 'title' => __('Add Post'), 'escape' => false]
+                                ['_name' => 'addPost'],
+                                [
+                                    'class' => 'navbar-item ' . ($routeName === 'addPost' ? 'is-active' : ''),
+                                    'title' => __('Add Post'),
+                                    'escape' => false
+                                ]
                         );
                         /*
                         echo $this->Html->link(
@@ -60,7 +71,11 @@ use Cake\Utility\Hash;
                         echo $this->Html->link(
                                 '<span class="fas fa-fw fa-cog"></span><span>&nbsp;' . __('Settings') . '</span>',
                                 ['controller' => 'Settings', 'action' => 'index'],
-                                ['class' => 'navbar-item', 'title' => __('Settings'), 'escape' => false]
+                                [
+                                    'class' => 'navbar-item ' . ($routeName === 'settings' ? 'is-active' : ''),
+                                    'title' => __('Settings'),
+                                    'escape' => false
+                                ]
                         );
                         echo $this->Form->create(null, [
                                 'id' => 'nav-logout-form',

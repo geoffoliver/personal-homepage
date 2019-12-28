@@ -12,7 +12,7 @@ $totalComments = count($post->comments);
         <?php if ($post->allow_comments || (!$post->allow_comments && $totalComments > 0)): ?>
             <h3 class="subtitle is-5"><?= __('Comments ({0})', $this->Number->format($totalComments)); ?></h3>
             <?php if (count($post->comments) === 0): ?>
-                <div class="message is-info no-comments">
+                <div class="message is-dark no-comments">
                     <div class="message-body is-size-7">
                         <?= __('There are no comments to display.'); ?>
                     </div>
@@ -108,7 +108,7 @@ $totalComments = count($post->comments);
                             __('Add Comment'),
                             [
                                 'type' => 'submit',
-                                'class' => 'button is-link'
+                                'class' => 'button is-dark'
                             ]
                         );
 

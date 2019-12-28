@@ -58,6 +58,16 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
+    $routes->connect('/add-post',
+        [
+            'controller' => 'Posts',
+            'action' => 'add'
+        ],
+        [
+            '_name' => 'addPost',
+        ]
+    );
+
     // the regular RSS feed for posts
     $routes->connect('/feed',
         [

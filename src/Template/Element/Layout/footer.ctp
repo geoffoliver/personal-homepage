@@ -1,22 +1,32 @@
-<footer class="footer">
-    <div class="content has-text-centered">
-        <p class="is-size-7">
-            Powered by <strong>My Personal Homepage</strong> by <a href="http://www.plan8studios.com" target="_blank">Plan8 Studios</a>
-            <br />
-            All content, &copy<?=date('Y');?> site owner.
-        </p>
-    </div>
-</footer>
 <?php
-    echo $this->Html->script('https://use.fontawesome.com/releases/v5.3.1/js/all.js', ['defer']);
-    echo $this->Html->script('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js');
+use Cake\Utility\Hash;
 
-    $this->append('script', $this->Html->script('util/lazyload.js'));
-    $this->append('script', $this->Html->script('util/fix-iframe-embeds.js'));
-    $this->append('script', $this->Html->script('util/nav.js'));
+echo $this->Html->tag(
+    'footer',
+    implode('', [
+        $this->Html->div(
+            'content has-text-centered',
+            $this->Html->para(
+                'is-size-7',
+                __('&copy; {0} &mdash; {1}', date('Y'), Hash::get($settings, 'site-name'))
+            )
+        )
+    ]),
+    [
+        'class' => 'footer'
+    ]
+);
 
-    echo $this->fetch('script');
-?>
-<script type="text/javascript">
-    hljs.initHighlightingOnLoad();
-</script>
+// external dependencies
+$this->append('script', $this->Html->script('https://use.fontawesome.com/releases/v5.3.1/js/all.js', ['defer']));
+
+// utilities
+$this->append('script', $this->Html->script('util/lazyload.js'));
+$this->append('script', $this->Html->script('util/fix-iframe-embeds.js'));
+$this->append('script', $this->Html->script('util/nav.js'));
+
+// code highlighting
+$this->append('script', $this->Html->script('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js'));
+$this->append('script', $this->Html->scriptBlock('hljs.initHighlightingOnLoad();'));
+
+echo $this->fetch('script');

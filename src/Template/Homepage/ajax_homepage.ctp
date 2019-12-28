@@ -28,7 +28,7 @@ if ($this->Paginator->hasNext()) {
             __('Older Posts'),
             $url,
             [
-                'class' => 'paginate button is-link is-fullwidth',
+                'class' => 'paginate button is-dark is-fullwidth',
                 'data-page' => $nextPage
             ]
         )
@@ -43,7 +43,7 @@ if ($pagination['prev'] || $pagination['next']) {
                     __('Older Posts'),
                     "/?page={$pagination['next']}",
                     [
-                        'class' => 'paginate button is-link is-fullwidth',
+                        'class' => 'paginate button is-dark is-fullwidth',
                         'data-page' => $pagination['next']
                     ]
                 )

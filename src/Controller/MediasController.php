@@ -181,25 +181,29 @@ class MediasController extends AppController
         $file = null;
         $original = $this->Medias->mediaPath . DS . $media->local_filename;
 
-        switch ($type) {
-            case 'original':
-                $file = $original;
-                break;
-            case 'thumbnail':
-                if ($media->thumbnail) {
-                    $f = $this->Medias->mediaPath . DS . $media->thumbnail;
-                    $file = file_exists($f) ? $f : null;
-                }
-                break;
-            case 'square_thumbnail':
-                if ($media->square_thumbnail) {
-                    $f = $this->Medias->mediaPath . DS . $media->square_thumbnail;
-                    $file = file_exists($f) ? $f : null;
-                }
-                break;
-            default:
-                throw new NotFoundException(__('Invalid media type'));
-                break;
+        if ($type !== 'original' && strpos($media->mime, 'audio/') === 0) {
+            $file = WWW_ROOT . 'img' . DS . 'file-audio-regular.svg';
+        } else {
+            switch ($type) {
+                case 'original':
+                    $file = $original;
+                    break;
+                case 'thumbnail':
+                    if ($media->thumbnail) {
+                        $f = $this->Medias->mediaPath . DS . $media->thumbnail;
+                        $file = file_exists($f) ? $f : null;
+                    }
+                    break;
+                case 'square_thumbnail':
+                    if ($media->square_thumbnail) {
+                        $f = $this->Medias->mediaPath . DS . $media->square_thumbnail;
+                        $file = file_exists($f) ? $f : null;
+                    }
+                    break;
+                default:
+                    throw new NotFoundException(__('Invalid media type'));
+                    break;
+            }
         }
 
         if (!$file && $original) {

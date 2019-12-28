@@ -28,14 +28,14 @@ $this->assign('css', $this->Html->css('friends/add.css'));
                                     'value' => $friend->name
                                 ]
                             );
-                            echo $this->Form->control(
-                                'description',
-                                [
-                                    'label' => __('Description'),
-                                    'type' => 'textarea',
-                                    'value' => $friend->description
-                                ]
-                            );
+                            // echo $this->Form->control(
+                            //     'description',
+                            //     [
+                            //         'label' => __('Description'),
+                            //         'type' => 'textarea',
+                            //         'value' => $friend->description
+                            //     ]
+                            // );
                             echo $this->Form->control(
                                 'feed_url',
                                 [
@@ -57,7 +57,7 @@ $this->assign('css', $this->Html->css('friends/add.css'));
                                 __('Save Friend'),
                                 [
                                     'type' => 'submit',
-                                    'class' => 'button is-link'
+                                    'class' => 'button is-dark'
                                 ]
                             );
                         echo $this->Form->end();

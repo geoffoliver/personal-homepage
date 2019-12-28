@@ -6,7 +6,7 @@ $this->assign('title', __('About Me'));
 <section class="section" id="aboutMe">
     <article>
         <div class="columns">
-            <div class="column is-three-fifths is-offset-one-fifth">
+            <div class="column">
                 <h1 class="title is-3"><?= __('About Me'); ?></h1>
                 <div class="box">
                     <?php

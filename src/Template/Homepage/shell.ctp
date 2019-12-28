@@ -28,7 +28,13 @@ $this->assign('hero', true);
             </h3>
             <div id="homepage-friends" class="sidebar-thumbnail-grid">
                 <?php foreach ($friends as $friend) : ?>
-                <img src="" data-lazy-src="<?= $friend->icon; ?>" />
+                    <?= $this->Html->image(
+                        null,
+                        [
+                            'data-lazy-src' => $friend->icon,
+                            'alt' => "Icon for {$friend->name}"
+                        ]
+                    ); ?>
                 <?php endforeach; ?>
             </div>
             <?php endif; ?>
