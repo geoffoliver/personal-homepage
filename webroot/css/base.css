@@ -153,20 +153,20 @@ footer.footer {
   #nav-logout-form button:focus,
   #nav-logout-form button:active {
     background-color: #fafafa !important;
-    color: #3273dc;
+    color: #292929;
   }
 
   #nav-logout-form button:hover strong,
   #nav-logout-form button:focus strong,
   #nav-logout-form button:active strong {
-    color: #3273dc;
+    color: #292929;
   }
 }
 
 #nav-logout-form button:hover,
 #nav-logout-form button:active,
 #nav-logout-form button:focus {
-  background-color: #2366d1;
+  background-color: #292929;
 }
 
 /**
