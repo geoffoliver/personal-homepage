@@ -17,28 +17,29 @@ $this->assign('hero', true);
             <p>
             <?= Hash::get($settings, 'homepage-about'); ?>
             </p>
-            <?php if ($friends->count()) : ?>
-            <hr />
-            <h3 class="title is-6">
-                <a href="<?= $this->Url->build(['_name' => 'friends']); ?>">
-                    <span class="fas fa-fw fa-user-friends"></span>
-                    &nbsp;
-                    <strong><?= __('My Friends'); ?></strong>
-                </a>
-            </h3>
-            <div id="homepage-friends" class="sidebar-thumbnail-grid">
-                <?php foreach ($friends as $friend) : ?>
-                    <?= $this->Html->image(
-                        null,
-                        [
-                            'data-lazy-src' => $friend->icon,
-                            'alt' => "Icon for {$friend->name}"
-                        ]
-                    ); ?>
-                <?php endforeach; ?>
-            </div>
-            <?php endif; ?>
         </div>
+        <?php if ($friends->count()) : ?>
+            <div class="box">
+                <h3 class="title is-6">
+                    <a href="<?= $this->Url->build(['_name' => 'friends']); ?>">
+                        <span class="fas fa-fw fa-user-friends"></span>
+                        &nbsp;
+                        <strong><?= __('My Friends'); ?></strong>
+                    </a>
+                </h3>
+                <div id="homepage-friends" class="sidebar-thumbnail-grid">
+                    <?php foreach ($friends as $friend) : ?>
+                        <?= $this->Html->image(
+                            null,
+                            [
+                                'data-lazy-src' => $friend->icon,
+                                'alt' => "Icon for {$friend->name}"
+                            ]
+                        ); ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
         </div>
     </div>
     <?= $this->fetch("main"); ?>
