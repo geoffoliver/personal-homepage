@@ -34,33 +34,3 @@ if ($this->Paginator->hasNext()) {
         )
     );
 }
-/*
-if ($pagination['prev'] || $pagination['next']) {
-    echo '<div class="homepage-pagination">';
-        if ($pagination['next']) {
-            echo $this->Html->div('load-next',
-                $this->Html->link(
-                    __('Older Posts'),
-                    "/?page={$pagination['next']}",
-                    [
-                        'class' => 'paginate button is-dark is-fullwidth',
-                        'data-page' => $pagination['next']
-                    ]
-                )
-            );
-        }
-    echo '</div>';
-}
-*/
-/*
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-      <?= $this->Paginator->prev(__('Newer')); ?>
-      <?= $this->Paginator->next(__('Older')); ?>
-      <ul class="pagination-list">
-        <?= $this->Paginator->numbers([
-          'modulus' => 4,
-          'first' => __('1')
-        ]); ?>
-      </ul>
-    </nav>
-*/

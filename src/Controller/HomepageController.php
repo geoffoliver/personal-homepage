@@ -93,23 +93,14 @@ class HomepageController extends AppController
     {
         $this->viewBuilder()->setLayout('ajax');
 
-        $posts = $this->paginate('Posts');
         $authed = false;
 
         if ($this->Authentication->getIdentity()) {
-            $authed = true;
-
             unset($this->paginate['Posts']['conditions']);
-
-            $this->paginate['Posts']['contain'] = [
-                'Medias',
-                'Comments' => [
-                    'conditions' => [
-                        'Comments.approved' => true
-                    ]
-                ]
-            ];
+            $authed = true;
         }
+
+        $posts = $this->paginate('Posts');
 
         $this->set([
             'posts' => $posts,

@@ -207,7 +207,7 @@ footer.footer {
 
 .sidebar.sticky-sidebar {
   position: sticky;
-  top: 77px;
+  top: 60px;
 }
 
 form div.required label::after {
