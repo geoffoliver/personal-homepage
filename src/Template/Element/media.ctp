@@ -35,13 +35,25 @@
             );
 
         } else {
-            echo $this->Html->image(
-                [
+            echo $this->Html->tag('img', null, [
+                'data-lazy-src' => $this->Url->build([
                     'controller' => 'Medias',
                     'action' => 'download',
-                    $media->id
+                    $media->id,
+                ])
+            ]);
+            /*
+            echo $this->Html->image(
+                null,
+                [
+                    'data-lazy-src' => $this->Url->build([
+                        'controller' => 'Medias',
+                        'action' => 'download',
+                        $media->id,
+                    ])
                 ]
             );
+            */
         }
     ?>
 </div>

@@ -30,9 +30,15 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                     <div class="column is-one-third">
                                         <div class="friends-list-friend">
                                             <div class="friends-list-friend-icon">
-                                                <?= $this->Html->image(
-                                                    $friend->icon,
+                                                <?= $this->Html->tag(
+                                                    'img',
+                                                    null,
                                                     [
+                                                        'data-lazy-src' => $this->Url->build([
+                                                            'controller' => 'Friends',
+                                                            'action' => 'icon',
+                                                            $friend->id
+                                                        ]),
                                                         'alt' => "Icon for {$friend->name}"
                                                     ]
                                                 ); ?>

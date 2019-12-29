@@ -29,10 +29,15 @@ $this->assign('hero', true);
                 </h3>
                 <div id="homepage-friends" class="sidebar-thumbnail-grid">
                     <?php foreach ($friends as $friend) : ?>
-                        <?= $this->Html->image(
+                        <?= $this->Html->tag(
+                            'img',
                             null,
                             [
-                                'data-lazy-src' => $friend->icon,
+                                'data-lazy-src' => $this->Url->build([
+                                    'controller' => 'Friends',
+                                    'action' => 'icon',
+                                    $friend->id
+                                ]),
                                 'alt' => "Icon for {$friend->name}"
                             ]
                         ); ?>

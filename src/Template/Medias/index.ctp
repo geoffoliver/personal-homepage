@@ -31,7 +31,8 @@ $this->append('css', $this->Html->css('medias/index.css'));
                         <?php
                         foreach ($medias as $media) {
                             echo $this->Html->link(
-                                $this->Html->image(
+                                $this->Html->tag(
+                                    'img',
                                     null,
                                     [
                                         'data-lazy-src' => $this->Url->build([

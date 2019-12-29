@@ -18,7 +18,8 @@
         );
     } else {
         echo $this->Html->link(
-            $this->Html->image(
+            $this->Html->tag(
+                'img',
                 null,
                 [
                     'data-lazy-src' => $this->Url->build([

@@ -5,6 +5,19 @@
   var lazyObserver;
   var lazyImages = [];
   var lazyloadThrottleTimeout;
+  var worker = null;
+
+  if (window.Worker) {
+    // make a worker for lazyloading images
+    worker = new Worker('/js/util/lazyload-worker.js');
+
+    // when the worker responds, we can update the image with the new src
+    worker.onmessage = function(message) {
+      var image = document.getElementById(message.data.id);
+      // image.src = message.data.src;
+      image.src = image.dataset.lazySrc;
+    };
+  }
 
   // puts the data-lazy-src of an image into the src of itself and then removes
   // the data-lazy-src attribute
@@ -14,17 +27,31 @@
       return;
     }
 
+    // make sure the image has an ID
+    if (!image.id) {
+      image.id = (new Date().getTime() + (Math.random() * 200)).toString(16);
+    }
+
     // when the image loads, remove the data-lazy-src and the data-loading attributes
     image.onload = function() {
       delete image.dataset.lazySrc;
       delete image.dataset.loading;
+      delete image.onload;
     };
 
     // so we don't try to load this image multiple times
     image.dataset.loading = true;
 
-    // set the src attribute
-    image.src = image.dataset.lazySrc;
+    // if we can, load this in a web worker
+    if (worker) {
+      worker.postMessage({
+        id: image.id,
+        url: image.dataset.lazySrc
+      });
+    } else {
+      // set the src attribute
+      image.src = image.dataset.lazySrc;
+    }
   }
 
   // loads images all at once in the instance that the browser doesn't support

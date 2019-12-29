@@ -1,5 +1,3 @@
-// TODO: change this to handle more mutations... iframes, scripts, <code>/<pre>
-// tags that need highlighting. all sorts of fun shit.
 (function() {
   // "fix" iframe embeds by slapping an extra class on the iframe parent so we
   // the iframes are displayed correctly... hopefully. this is really just a fix
@@ -35,10 +33,4 @@
 
   // tell the observer to start observing
   observer.observe(document.body, {childList: true, subtree: true});
-
-  // This will tell higlightJS to find all the <pre> and <code> blocks and
-  // highlight them. It needs to be improved, but you get the idea.
-  // document.querySelectorAll('pre code').forEach((block) => {
-  //   hljs.highlightBlock(block);
-  // });
 })();

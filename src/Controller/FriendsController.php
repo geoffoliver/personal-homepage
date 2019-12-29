@@ -20,7 +20,7 @@ class FriendsController extends AppController
     {
         parent::initialize();
 
-        $this->Authentication->allowUnauthenticated(['index']);
+        $this->Authentication->allowUnauthenticated(['index', 'icon']);
     }
 
     public function index()
@@ -139,6 +139,53 @@ class FriendsController extends AppController
                 ]
             ]
         ));
+    }
+
+    public function icon($id, $update = false)
+    {
+        $friend = $this->Friends->get($id);
+
+        // make sure we're trying to see an icon for a friend that exists
+        if (!$friend) {
+            throw new \Exception('Invalid friend');
+        }
+
+        // this is where the icon should/will live
+        $iconPath = CACHE . 'icons' . DS . $friend->id;
+
+        // how long should we cache the icon?
+        $maxAge = strtotime('-24 hours');
+
+        // make sure the friend has an icon
+        if ($friend->icon) {
+            // if we're not asking to update, check if we _should_ update because
+            // the icon is too old
+            if (!$update) {
+                $update = !file_exists($iconPath) || (filemtime($iconPath) > $maxAge);
+            }
+
+            // should we update the icon?
+            if ($update) {
+                // try it out!
+                if ($icon = @file_get_contents($friend->icon)) {
+                    file_put_contents($iconPath, $icon);
+                }
+            }
+
+            // try to return the icon for the friend
+            if (file_exists($iconPath)) {
+                $this->response = $this->response
+                    ->withCache(filemtime($iconPath), '+24 hours');
+                return $this->response->withFile($iconPath);
+            }
+        }
+
+        // if we're still here, just display a random icon for the friend
+        $icon = new \Jdenticon\Identicon();
+        $icon->setValue($friend->id);
+        $icon->setSize(64);
+        $icon->displayImage('png');
+        exit();
     }
 
     private function getDataFromSite($url)
