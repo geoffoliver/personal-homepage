@@ -40,6 +40,20 @@ class HomepageController extends AppController
     public function index($view = null)
     {
         $this->setVarsForHomepageAndFeed();
+
+        $authed = false;
+
+        if ($this->Authentication->getIdentity()) {
+            unset($this->paginate['Posts']['conditions']);
+            $authed = true;
+        }
+
+        $posts = $this->paginate('Posts');
+
+        $this->set([
+            'posts' => $posts,
+            'authed' => $authed
+        ]);
     }
 
     private function setVarsForHomepageAndFeed()
@@ -86,25 +100,6 @@ class HomepageController extends AppController
             'photos' => $photos,
             'videos' => $videos,
             'friends' => $friends
-        ]);
-    }
-
-    public function ajaxHomepage()
-    {
-        $this->viewBuilder()->setLayout('ajax');
-
-        $authed = false;
-
-        if ($this->Authentication->getIdentity()) {
-            unset($this->paginate['Posts']['conditions']);
-            $authed = true;
-        }
-
-        $posts = $this->paginate('Posts');
-
-        $this->set([
-            'posts' => $posts,
-            'authed' => $authed
         ]);
     }
 

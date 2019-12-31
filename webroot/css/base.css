@@ -102,6 +102,18 @@ body > nav.navbar > .container {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
+#hero.mini h1 {
+  font-size: 1rem;
+}
+
+#hero.mini h2 {
+  font-size: 0.8rem;
+}
+
+#hero.mini .hero-body {
+  padding: 1.5rem;
+}
+
 /**
  * Site footer
  */

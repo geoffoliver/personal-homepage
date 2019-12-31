@@ -1,5 +1,7 @@
 <?php
 $this->assign('title', __('My Feed'));
+$this->assign('miniHero', true);
+
 $this->append('css', $this->Html->css('feed.css'));
 $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 $this->append('script', $this->Html->script('util/ajax-paginate.js'));

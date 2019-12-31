@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+use Cake\Cache\Cache;
 use Cake\Http\Client;
 
 class FriendsController extends AppController
@@ -150,33 +151,44 @@ class FriendsController extends AppController
             throw new \Exception('Invalid friend');
         }
 
-        // this is where the icon should/will live
-        $iconPath = CACHE . 'icons' . DS . $friend->id;
-
-        // how long should we cache the icon?
-        $maxAge = strtotime('-24 hours');
+        $icon = Cache::read($friend->id, 'icons');
 
         // make sure the friend has an icon
         if ($friend->icon) {
             // if we're not asking to update, check if we _should_ update because
             // the icon is too old
             if (!$update) {
-                $update = !file_exists($iconPath) || (filemtime($iconPath) > $maxAge);
+                $update = !$icon;
             }
 
             // should we update the icon?
             if ($update) {
                 // try it out!
-                if ($icon = @file_get_contents($friend->icon)) {
-                    file_put_contents($iconPath, $icon);
+                if ($newIcon = @file_get_contents($friend->icon)) {
+                    $icon = $newIcon;
+                    Cache::write($friend->id, $icon, 'icons');
                 }
             }
 
-            // try to return the icon for the friend
-            if (file_exists($iconPath)) {
-                $this->response = $this->response
-                    ->withCache(filemtime($iconPath), '+24 hours');
-                return $this->response->withFile($iconPath);
+            if ($icon) {
+                // try to figure out the type we should send
+                $basename = basename($friend->icon);
+                $parts = explode('?', $basename);
+
+                $iconName = $parts[0];
+                // we can only do this if there's a dot, presumably followed by the extension
+                if (strpos($iconName, '.') !== false) {
+                    $nameParts = explode('.', $iconName);
+                    $ext = array_pop($nameParts);
+
+                    if ($ext) {
+                        // yay, things are good!
+                        $response = $this->response->withType($ext);
+                    }
+                }
+
+                // try to return the icon for the friend
+                return $this->response->withStringBody($icon);
             }
         }
 
