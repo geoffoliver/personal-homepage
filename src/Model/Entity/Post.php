@@ -34,6 +34,7 @@ class Post extends Entity
         'content' => true,
         'source' => true,
         'import_source' => true,
+        'embeds' => true,
         'public' => true,
         'allow_comments' => true,
         'user_id' => true,

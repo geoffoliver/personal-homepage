@@ -346,7 +346,7 @@ class ImportInstagramDataCommand extends Command
 
     private function fixText($str) {
         // replace hash symbols with html encoded versions
-        $str = str_replace('#', '&#35;', $str);
+        // $str = str_replace('#', '&#35;', $str);
 
         return $str;
     }

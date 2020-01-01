@@ -13,8 +13,7 @@ $content = $this->element(
     ['content' => $post->content]
 );
 
-$hasEmbed = strpos($content, 'pf-oembed') !== false;
-
+$embeds = $post->embeds ? json_decode($post->embeds) : false;
 ?>
 <section class="section" id="viewPost">
     <article>
@@ -30,22 +29,19 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                     <div class="box">
                         <?php if ($post->content): ?>
                             <div class="post-content content">
-                                <?= $content; ?>
                                 <?php
-                                    if (!$hasEmbed && $post->source) {
-                                        $embed = $oEmbed->getEmbedInfo($post->source);
-                                        if ($embed && $embed->code) {
-                                            $hasEmbed = true;
-                                            echo $oEmbed->wrapEmbed($embed->code);
+                                    echo $this->Html->div('main-content', $content);
+
+                                    if ($embeds && is_array($embeds)) {
+                                        foreach ($embeds as $embed) {
+                                            echo $this->Html->div('pf-oembed', $embed);
                                         }
                                     }
                                 ?>
                             </div>
                         <?php endif; ?>
                         <?php if (
-                            $post->medias && (
-                                $post->import_source !== 'twitter' || !$hasEmbed
-                            )
+                            $post->medias
                         ): ?>
                             <div class="post-media">
                                 <?php

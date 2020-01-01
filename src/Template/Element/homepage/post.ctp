@@ -1,15 +1,12 @@
 <?php
 use Cake\Utility\Hash;
-use App\Lib\oEmbed;
-
-$oEmbed = oEmbed::getInstance();
 
 $content = $this->element(
     'posts/content',
     ['content' => $post->content]
 );
 
-$hasEmbed = strpos($content, 'pf-oembed') !== false;
+$embeds = $post->embeds ? json_decode($post->embeds) : false;
 ?>
 <div class="box homepage-post">
     <article class="media">
@@ -30,23 +27,19 @@ $hasEmbed = strpos($content, 'pf-oembed') !== false;
                         &middot; <?= __('Updated'); ?>&nbsp;<?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?>
                     <?php endif; ?>
                 </h5>
-                <p>
-                    <?= $content; ?>
-                    <?php
-                        if (!$hasEmbed && $post->source) {
-                            $embed = $oEmbed->getEmbedInfo($post->source);
-                            if ($embed && $embed->code) {
-                                $hasEmbed = true;
-                                echo $oEmbed->wrapEmbed($embed->code);
-                            }
+                <?php
+                    echo $this->Html->div('main-content', $content);
+
+                    if ($embeds && is_array($embeds)) {
+                        foreach ($embeds as $embed) {
+                            echo $this->Html->div('pf-oembed', $embed);
                         }
-                    ?>
-                </p>
-                <?php if (
-                    $post->medias && (
-                        $post->import_source !== 'twitter' || !$hasEmbed
-                    )
-                ): ?>
+                    }
+
+                    if (
+                        $post->medias
+                    ):
+                ?>
                     <div class="post-media">
                         <?php foreach ($post->medias as $media): ?>
                             <?= $this->element('medias/thumbnail', ['media' => $media]); ?>

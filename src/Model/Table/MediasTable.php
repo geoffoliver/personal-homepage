@@ -252,11 +252,11 @@ class MediasTable extends Table
         }
 
         if (strpos($mime, 'video') === 0) {
-            $ffmpeg = \FFMpeg\FFMpeg::create();
-            $video = $ffmpeg->open($file->path);
-            $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(0));
-
             try {
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $video = $ffmpeg->open($file->path);
+                $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(0));
+
                 // turn the video filename into a jpg filename
                 $imageThumb = $thumbPath . '.jpg';
 

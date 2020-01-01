@@ -1,14 +1,15 @@
 <?php
 
-use App\Lib\oEmbed;
+// use App\Lib\oEmbed;
 
 if (!isset($content) || !$content) {
     return;
 }
 
 $Parsedown = new ParsedownExtra();
-$oEmbed = oEmbed::getInstance();
+// $oEmbed = oEmbed::getInstance();
 $parsed = $Parsedown->text($content);
 
-echo $oEmbed->embed($parsed);
+// echo $oEmbed->embed($parsed);
 
+echo $parsed;

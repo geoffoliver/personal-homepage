@@ -5,6 +5,10 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use Cake\Datasource\EntityInterface;
+use ArrayObject;
+use App\Lib\oEmbed;
 
 /**
  * Posts Model
@@ -92,5 +96,25 @@ class PostsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
+    {
+        $oEmbed = oEmbed::getInstance();
+        $embeds = [];
+
+        if ($emb = $oEmbed->getEmbeds($data)) {
+            $embeds = $emb;
+        } elseif ($data['source']) {
+            $embedInfo = $oEmbed->getEmbedInfo($data['source']);
+
+            if ($embedInfo && $embedInfo->code) {
+                $embeds = [$embedInfo->code];
+            }
+        }
+
+        $data['embeds'] = json_encode($embeds);
+
+        return $data;
     }
 }

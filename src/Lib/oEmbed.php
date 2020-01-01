@@ -35,6 +35,37 @@ class oEmbed {
         return self::$instance;
     }
 
+    public function getEmbeds(\ArrayObject $entity)
+    {
+        $embeds = [];
+        // pull out any links from the content
+        if (preg_match_all('/<a[^>]+href=[^>]+>[^<]+<\/a>/', $entity['content'], $links)) {
+            // loop over the links so we can _maybe_ embed it
+            foreach ($links[0] as $link) {
+                // this is an easy way to get the href from a link... right?
+                $xLink = new \SimpleXMLElement($link);
+                $url = isset($xLink['href']) ? (string)$xLink['href'] : false;
+
+                if (!$url) {
+                    continue;
+                }
+
+                // get the embed info fresh
+                $embedInfo =$this->getEmbedInfo($url);
+
+                if (!$embedInfo) {
+                    continue;
+                }
+
+                if ($embedInfo->code) {
+                    $embeds[]= $embedInfo->code;
+                }
+            }
+        }
+
+        return $embeds;
+    }
+
     public function embed($content)
     {
         // pull out any links from the content

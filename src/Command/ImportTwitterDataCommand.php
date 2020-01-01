@@ -16,6 +16,7 @@ class ImportTwitterDataCommand extends Command
 {
     private $user;
     private $path;
+    private $zip;
     private $mediaZip;
     private $photosAlbum;
     private $videosAlbum;
@@ -55,7 +56,7 @@ class ImportTwitterDataCommand extends Command
 
         // we always need a path to the FB data
         $parser->addArgument('path', [
-            'help' => __('The path to your _unzipped_ Twitter data. Just unzip the main archive, not any of the zips contained within it.'),
+            'help' => __('The path to your zipped Twitter data.'),
             'required' => true
         ]);
 
@@ -78,7 +79,7 @@ class ImportTwitterDataCommand extends Command
         // tell the user what's going on
         $io->out(__('Importing Twitter data...'));
 
-        // get the actual path (in case the user enters something like ./tmp/twitter-data)
+        // get the actual path to the zip (in case the user enters something like ./tmp/twitter-data.zip)
         $path = realpath($args->getArgument('path'));
 
         $user = $this->Users->find();
@@ -101,14 +102,16 @@ class ImportTwitterDataCommand extends Command
 
         $this->user = $user;
 
-        // make sure the path exists
-        if (!ImportUtils::checkPath($path, $io)) {
+        // make sure the import file exists
+        if (!ImportUtils::checkFile($path, $io)) {
             return;
         }
 
-        // setup some directories
-        $this->path = $path;
-        $this->mediaDir = $this->path . DS . 'tweet_media';
+        $this->zip = new \ZipArchive();
+        if (!$this->zip->open($path)) {
+            $io->error__('Unable to open Twitter data zip file');
+            return;
+        }
 
         // give a little output
         $io->out(__('Processing data...'));
@@ -140,35 +143,12 @@ class ImportTwitterDataCommand extends Command
         $io->out(__('Importing tweets...'));
 
         // this is where tweets _should_ live
-        $tweetFile = $this->path . DS . 'tweet.js';
-
-        // make sure we can work with the tweet file
-        if (!ImportUtils::checkFile($tweetFile, $io)) {
-            return;
-        }
-
-        // grab the contents of the file that contains tweets
-        $tweetFileContent = file_get_contents($tweetFile);
+        $tweetFileContent = $this->zip->getFromName('tweet.js');
 
         if (!$tweetFileContent) {
             $io->error(__('Tweet file is empty'));
             return;
         }
-
-        // this is the zip file that contains all the media for tweets
-        $mediaZipPath = $this->path . DS . 'tweet_media' . DS . 'tweet-media-part1.zip';
-
-        // make sure we can access the zip file
-        if (!ImportUtils::checkFile($mediaZipPath, $io)) {
-            return;
-        }
-
-        // get a handle on the zip file
-        $this->mediaZip = new \ZipArchive();
-        if ($this->mediaZip->open($mediaZipPath) !== true) {
-            $io->error(__('Unable to open media zip file'));
-            return;
-        };
 
         $albums = [
             [
@@ -318,7 +298,6 @@ class ImportTwitterDataCommand extends Command
                     $content
                 );
             }
-            $io->out(__('Content: {0}', $content));
         }
 
 
@@ -359,9 +338,6 @@ class ImportTwitterDataCommand extends Command
             'medias' => $mediaIds,
         ];
 
-        // replace octothorpes with HTML version
-        $entity['content'] = str_replace('#', '&#35;', $entity['content']);
-
         $post = $this->Posts->newEntity($entity);
 
         if ($errors = $post->getErrors()) {
@@ -372,7 +348,6 @@ class ImportTwitterDataCommand extends Command
         if ($this->Posts->save($post)) {
             $this->stats['posts']['success']++;
             $io->success(__('Tweet saved!'));
-
             if ($medias) {
                 $photos = [];
                 $videos = [];
@@ -401,7 +376,6 @@ class ImportTwitterDataCommand extends Command
             $this->stats['posts']['fail']++;
             $io->error(__('Unable to save tweet'));
         }
-
     }
 
     private function importMedia($media, $tweet, $io)
@@ -473,14 +447,15 @@ class ImportTwitterDataCommand extends Command
         }
 
         // try to get the file out of the zip
-        $extracted = $this->mediaZip->getFromName($mediaFile);
+        $extracted = $this->zip->getFromName('tweet_media' . DS . $mediaFile);
 
         if (!$extracted) {
             $io->error(__('Unable to find file named "{0}" in media archive', $mediaFile));
+            return;
         }
 
         // this is where the file will live for a moment
-        $tmpName = TMP . 'import-' . $mediaFile;
+        $tmpName = TMP . 'import' . DS . $mediaFile;
 
         if (!file_put_contents($tmpName, $extracted)) {
             $io->error(__('Unable to create temporary file from "{0}"', $mediaFile));
@@ -513,6 +488,8 @@ class ImportTwitterDataCommand extends Command
             // yay!!!
             return $media;
         } else {
+            // delete the temporary file
+            unlink($tmpName);
             $this->stats['media']['fail']++;
         }
 
