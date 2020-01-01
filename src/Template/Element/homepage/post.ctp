@@ -37,7 +37,9 @@ $embeds = $post->embeds ? json_decode($post->embeds) : false;
                     }
 
                     if (
-                        $post->medias
+                        $post->medias && (
+                            $post->import_source !== 'twitter' || !$embeds
+                        )
                     ):
                 ?>
                     <div class="post-media">
