@@ -16,6 +16,7 @@ class ImportInstagramDataCommand extends Command
 {
     private $user;
     private $path;
+    private $zip;
     private $photosAlbum;
     private $videosAlbum;
 
@@ -52,9 +53,9 @@ class ImportInstagramDataCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
-        // we always need a path to the FB data
+        // we always need a path to the IG data
         $parser->addArgument('path', [
-            'help' => __('The path to your _unzipped_ Instagram data.'),
+            'help' => __('The path to your zipped Instagram data.'),
             'required' => true
         ]);
 
@@ -77,7 +78,7 @@ class ImportInstagramDataCommand extends Command
         // tell the user what's going on
         $io->out(__('Importing Instagram data...'));
 
-        // get the actual path (in case the user enters something like ./tmp/instagram-data)
+        // get the actual path (in case the user enters something like ./tmp/instagram-data.zip)
         $path = realpath($args->getArgument('path'));
 
         $user = $this->Users->find();
@@ -100,13 +101,20 @@ class ImportInstagramDataCommand extends Command
 
         $this->user = $user;
 
-        // make sure the path exists
-        if (!ImportUtils::checkPath($path, $io)) {
+        // make sure the zip exists
+        if (!ImportUtils::checkFile($path, $io)) {
             return;
         }
 
         // setup some directories
         $this->path = $path;
+
+        // try to open the zip
+        $this->zip = new \ZipArchive();
+        if (!$this->zip->open($this->path)) {
+            $io->error(__('Unable to open zip {0}', $this->path));
+            return;
+        }
 
         $albums = [
             [
@@ -176,6 +184,7 @@ class ImportInstagramDataCommand extends Command
         $io->out(__('Importing photos, videos, and stories...'));
 
         // this is where instagram posts _should_ live
+        /*
         $mediaFile = $this->path . DS . 'media.json';
 
         // make sure we can work with the instagram file
@@ -185,6 +194,8 @@ class ImportInstagramDataCommand extends Command
 
         // grab the contents of the file that contains instagram posts
         $mediaFileContent = file_get_contents($mediaFile);
+        */
+        $mediaFileContent = $this->zip->getFromName('media.json');
 
         if (!$mediaFileContent) {
             $io->error(__('Instagram media file is empty'));
@@ -268,12 +279,8 @@ class ImportInstagramDataCommand extends Command
         $io->out(__('Importing media...'));
 
         // grab the filename for the file
-        $mediaFile = $this->path . DS . $igPost->path;
+        $mediaFile = $igPost->path;
         $mediaFilename = basename($mediaFile);
-
-        if (!ImportUtils::checkFile($mediaFile, $io)) {
-            return;
-        }
 
         // if we've already imported this media item, just use that
         $existing = $this->Medias->find()
@@ -288,9 +295,20 @@ class ImportInstagramDataCommand extends Command
             return $existing;
         }
 
+        // pull the file out of the zip
+        $extracted = $this->zip->getFromName($mediaFile);
+
+        // this is where the file will live for a moment
+        $tmpName = TMP . 'import-' . $mediaFilename;
+
+        if (!file_put_contents($tmpName, $extracted)) {
+            $io->error(__('Unable to create temporary file from "{0}"', $mediaFilename));
+            return;
+        }
+
         // create a data structure that the `uploadAndCreate` can work with
         $create = [
-            'tmp_name' => $mediaFile,
+            'tmp_name' => $tmpName,
             'name' => $mediaFilename,
         ];
 
@@ -314,6 +332,8 @@ class ImportInstagramDataCommand extends Command
         if ($media = $this->Medias->uploadAndCreate($create, false, $addlData)) {
             $io->success(__('Media saved'));
             $this->stats['media']['success']++;
+            // delete the temporary file
+            unlink($tmpName);
             // yay!!!
             return $media;
         } else {
