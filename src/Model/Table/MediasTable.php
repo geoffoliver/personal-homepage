@@ -129,7 +129,7 @@ class MediasTable extends Table
             throw new \Exception(__('Invalid upload'));
         }
 
-        if (!Hash::get($file, 'size')) {
+        if ($shouldBeUploaded && !Hash::get($file, 'size')) {
             throw new \Exception(__('Invalid file size'));
         }
 
