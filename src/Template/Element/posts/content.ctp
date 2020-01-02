@@ -1,15 +1,11 @@
 <?php
 
-// use App\Lib\oEmbed;
-
 if (!isset($content) || !$content) {
     return;
 }
 
-$Parsedown = new ParsedownExtra();
-// $oEmbed = oEmbed::getInstance();
+$Parsedown = new Parsedown();
+$Parsedown->setStrictMode(true);
 $parsed = $Parsedown->text($content);
 
-// echo $oEmbed->embed($parsed);
-
-echo $parsed;
+echo $this->Html->div('post-content', $parsed);

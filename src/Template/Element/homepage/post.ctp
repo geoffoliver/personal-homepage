@@ -1,12 +1,5 @@
 <?php
 use Cake\Utility\Hash;
-
-$content = $this->element(
-    'posts/content',
-    ['content' => $post->content]
-);
-
-$embeds = $post->embeds ? json_decode($post->embeds) : false;
 ?>
 <div class="box homepage-post">
     <article class="media">
@@ -28,26 +21,27 @@ $embeds = $post->embeds ? json_decode($post->embeds) : false;
                     <?php endif; ?>
                 </h5>
                 <?php
-                    echo $this->Html->div('main-content', $content);
-
-                    if ($embeds && is_array($embeds)) {
-                        foreach ($embeds as $embed) {
-                            echo $this->Html->div('pf-oembed', $embed);
-                        }
+                    if ($post->content) {
+                        echo $this->element(
+                            'posts/content',
+                            ['content' => $post->content]
+                        );
                     }
 
-                    if (
-                        $post->medias && (
-                            $post->import_source !== 'twitter' || !$embeds
-                        )
-                    ):
+                    if ($post->embeds) {
+                        echo $this->element(
+                            'posts/embeds',
+                            ['post' => $post]
+                        );
+                    }
+
+                    if ($post->medias) {
+                        echo $this->element(
+                            'posts/media',
+                            ['post' => $post]
+                        );
+                    }
                 ?>
-                    <div class="post-media">
-                        <?php foreach ($post->medias as $media): ?>
-                            <?= $this->element('medias/thumbnail', ['media' => $media]); ?>
-                        <?php endforeach;?>
-                    </div>
-                <?php endif;?>
                 <hr />
                 <?= $this->element('item-footer', ['item' => $post]); ?>
             </div>

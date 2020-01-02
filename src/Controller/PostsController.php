@@ -193,14 +193,20 @@ class PostsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+
         $post = $this->Posts->get($id);
+
+        if (!$post) {
+            throw new \Exception(__('Invalid post'));
+        }
+
         if ($this->Posts->delete($post)) {
             $this->Flash->success(__('The post has been deleted.'));
         } else {
             $this->Flash->error(__('The post could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['controller' => 'Homepage', 'action' => 'homepage']);
+        return $this->redirect(['_name' => 'homepage']);
     }
 
     public function feed()

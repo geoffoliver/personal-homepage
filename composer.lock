@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b0e0407e05e7e5bde596e0054423e66",
+    "content-hash": "5def87bf5b6fcba1cbd0eb27f563782c",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -647,16 +647,16 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.7.3",
+            "version": "dev-1.8.x-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7"
+                "reference": "87b57bf3cbf0bf5024070a8a7379e6c216a44169"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
-                "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/87b57bf3cbf0bf5024070a8a7379e6c216a44169",
+                "reference": "87b57bf3cbf0bf5024070a8a7379e6c216a44169",
                 "shasum": ""
             },
             "require": {
@@ -689,51 +689,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2019-03-17T18:48:37+00:00"
-        },
-        {
-            "name": "erusev/parsedown-extra",
-            "version": "0.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/erusev/parsedown-extra.git",
-                "reference": "0db5cce7354e4b76f155d092ab5eb3981c21258c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown-extra/zipball/0db5cce7354e4b76f155d092ab5eb3981c21258c",
-                "reference": "0db5cce7354e4b76f155d092ab5eb3981c21258c",
-                "shasum": ""
-            },
-            "require": {
-                "erusev/parsedown": "~1.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "ParsedownExtra": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Emanuil Rusev",
-                    "email": "hello@erusev.com",
-                    "homepage": "http://erusev.com"
-                }
-            ],
-            "description": "An extension of Parsedown that adds support for Markdown Extra.",
-            "homepage": "https://github.com/erusev/parsedown-extra",
-            "keywords": [
-                "markdown",
-                "markdown extra",
-                "parsedown",
-                "parser"
-            ],
-            "time": "2015-11-01T10:19:22+00:00"
+            "time": "2019-04-10T20:54:34+00:00"
         },
         {
             "name": "evenement/evenement",
@@ -2450,6 +2406,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2018-09-05T19:29:37+00:00"
         }
     ],
@@ -5483,6 +5440,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "erusev/parsedown": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

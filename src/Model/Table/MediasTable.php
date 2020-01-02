@@ -152,7 +152,7 @@ class MediasTable extends Table
         if ($filename && strpos($filename, '.') !== false) {
             $parts = explode('.', $filename);
             $ext = strtolower($parts[count($parts) - 1]);
-            $uploadFilename.= ".{$ext}";
+            $uploadFilename .= ".{$ext}";
         }
 
         $uploadFileDest = $uploadDest->path . DS . $uploadFilename;
@@ -168,41 +168,47 @@ class MediasTable extends Table
         if ($moved) {
             $mediaFile = new File($uploadFileDest);
 
-            $thumbnailFilename = $this->generateThumbnail($mediaFile);
-            if ($thumbnailFilename) {
-                $thumbnailFilename = $uploadFolder . DS . $thumbnailFilename;
-            }
-
-            $squareThumbnailFilename = $this->generateThumbnail($mediaFile, true);
-            if ($squareThumbnailFilename) {
-                $squareThumbnailFilename = $uploadFolder . DS . $squareThumbnailFilename;
-            }
-
-            $mime = $mediaFile->mime();
-
-            $newMedia = $this->newEntity(array_merge([
-                'mime' => $mime,
-                'size' => $mediaFile->size(),
-                'thumbnail' => $thumbnailFilename,
-                'square_thumbnail' => $squareThumbnailFilename,
-                'local_filename' => $uploadFolder . DS . $uploadFilename,
-                'original_filename' => $filename,
-            ], $extraData));
-
-            if ($newMedia->getErrors()) {
-                $errors = $newMedia->getErrors();
-                $err = [];
-                foreach ($errors as $field => $ers) {
-                    foreach ($ers as $e) {
-                        $err[]= "{$field}: " . print_r($e, true);
-                    }
+            try {
+                $thumbnailFilename = $this->generateThumbnail($mediaFile);
+                if ($thumbnailFilename) {
+                    $thumbnailFilename = $uploadFolder . DS . $thumbnailFilename;
                 }
 
-                throw new \Exception(implode(". ", $err));
-            }
+                $squareThumbnailFilename = $this->generateThumbnail($mediaFile, true);
+                if ($squareThumbnailFilename) {
+                    $squareThumbnailFilename = $uploadFolder . DS . $squareThumbnailFilename;
+                }
 
-            if ($this->save($newMedia)) {
-                return $newMedia;
+                $mime = $mediaFile->mime();
+
+                $newMedia = $this->newEntity(array_merge([
+                    'mime' => $mime,
+                    'size' => $mediaFile->size(),
+                    'thumbnail' => $thumbnailFilename,
+                    'square_thumbnail' => $squareThumbnailFilename,
+                    'local_filename' => $uploadFolder . DS . $uploadFilename,
+                    'original_filename' => $filename,
+                ], $extraData));
+
+                if ($newMedia->getErrors()) {
+                    $errors = $newMedia->getErrors();
+                    $err = [];
+                    foreach ($errors as $field => $ers) {
+                        foreach ($ers as $e) {
+                            $err[]= "{$field}: " . print_r($e, true);
+                        }
+                    }
+
+                    throw new \Exception(implode(". ", $err));
+                }
+
+                $mediaFile->close();
+
+                if ($this->save($newMedia)) {
+                    return $newMedia;
+                }
+            } catch (\Exception $ex) {
+                $mediaFile->close();
             }
         }
 
@@ -243,10 +249,12 @@ class MediasTable extends Table
 
             if ($thumb->writeImage($thumbPath)) {
                 $thumb->destroy();
+                unset($thumb);
                 return basename($thumbPath);
             }
 
             $thumb->destroy();
+            unset($thumb);
 
             return false;
         }
@@ -263,6 +271,10 @@ class MediasTable extends Table
                 $frame->save($imageThumb);
                 $thumb = new \Imagick($imageThumb);
 
+                // maybe this will help memory usage? :shrug:
+                unset($frame);
+                unset($video);
+
                 if ($square) {
                     $thumb->cropThumbnailImage($width, $height, true);
                 } else {
@@ -271,8 +283,12 @@ class MediasTable extends Table
 
                 if ($thumb->writeImage($imageThumb)) {
                     $thumb->destroy();
+                    unset($thumb);
                     return basename($imageThumb);
                 }
+
+                $thumb->destroy();
+                unset($thumb);
             } catch (\Exception $ex) {
                 return false;
             }

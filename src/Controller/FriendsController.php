@@ -176,6 +176,7 @@ class FriendsController extends AppController
                 $parts = explode('?', $basename);
 
                 $iconName = $parts[0];
+
                 // we can only do this if there's a dot, presumably followed by the extension
                 if (strpos($iconName, '.') !== false) {
                     $nameParts = explode('.', $iconName);

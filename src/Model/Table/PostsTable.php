@@ -100,18 +100,24 @@ class PostsTable extends Table
 
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
-        $oEmbed = oEmbed::getInstance();
+        $oEmbed = new oEmbed();//oEmbed::getInstance();
         $embeds = [];
 
-        if ($emb = $oEmbed->getEmbeds($data)) {
-            $embeds = $emb;
-        } elseif ($data['source']) {
+        if (isset($data['source']) && $data['source']) {
             $embedInfo = $oEmbed->getEmbedInfo($data['source']);
 
             if ($embedInfo && $embedInfo->code) {
                 $embeds = [$embedInfo->code];
             }
         }
+
+        /*
+        if (!$embeds) {
+            if ($emb = $oEmbed->getEmbeds($data)) {
+                $embeds = $emb;
+            }
+        }
+        */
 
         $data['embeds'] = json_encode($embeds);
 

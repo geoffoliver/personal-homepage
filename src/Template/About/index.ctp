@@ -1,5 +1,6 @@
 <?php
-$Parsedown = new ParsedownExtra();
+$Parsedown = new Parsedown();
+$Parsedown->setStrictMode(true);
 
 $this->assign('title', __('About Me'));
 ?>

@@ -135,7 +135,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    $routes->connect('/medias/view/:id',
+    $routes->connect('/view-media/:id',
         [
             'controller' => 'Medias',
             'action' => 'view'

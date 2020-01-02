@@ -24,15 +24,20 @@ if (!isset($share)) {
     $share = true;
 }
 
+$itemUrl = $this->Url->build([
+    'controller' => $isPost ? 'Posts' : 'Medias',
+    'action' => 'view',
+    $item->id
+], true);
+
 if ($share) {
     $links[]= $this->Html->link(
         '<span class="fas fa-share" aria-hidden="true"></span>&nbsp;' . __('Share'),
+        '#',
         [
-            'href' => '#'
-        ],
-        [
+            'data-url' => $itemUrl,
             'escape' => false,
-            'class' => 'level-item'
+            'class' => 'level-item share-item'
         ]
     );
 }
@@ -134,7 +139,7 @@ if ($isMedia) {
                     $item->id
                 ],
                 [
-                    'confirm' => __('Are you sure you want to delete this?'),
+                    'confirm' => __('Are you sure you want to delete this item?\n\nYou can not undo this!'),
                     'escape' => false
                 ]
             ); ?>

@@ -4,10 +4,11 @@ namespace App\Lib;
 use Cake\Cache\Cache;
 
 use Embed\Embed;
+use Embed\Http\CurlDispatcher;
 
 class oEmbed {
 
-    private static $instance = null;
+    // private static $instance = null;
 
     private $embeddable = [
         '/https:\/\/twitter\.com\/[^\/]+\/status\/[\d]+/',
@@ -21,37 +22,50 @@ class oEmbed {
 
     private $cacheName = 'o_embed';
 
-    private function __construct()
+    private $dispatcher;
+
+    public function __construct()
     {
         // nothing happens here
+        $this->dispatcher = new CurlDispatcher([
+            CURLOPT_HTTPHEADER => [],
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 10,
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_FORBID_REUSE => true,
+            CURLOPT_FRESH_CONNECT => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_AUTOREFERER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_USERAGENT => 'Embed PHP library',
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+        ]);
     }
 
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new oEmbed();
-        }
+    // public static function getInstance()
+    // {
+    //     if (self::$instance === null) {
+    //         self::$instance = new oEmbed();
+    //     }
 
-        return self::$instance;
-    }
+    //     return self::$instance;
+    // }
 
     public function getEmbeds(\ArrayObject $entity)
     {
         $embeds = [];
         // pull out any links from the content
-        if (preg_match_all('/<a[^>]+href=[^>]+>[^<]+<\/a>/', $entity['content'], $links)) {
-            // loop over the links so we can _maybe_ embed it
+        if (preg_match_all('/(https?:\/\/[^\s]+)/', $entity['content'], $links)) {
+            // loop over the links so we can _maybe_ embed them
             foreach ($links[0] as $link) {
-                // this is an easy way to get the href from a link... right?
-                $xLink = new \SimpleXMLElement($link);
-                $url = isset($xLink['href']) ? (string)$xLink['href'] : false;
-
-                if (!$url) {
-                    continue;
-                }
+                // strip out any leading/trailing parens in case we're inside
+                // a markdown link
+                $link = ltrim(rtrim($link, ')'), '(');
 
                 // get the embed info fresh
-                $embedInfo =$this->getEmbedInfo($url);
+                $embedInfo =$this->getEmbedInfo($link);
 
                 if (!$embedInfo) {
                     continue;
@@ -107,18 +121,21 @@ class oEmbed {
         $cacheKey = md5($url);
         $cached = Cache::read($cacheKey, $this->cacheName);
 
-        if ($cached !== false) {
+        if ($cached) {
             // we've already worked with this URL, hand back the info we have
             return $cached;
         }
 
         $result = null;
 
+        /*
         foreach ($this->embeddable as $emb) {
             if (preg_match($emb, $url)) {
+        */
                 try {
-                    $result = Embed::create($url);
+                    $result = Embed::create($url, null, $this->dispatcher);
                 } catch (\Exception $ex) {
+                    $result = false;
                     // we don't really care if this fails, but we need to catch
                     // any exceptions that might be thrown
                 }
@@ -126,12 +143,14 @@ class oEmbed {
                 // save _whatever_ we got back into the cache
                 Cache::write($cacheKey, $result, $this->cacheName);
                 return $result;
+        /*
             }
         }
 
         // nothing matched, whatever, we don't care. cache that and move on
         Cache::write($cacheKey, null, $this->cacheName);
         return null;
+        */
     }
 
     public function wrapEmbed($code) {

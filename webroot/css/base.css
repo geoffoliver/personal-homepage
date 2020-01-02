@@ -67,8 +67,6 @@ body > nav.navbar > .container {
   }
 }
 
-
-
 /**
  * Hero, aka your cover photo
  */
@@ -239,6 +237,10 @@ main > .container > article.message {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
+.share-item svg {
+  pointer-events: none;
+}
+
 /**
  * For highlighting code
  */
@@ -337,7 +339,6 @@ pre .hljs {
 .video-container {
   position: relative;
   padding-bottom: 56.25%; /*16:9*/
-  padding-top: 30px;
   height: 0;
   overflow: hidden;
 }

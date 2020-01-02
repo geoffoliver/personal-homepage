@@ -2,7 +2,8 @@
 use Cake\Utility\Hash;
 $this->assign('title', $media->name);
 $this->append('css', $this->Html->css('medias/view.css'));
-$Parsedown = new ParsedownExtra();
+$Parsedown = new Parsedown();
+$Parsedown->setStrictMode(true);
 ?>
 <section class="section" id="viewMedia">
     <article>
@@ -25,18 +26,6 @@ $Parsedown = new ParsedownExtra();
                         <?php endif; ?>
                         <?php if ($media->post && $media->post->content): ?>
                             <hr />
-                            <h4 class="is-size-5">
-                                <?= $this->Html->link(
-                                    __('Original Post &raquo;'),
-                                    [
-                                        '_name' => 'viewPost',
-                                        $media->post->id
-                                    ],
-                                    [
-                                        'escape' => false
-                                    ]
-                                ); ?>
-                            </h4>
                             <p>
                                 <?= $Parsedown->text($media->post->content); ?>
                             </p>

@@ -388,6 +388,7 @@ class ImportTwitterDataCommand extends Command
 
         // this is where the filename will go
         $mediaFile = null;
+        $possibleFiles = [];
 
         if ($type === "photo") {
             // photos are easy, just the tweet id concated with a hyphen
@@ -411,12 +412,20 @@ class ImportTwitterDataCommand extends Command
                     // this is the playlist, skip it
                     continue;
                 }
-                // convert the bitrate to a number so we can compare it..
-                $br = (int)$variant->bitrate;
-                if ($br > $bitrate) {
-                    // bigger bitrate on the video, so use it
-                    $mediaFile = $tweet->id . '-' . basename($variant->url);
-                    $br = $bitrate;
+
+                $varUrl = basename($variant->url);
+
+                if (strpos($varUrl, '?') !== false) {
+                    list ($varUrl, ) = explode('?', $varUrl);
+                }
+
+                // generate a filename so we can see if it exists in the zip
+                $varFilename = $tweet->id . '-' . basename($varUrl);
+
+                // if we can find the file, use that sonofabitch!
+                if ($this->zip->locateName('tweet_media' . DS . $varFilename)) {
+                    $mediaFile = $varFilename;
+                    break;
                 }
             }
         } else {
@@ -442,7 +451,7 @@ class ImportTwitterDataCommand extends Command
             ->first();
 
         if ($existing) {
-            $io->out(__('Media {0} exists in database', $existing->name));
+            $io->out(__('Media {0} exists in database', $existing->original_filename));
             return $existing;
         }
 

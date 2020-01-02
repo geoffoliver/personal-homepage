@@ -1,5 +1,5 @@
 .homepage-post .post-media {
-  margin: 0 -21px 1.5rem;
+  margin: 1rem -20px 1.5rem;
   display: flex;
   flex-wrap: wrap;
   border-top: 1px solid #e3e3e3;
@@ -14,12 +14,28 @@
   display: flex;
   max-width: 50%;
   min-width: 33%;
-  padding: 1px;
-  background: #e3e3e3;
+  padding: 0 1px;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  /*
+  max-height: 300px;
+  overflow: hidden;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-direction: column;
+  */
+}
+
+.homepage-post .post-media a:hover,
+.homepage-post .post-media a:active,
+.homepage-post .post-media a:focus {
+  background: #f2f2f2;
 }
 
 .homepage-post .post-media a img {
-  width: 100%;
+  /* width: 100%; */
+  max-width: 100%;
   align-self: center;
 }
 

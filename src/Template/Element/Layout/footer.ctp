@@ -25,6 +25,8 @@ $this->append('script', $this->Html->script('util/lazyload.js'));
 $this->append('script', $this->Html->script('util/fix-iframe-embeds.js'));
 $this->append('script', $this->Html->script('util/nav.js'));
 $this->append('script', $this->Html->script('util/highlight-code.js'));
+$this->append('script', $this->Html->script('util/external-links.js'));
+$this->append('script', $this->Html->script('util/share.js'));
 
 // code highlighting
 /*

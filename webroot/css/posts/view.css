@@ -1,4 +1,28 @@
-.post-media .media-container img {
-  max-width: 100%;
+.post-media {
+  margin: 15px -20px 15px;
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.post-media a {
+  background: #f9f9f9;
+  display: flex;
   width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-media a:hover,
+.post-media a:active,
+.post-media a:focus {
+  background: #f2f2f2;
+}
+
+
+.post-media img {
+  max-width: 100%;
+}
+
+.post-media + hr {
+  display: none;
 }
