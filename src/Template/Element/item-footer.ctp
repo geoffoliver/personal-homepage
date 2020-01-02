@@ -24,11 +24,15 @@ if (!isset($share)) {
     $share = true;
 }
 
-$itemUrl = $this->Url->build([
-    'controller' => $isPost ? 'Posts' : 'Medias',
-    'action' => 'view',
-    $item->id
-], true);
+if ($isPost && $item->source) {
+    $itemUrl = $item->source;
+} else {
+    $itemUrl = $this->Url->build([
+        'controller' => $isPost ? 'Posts' : 'Medias',
+        'action' => 'view',
+        $item->id
+    ], true);
+}
 
 if ($share) {
     $links[]= $this->Html->link(
