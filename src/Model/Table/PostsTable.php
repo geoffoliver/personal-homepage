@@ -100,8 +100,22 @@ class PostsTable extends Table
 
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
-        $oEmbed = new oEmbed();//oEmbed::getInstance();
+        $oEmbed = new oEmbed();
         $embeds = [];
+
+        $data['content'] = trim($data['content']);
+
+        if ($data['content'] && !$data['source']) {
+            $spacePos = strpos($data['content'], ' ');
+
+            if (
+                !$data['source'] &&
+                $spacePos === false &&
+                preg_match('/^https?:\/\/.*$/', $data['content'])
+            ) {
+                $data['source'] = $data['content'];
+            }
+        }
 
         if (isset($data['source']) && $data['source']) {
             $embedInfo = $oEmbed->getEmbedInfo($data['source']);
@@ -111,13 +125,11 @@ class PostsTable extends Table
             }
         }
 
-        /*
-        if (!$embeds) {
-            if ($emb = $oEmbed->getEmbeds($data)) {
-                $embeds = $emb;
-            }
-        }
-        */
+        // if (!$embeds) {
+        //     if ($emb = $oEmbed->getEmbeds($data)) {
+        //         $embeds = $emb;
+        //     }
+        // }
 
         $data['embeds'] = json_encode($embeds);
 
