@@ -20,6 +20,7 @@ class ImportFacebookDataCommand extends Command
     private $user;
     private $zip;
     private $path;
+    private $importDir;
     private $photosDir;
     private $albumsDir;
     private $videosDir;
@@ -64,7 +65,7 @@ class ImportFacebookDataCommand extends Command
 
         // we always need a path to the FB data
         $parser->addArgument('path', [
-            'help' => __('The path to your _unzipped_ Facebook data.'),
+            'help' => __('The path to your zipped Facebook data.'),
             'required' => true
         ]);
 
@@ -111,7 +112,7 @@ class ImportFacebookDataCommand extends Command
         $this->user = $user;
 
         // make sure the path exists
-        if (!ImportUtils::checkPath($path, $io)) {
+        if (!ImportUtils::checkFile($path, $io)) {
             return;
         }
 
@@ -124,10 +125,17 @@ class ImportFacebookDataCommand extends Command
             return;
         }
 
-        $this->postsDir = new Folder(TMP . DS . 'import' . DS . 'posts', 0777, true);
-        $this->photosDir = new Folder(TMP . DS . 'import' . DS . 'photos_and_videos', 0777, true);
-        $this->albumsDir = new Folder($this->photosDir . DS . 'album', 0777, true);
-        $this->videosDir = new Folder($this->photosDir . DS . 'videos', 0777, true);
+        $this->importDir = new Folder(TMP . 'import' . DS . 'facebook', true, 0777);
+        if (!$this->zip->extractTo($this->importDir->path)) {
+            $io->error(__('Unable to extract Facebook data zip!'));
+            return;
+        }
+
+        $this->postsDir = new Folder($this->importDir->path . DS . 'posts', true, 0777);
+        $this->photosDir = new Folder($this->importDir->path. DS . 'photos_and_videos', true, 0777);
+        $this->albumsDir = new Folder($this->photosDir->path . DS . 'album', true, 0777);
+        $this->videosDir = new Folder($this->photosDir->path . DS . 'videos', true, 0777);
+
 
         // give a little output
         $io->out(__('Processing data...'));
@@ -140,12 +148,6 @@ class ImportFacebookDataCommand extends Command
 
         // import posts
         $this->importPosts($io);
-
-        // we don't need these anymore
-        $this->postsDir->delete();
-        $this->photosDir->delete();
-        $this->albumsDir->delete();
-        $this->videosDir->delete();
 
         // spit out a little report
         $io->out('|----------------------------------|');
@@ -164,15 +166,15 @@ class ImportFacebookDataCommand extends Command
 
         // all done
         $io->success(__('Done!'));
+
+        // get rid of the facebook import directory
+        $importDir->delete();
     }
 
     private function importAlbums(ConsoleIo $io)
     {
         // tell the user what's happening
         $io->out(__('Importing albums'));
-
-        // try to extract the zip
-        $this->zip->extractTo($this->albumsDir->path, ['photos_and_videos' . DS . 'album']);
 
         // fire up a folder and search for JSON files in it
         $albums = $this->albumsDir->find('^.+\.json$');
@@ -279,12 +281,16 @@ class ImportFacebookDataCommand extends Command
         // tell the user what's going on
         $io->out(__('Importing videos'));
 
-        // try to extract the zip
-        $this->zip->extractTo($this->videosDir->path, ['photos_and_videos' . DS . 'videos']);
+        $videosJson = @file_get_contents($this->photosDir->path . DS . 'your_videos.json');
+
+        if (!$videosJson) {
+            $io->error(__('Unable to open videos data file.'));
+            return;
+        }
 
         // the JSON file that describes a user's videos
         $videos = json_decode(
-            $this->zip->getFromName('photos_and_videos' . DS . 'your_videos.json'),
+            $videosJson,
             false,
             512,
             JSON_UNESCAPED_UNICODE
@@ -348,11 +354,8 @@ class ImportFacebookDataCommand extends Command
         // tell the user what's happening
         $io->out(__('Importing posts'));
 
-        // try to extract the zip
-        $this->zip->extractTo($this->postsDir->path, ['posts']);
-
         // get a handle on the directory where posts live
-        $postFiles = $this->postDir->find('^your_posts.*\.json$');
+        $postFiles = $this->postsDir->find('^your_posts.*\.json$');
 
         // find post files
         if (!$postFiles) {
@@ -563,13 +566,7 @@ class ImportFacebookDataCommand extends Command
         // tell the user what's going on
         $io->out(__('Importing media...'));
 
-        $tmpName = TMP . 'import' . DS . basename($media->uri);
-
-        // try to extract the media
-        if (!$this->zip->extractTo($tmpName, [$media->uri])) {
-            $io->error(__('Unable to extract media from zip'));
-            return;
-        }
+        $tmpName = $this->importDir->path . DS . $media->uri;
 
         // create a data structure that the `uploadAndCreate` can work with
         $create = [
