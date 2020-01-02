@@ -63,9 +63,11 @@
                         '#',
                         [
                             'escape' => false,
-                            'target' => '_blank',
                             'rel' => 'noopener noreferrer',
-                            'class' => 'level-item'
+                            'data-url' => $post->url,
+                            'data-share-local' => true,
+                            'data-name' => $post->title,
+                            'class' => 'level-item share-item'
                         ]
                     ); ?>
                     <?= $this->Html->link(

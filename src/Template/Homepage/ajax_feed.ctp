@@ -11,8 +11,8 @@ if (count($posts) === 0) {
 foreach ($posts as $post) {
     echo $this->element(
         'feed/item',
-        ['post' => $post],
-        ['cache' => ['key' => md5($post->id), 'config' => 'elements']]
+        ['post' => $post]/*,
+        ['cache' => ['key' => md5($post->id), 'config' => 'elements']]*/
     );
 }
 

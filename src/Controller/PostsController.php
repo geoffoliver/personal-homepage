@@ -127,6 +127,62 @@ class PostsController extends AppController
         $this->set(compact('post'));
     }
 
+    public function share()
+    {
+        $this->viewBuilder()->setLayout('popup');
+
+        $post = $this->Posts->newEntity();
+        $user = $this->request->getAttribute('identity');
+
+        if ($this->request->is('post')) {
+            $postData = [
+                'name' => $this->request->getData('name'),
+                'content' => $this->request->getData('content'),
+                'source' => $this->request->getData('source'),
+                'public' => $this->request->getData('public'),
+                'allow_comments' => $this->request->getData('allow_comments')
+            ];
+
+            $post = $this->Posts->patchEntity(
+                $post,
+                $postData,
+                ['associated' => ['Medias']]
+            );
+
+            $post->user_id = $user->id;
+
+            if ($this->Posts->save($post)) {
+                if ($att = $this->request->getData('new_media')) {
+                    foreach ($att as $attId) {
+                        $media = $this->Posts->Medias->find()
+                            ->where([
+                                'Medias.id' => $attId,
+                                'Medias.post_id IS NULL'
+                            ])
+                            ->first();
+
+                        if (!$media) {
+                            continue;
+                        }
+
+                        $this->Posts->Medias->link($post, [$media]);
+                    }
+                }
+
+                $this->Flash->success(__('The post has been saved.'));
+                $this->set('saved', true);
+            } else {
+                $this->Flash->error(__('The post could not be saved. Please, try again.'));
+            }
+        } else {
+            $post->name = rawurldecode($this->request->getQuery('name'));
+            $post->source = rawurldecode($this->request->getQuery('source'));
+            $post->content = $post->source;
+        }
+
+        $this->set(compact('post'));
+    }
+
     /**
      * Edit method
      *

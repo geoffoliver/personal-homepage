@@ -26,7 +26,6 @@ $this->start('main');
         }
 
         if ($this->Paginator->hasNext()) {
-
             $nextPage = (int)$this->request->getQuery('page', 1) + 1;
 
             $url = "/?page={$nextPage}";

@@ -1,13 +1,21 @@
 <?php
-$this->assign('title', __('Edit Post'));
+$this->assign('title', __('Share On Your Website'));
 $this->append('css', $this->Html->css('posts/add.css'));
 $this->append('script', $this->Html->script('lib/dropzone/dropzone.js'));
 $this->append('script', $this->Html->script('posts/add.js'));
+
+if (isset($saved) && $saved) {
+?>
+    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+        <button class="button is-dark" onClick="window.close()">Close Window</button>
+    </div>
+<?
+} else {
 ?>
 <section class="section" id="addPostForm">
     <div class="columns">
         <div class="column is-three-fifths is-offset-one-fifth">
-            <h1 class="is-size-3"><?= __('Edit Post'); ?></h1>
+            <h1 class="is-size-3"><?= __('Share Post'); ?></h1>
             <div class="box">
                 <?= $this->element('posts/form', ['post' => $post]); ?>
             </div>
@@ -25,3 +33,11 @@ $this->append('script', $this->Html->script('posts/add.js'));
 <template id="post-attachment-template">
     <?= $this->element('posts/media_item'); ?>
 </template>
+<script type="text/javascript">
+(function() {
+    document.getElementById('content').focus();
+})();
+</script>
+<?php
+}
+?>
