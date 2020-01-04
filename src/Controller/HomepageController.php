@@ -119,6 +119,9 @@ class HomepageController extends AppController
 
         foreach ($friends as $friend) {
             $feed = $friend->getFeed(false);
+            if ($friend->name === 'Boing Boing') {
+                dd($feed);
+            }
             if ($feed && isset($feed->items) && $feed->items) {
                 foreach ($feed->items as $item) {
                     $item->friend = $friend;
