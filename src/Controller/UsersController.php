@@ -172,7 +172,7 @@ class UsersController extends AppController
             $user->password = $password;
             $user->reset_hash = null;
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('Password reset'));
+                $this->Flash->success(__('Password reset successfully'));
                 return $this->redirect([
                     'controller' => 'Users',
                     'action' => 'login'

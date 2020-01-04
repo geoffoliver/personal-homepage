@@ -5,7 +5,7 @@ apt-get update
 apt-get install -y ffmpeg
 
 # install some things that we'll need
-apt-get install -y rpl imagemagick php-imagick php-mbstring php-zip php-intl php-simplexml
+apt-get install -y rpl imagemagick php7.2-imagick php7.2-mbstring php-zip php7.2-intl php7.2-xml
 
 rpl public webroot /etc/apache2/sites-available/000-default.conf
 

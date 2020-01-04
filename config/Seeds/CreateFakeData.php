@@ -35,7 +35,7 @@ class CreateFakeData extends AbstractSeed
         ]];
 
         $this->table('users')->insert($users)->save();
-
+        /*
         $posts = [];
         $medias = [];
         $comments = [];
@@ -109,5 +109,6 @@ class CreateFakeData extends AbstractSeed
         $this->table('posts')->insert($posts)->save();
         $this->table('medias')->insert($medias)->save();
         $this->table('comments')->insert($comments)->save();
+        */
     }
 }
