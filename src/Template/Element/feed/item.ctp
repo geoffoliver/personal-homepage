@@ -86,7 +86,7 @@
                                 'data-url' => $post->url,
                                 'data-share-local' => true,
                                 'data-name' => $post->title,
-                                'data-summary' => $post->content_text ? $post->content_text : $post->summary,
+                                'data-summary' => $post->summary,
                                 'class' => 'level-item share-item'
                             ]
                         );

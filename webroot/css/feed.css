@@ -33,6 +33,11 @@
 
 .feed-post-item-summary {
   width: 100%;
+  overflow: hidden;
+}
+
+.feed-post-item-summary blockquote {
+  clear: both;
 }
 
 .feed-post-item-summary > img {
