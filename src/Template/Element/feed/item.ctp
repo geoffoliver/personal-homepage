@@ -59,7 +59,7 @@
             <?php
                 $content = $post->content_html;
 
-                if ($post->media) {
+                if (isset($post->media) && $post->media) {
                     $content = $this->Html->tag(
                         'img',
                         null,

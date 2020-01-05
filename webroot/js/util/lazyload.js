@@ -91,12 +91,16 @@
 
   // do the lazy loading of images
   function lazyload () {
+    console.log('lazy');
+
     if(lazyloadThrottleTimeout) {
       cancelAnimationFrame(lazyloadThrottleTimeout);
     }
 
     lazyloadThrottleTimeout = requestAnimationFrame(function() {
       lazyImages = document.querySelectorAll('img[data-lazy-src]');
+
+      console.log('li', lazyImages);
 
       var scrollTop = window.pageYOffset;
       lazyImages.forEach(function(img) {
