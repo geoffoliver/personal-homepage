@@ -177,7 +177,11 @@ class PostsController extends AppController
         } else {
             $post->name = rawurldecode($this->request->getQuery('name'));
             $post->source = rawurldecode($this->request->getQuery('source'));
-            $post->content = $post->source;
+            if ($body = $this->request->getQuery('body')) {
+                $post->content = rawurldecode($body);
+            } else {
+                $post->content = $post->source;
+            }
         }
 
         $this->set(compact('post'));

@@ -30,3 +30,14 @@
   margin: 0 !important;
   width: 48px;
 }
+
+.feed-post-item-summary {
+  width: 100%;
+}
+
+.feed-post-item-summary > img {
+  max-width: 35%;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  float: left;
+}

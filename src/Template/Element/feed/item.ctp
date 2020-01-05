@@ -56,7 +56,21 @@
             </div>
         </div>
         <div class="feed-post-item-content">
-            <div><?= nl2br($post->summary); ?></div>
+            <?php
+                $content = $post->content_html;
+
+                if ($post->media) {
+                    $content = $this->Html->tag(
+                        'img',
+                        null,
+                        [
+                            'data-lazy-src' => $post->media
+                        ]
+                    ) . $content;
+                }
+
+                echo $this->Html->div('feed-post-item-summary', $content);
+            ?>
         </div>
         <hr />
         <div class="feed-post-item-footer">
@@ -72,6 +86,7 @@
                                 'data-url' => $post->url,
                                 'data-share-local' => true,
                                 'data-name' => $post->title,
+                                'data-summary' => $post->content_text ? $post->content_text : $post->summary,
                                 'class' => 'level-item share-item'
                             ]
                         );

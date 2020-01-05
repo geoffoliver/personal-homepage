@@ -269,6 +269,30 @@ class FeedParser
             }
         }
 
+        // figure out if there's some media
+        $media = null;
+        if (array_key_exists('media', $namespaces)) {
+            $medias = $item->xpath('media:content');
+            if (
+                $medias &&
+                isset($medias[0]->attributes()->url) &&
+                $medias[0]->attributes()->url
+            ) {
+                $media = (string)$medias[0]->attributes()->url;
+            }
+        }
+
+        if (!$media) {
+            $enclosure = $item->xpath('enclosure');
+            if (
+                $enclosure &&
+                isset($enclosure[0]->attributes()->url) &&
+                $enclosure[0]->attributes()->url
+            ) {
+                $media = (string)$enclosure[0]->attributes()->url;
+            }
+        }
+
         $url = null;
         $source = null;
         $commentsUrl = null;
@@ -397,6 +421,8 @@ class FeedParser
             }
         }
 
+        $purifier = new \HTMLPurifier();
+
         return (object)[
             'id' => $id,
             'title' => $title,
@@ -405,11 +431,12 @@ class FeedParser
             'date_published' => new Time($pubDate),
             'date_modified' => new Time($modDate),
             'summary' => $summary,
-            'content_html' => $contentHtml,
+            'content_html' => $purifier->purify($contentHtml),
             'content_text' => $contentText,
             'attachments' => $attachments,
             'tags' => $categories,
             'author' => $author,
+            'media' => $media,
             '_page_feed' => (object)[
                 'about' => 'Custom fields for PageFeed',
                 'comments' => (object)[

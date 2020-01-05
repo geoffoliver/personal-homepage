@@ -57,9 +57,14 @@
 
     // user is trying to share an item from their feed. popup the share dialog
     if (target.dataset.shareLocal) {
-      const here = document.location.protocol + '//' + document.location.hostname;
+      var shareUrl = document.location.protocol
+        + '//' + document.location.hostname
+        + '/posts/share'
+        + '?name=' + encodeURIComponent(target.dataset.name)
+        + '&source=' + encodeURIComponent(target.dataset.url)
+        + '&body=' + encodeURIComponent(target.dataset.summary);
       window.open(
-        here + '/posts/share?name=' + encodeURIComponent(target.dataset.name) + '&source=' + encodeURIComponent(target.dataset.url),
+        shareUrl,
         'shareWindow',
         'width=650,height=750'
       );
