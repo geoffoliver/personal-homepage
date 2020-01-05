@@ -121,4 +121,24 @@
       loadImages();
     }
   });
+
+  // create an observer that listens for changes in the DOM so we can trigger
+  // lazy loading
+  var observer = new MutationObserver(function(mutations) {
+    for (var mut of mutations) {
+      // if something was added, let's try to find and fix iframe embeds
+      if (mut.addedNodes.length > 0) {
+        // find any code blocks that aren't being/have been highlighted
+        var lazy = document.querySelectorAll('img[data-lazy-src]');
+        if (lazy.length > 0) {
+          lazyload();
+        }
+        return;
+      }
+    }
+  });
+
+  // tell the observer to start observing
+  observer.observe(document.body, {childList: true, subtree: true});
+
 })();
