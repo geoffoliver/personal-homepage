@@ -22,7 +22,7 @@ class CreateMedias extends AbstractMigration
         ]);
         $table->addColumn('post_id', 'uuid', [
             'default' => null,
-            'null' => false
+            'null' => true
         ]);
         $table->addColumn('mime', 'string', [
             'default' => null,

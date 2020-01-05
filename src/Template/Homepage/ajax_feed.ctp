@@ -1,4 +1,21 @@
 <?php
+if (!$friends->count()) {
+    echo $this->Html->div('box',
+        implode('<br>', [
+            __('You don\'t have any friends setup!'),
+            $this->Html->link(
+                __('Add Friend'),
+                [
+                    'controller' => 'Friends',
+                    'action' => 'add'
+                ]
+            )
+        ])
+    );
+    return;
+}
+
+
 if (count($posts) === 0) {
     if ($this->request->getQuery('page')) {
         echo $this->Html->div('box', __('There are no more posts to display.'));

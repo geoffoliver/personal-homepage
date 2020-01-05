@@ -105,11 +105,11 @@ class PostsTable extends Table
 
         $data['content'] = trim($data['content']);
 
-        if ($data['content'] && !$data['source']) {
+        if ($data['content'] && !isset($data['source'])) {
             $spacePos = strpos($data['content'], ' ');
 
             if (
-                !$data['source'] &&
+                !isset($data['source']) &&
                 $spacePos === false &&
                 preg_match('/^https?:\/\/.*$/', $data['content'])
             ) {

@@ -1,5 +1,3 @@
-<?php
-?>
 <section class="section">
     <div class="columns">
         <div class="column is-half is-offset-one-quarter">

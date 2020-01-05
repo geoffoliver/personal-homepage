@@ -84,7 +84,7 @@ $this->assign('title', __('Settings'));
                         ]);
 
                         echo $this->Form->input('cover-photo', [
-                            'label' => __('Photo'),
+                            'label' => __('Background Picture'),
                             'type' => 'file'
                         ]);
 

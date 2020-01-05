@@ -33,7 +33,7 @@ class CreatePosts extends AbstractMigration
         $table->addColumn('content', 'text', [
             'default' => null,
             'limit' => 'TEXT_LONG',
-            'null' => false,
+            'null' => true,
         ]);
         $table->addColumn('public', 'boolean', [
             'default' => true,

@@ -5,9 +5,20 @@ apt-get update
 apt-get install -y ffmpeg
 
 # install some things that we'll need
-apt-get install -y rpl imagemagick php7.2-imagick php7.2-mbstring php-zip php7.2-intl php7.2-xml
+apt-get install -y imagemagick php7.2-imagick php7.2-mbstring php7.2-zip php7.2-intl php7.2-xml
 
-rpl public webroot /etc/apache2/sites-available/000-default.conf
+echo '<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/webroot
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        <Directory /var/www/webroot>
+                AllowOverride All
+        </Directory>
+
+</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
 # restart apache
 /etc/init.d/apache2 restart
@@ -26,3 +37,7 @@ composer install
 
 bin/cake migrations migrate
 bin/cake migrations seed
+
+# enable modrewrite
+a2enmod rewreite
+service apache2 restart

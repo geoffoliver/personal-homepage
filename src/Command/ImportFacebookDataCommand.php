@@ -168,7 +168,7 @@ class ImportFacebookDataCommand extends Command
         $io->success(__('Done!'));
 
         // get rid of the facebook import directory
-        $importDir->delete();
+        $this->importDir->delete();
     }
 
     private function importAlbums(ConsoleIo $io)

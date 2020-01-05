@@ -7,8 +7,10 @@
     <main>
         <div class="container">
             <div class="content">
-                <?=$this->Flash->render()?>
-                <?=$this->fetch('content')?>
+                <?php
+                    echo $this->Flash->render();
+                    echo $this->fetch('body');
+                ?>
             </div>
         </div>
     </main>

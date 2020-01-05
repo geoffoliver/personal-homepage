@@ -4,7 +4,11 @@
             <figure class="image is-48x48 is-rounded friend-icon">
                 <?= $this->Html->link(
                     $this->Html->image(
-                        $post->friend->icon,
+                        $this->Url->build([
+                            'controller' => 'Friends',
+                            'action' => 'icon',
+                            $post->friend->id
+                        ]),
                         ['class' => 'is-rounded']
                     ),
                     $post->friend->url,
@@ -39,7 +43,7 @@
                         <?= __('&mdash; by {0}', h($post->author['name'])); ?>
                         </span>
                     <?php endif; ?>
-                    &middot;
+                    &mdash;
                     <time>
                         <?= $post->date_published->nice('America/Denver'); ?>
                         <?php if ($post->date_published != $post->date_modified): ?>
@@ -52,7 +56,7 @@
             </div>
         </div>
         <div class="feed-post-item-content">
-            <div><?= nl2br(h($post->summary)); ?></div>
+            <div><?= nl2br($post->summary); ?></div>
         </div>
         <hr />
         <div class="feed-post-item-footer">

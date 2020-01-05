@@ -162,6 +162,7 @@ class HomepageController extends AppController
 
         $this->set([
             'posts' => $paginated,
+            'friends' => $friends,
             'pagination' => [
                 'total' => count($posts),
                 'prev' => $prev,
