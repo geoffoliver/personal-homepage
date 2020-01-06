@@ -13,8 +13,8 @@
     }
   };
 
-  // create an observer that listens for changes in the DOM so we can trigger
-  // lazy loading
+  // create an observer that listens for changes in the DOM so we can run the
+  // `setupExternalLinks` function
   var observer = new MutationObserver(function(mutations) {
     for (var mut of mutations) {
       // if something was added, let's try to find and fix iframe embeds
