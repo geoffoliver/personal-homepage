@@ -67,6 +67,10 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             'password' => 'password'
         ];
 
+        $service->setConfig([
+            'unauthenticatedRedirect' => '/users/login'
+        ]);
+
         $service->loadIdentifier('Authentication.Password', ['fields' => $fields]);
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [

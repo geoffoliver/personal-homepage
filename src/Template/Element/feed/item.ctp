@@ -83,10 +83,10 @@
                             [
                                 'escape' => false,
                                 'rel' => 'noopener noreferrer',
-                                'data-url' => $post->url,
+                                'data-url' => urlencode($post->url),
                                 'data-share-local' => true,
-                                'data-name' => $post->title,
-                                'data-summary' => $post->summary,
+                                'data-name' => urlencode($this->Text->truncate($post->title, 255)),
+                                'data-summary' => urlencode($this->Text->truncate($post->summary, 255)),
                                 'class' => 'level-item share-item'
                             ]
                         );

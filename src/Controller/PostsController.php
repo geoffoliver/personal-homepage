@@ -175,10 +175,10 @@ class PostsController extends AppController
                 $this->Flash->error(__('The post could not be saved. Please, try again.'));
             }
         } else {
-            $post->name = rawurldecode($this->request->getQuery('name'));
-            $post->source = rawurldecode($this->request->getQuery('source'));
+            $post->name = urldecode($this->request->getQuery('name'));
+            $post->source = urldecode($this->request->getQuery('source'));
             if ($body = $this->request->getQuery('body')) {
-                $post->content = rawurldecode($body);
+                $post->content = urldecode($body);
             } else {
                 $post->content = $post->source;
             }

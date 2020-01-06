@@ -1,5 +1,6 @@
 .feed-post-item img {
   max-width: 100%;
+  width: 100%;
   height: auto;
 }
 
@@ -34,6 +35,10 @@
 .feed-post-item-summary {
   width: 100%;
   overflow: hidden;
+}
+
+.feed-post-item-summary p:empty {
+  display: none;
 }
 
 .feed-post-item-summary blockquote {

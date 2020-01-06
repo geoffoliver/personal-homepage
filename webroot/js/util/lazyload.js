@@ -91,8 +91,6 @@
 
   // do the lazy loading of images
   function lazyload () {
-    console.log('lazy');
-
     if(lazyloadThrottleTimeout) {
       cancelAnimationFrame(lazyloadThrottleTimeout);
     }
@@ -100,20 +98,12 @@
     lazyloadThrottleTimeout = requestAnimationFrame(function() {
       lazyImages = document.querySelectorAll('img[data-lazy-src]');
 
-      console.log('li', lazyImages);
-
       var scrollTop = window.pageYOffset;
       lazyImages.forEach(function(img) {
           if(img.offsetTop < (window.innerHeight + scrollTop)) {
             loadImage(img);
           }
       });
-
-      if(lazyImages.length == 0) {
-        document.removeEventListener("scroll", lazyload);
-        window.removeEventListener("resize", lazyload);
-        window.removeEventListener("orientationChange", lazyload);
-      }
     });
   }
 
@@ -144,5 +134,4 @@
 
   // tell the observer to start observing
   observer.observe(document.body, {childList: true, subtree: true});
-
 })();

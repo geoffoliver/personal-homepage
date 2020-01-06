@@ -45,6 +45,6 @@ class Friend extends Entity
         $fp = new FeedParser();
 
         // try to fetch the feed
-        return $fp->fetch($this->feed_url, $encode);
+        return $fp->fetch($this->feed_url, $this->url, $encode);
     }
 }

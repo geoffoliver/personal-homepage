@@ -43,6 +43,7 @@ class ErrorController extends AppController
      */
     public function beforeFilter(Event $event)
     {
+        return parent::beforeFilter($event);
     }
 
     /**

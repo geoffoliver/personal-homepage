@@ -60,9 +60,9 @@
       var shareUrl = document.location.protocol
         + '//' + document.location.hostname
         + '/posts/share'
-        + '?name=' + encodeURIComponent(target.dataset.name)
-        + '&source=' + encodeURIComponent(target.dataset.url)
-        + '&body=' + encodeURIComponent(target.dataset.summary);
+        + '?name=' + target.dataset.name
+        + '&source=' + target.dataset.url
+        + '&body=' + target.dataset.summary;
       window.open(
         shareUrl,
         'shareWindow',

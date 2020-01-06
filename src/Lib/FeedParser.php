@@ -9,12 +9,23 @@ use Cake\Utility\Hash;
 
 class FeedParser
 {
-    public function fetch($feedUrl = null, $encode = true)
+    private $purifier = null;
+
+    public function fetch($feedUrl = null, $baseUrl = null, $encode = true)
     {
         // wtf are you even doing here?
         if (!$feedUrl) {
             throw new \Exception('Missing Feed URL');
         }
+
+        // make an HTML purifier we'll use for cleaning up HTML content
+        $config = \HTMLPurifier_Config::createDefault();
+        $config->set('AutoFormat.RemoveEmpty', true);
+        if ($baseUrl) {
+            $config->set('URI.Base', $baseUrl);
+            $config->set('URI.MakeAbsolute', true);
+        }
+        $this->purifier = new \HTMLPurifier($config);
 
         // fire up an HTTP client
         $client = new Client();
@@ -421,8 +432,6 @@ class FeedParser
             }
         }
 
-        $purifier = new \HTMLPurifier();
-
         return (object)[
             'id' => $id,
             'title' => $title,
@@ -431,7 +440,7 @@ class FeedParser
             'date_published' => new Time($pubDate),
             'date_modified' => new Time($modDate),
             'summary' => $summary,
-            'content_html' => $purifier->purify($contentHtml),
+            'content_html' => $this->purifier->purify($contentHtml),
             'content_text' => $contentText,
             'attachments' => $attachments,
             'tags' => $categories,
