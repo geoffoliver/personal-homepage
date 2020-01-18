@@ -1,9 +1,16 @@
 (function() {
   Dropzone.autoDiscover = false;
 
-  var attachmentTpl = document.querySelector('#post-attachment-template');
-  var attachmentsContainer = document.querySelector('#add-post-attachments');
-  var templateHtml = document.querySelector('#add-post-attachment-preview-template').innerHTML
+  var $ = function(qs) {
+    return document.querySelector(qs);
+  };
+
+  var attachmentTpl = $('#post-attachment-template');
+  var attachmentsContainer = $('#add-post-attachments');
+  var templateHtml = $('#add-post-attachment-preview-template').innerHTML
+  var title = $('#name');
+  var body = $('#content');
+  var preview = $('#postPreview');
 
   var error = function(file, message) {
     dropzone.removeFile(file);
@@ -40,6 +47,21 @@
     }
   });
 
+  var updatePreview = function() {
+    var titleText = title.value;
+    var previewContent = body.value;
+
+    if (titleText) {
+      previewContent = '# ' + titleText + '\n\n' + previewContent;
+    }
+
+    body.style.height = 'auto';
+
+    body.style.height = body.scrollHeight + 'px';
+
+    preview.innerHTML = marked(previewContent);
+  }
+
   document.addEventListener('click', function(e) {
     if (e.target.classList.contains('delete-post-attachment')) {
       if (confirm('Are you sure you want to remove this file from the post?')) {
@@ -61,4 +83,7 @@
       return;
     }
   });
+
+  document.getElementById('postForm').addEventListener('input', updatePreview);
+  updatePreview();
 })();

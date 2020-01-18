@@ -14,6 +14,9 @@
   // handle the message (highlighted code) from the worker
   worker.onmessage = function(message) {
     var element = document.getElementById(message.data.id);
+    if (!element) {
+      return;
+    }
     element.innerHTML = message.data.value;
     element.classList.remove(working);
     element.classList.add(done);

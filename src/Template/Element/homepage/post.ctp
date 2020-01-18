@@ -15,9 +15,9 @@ use Cake\Utility\Hash;
                     <?php if ($post->import_source): ?>
                         <span class="fab fa-<?= $post->import_source; ?>" aria-hidden="true"></span>
                     <?php endif; ?>
-                    <?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?>
+                    <time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
                     <?php if ($post->created != $post->modified): ?>
-                        &middot; <?= __('Updated'); ?>&nbsp;<?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?>
+                        &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
                     <?php endif; ?>
                 </h5>
                 <?php

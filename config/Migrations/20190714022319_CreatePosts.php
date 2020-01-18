@@ -28,12 +28,12 @@ class CreatePosts extends AbstractMigration
         $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,
-            'null' => false,
+            'null' => true,
         ]);
         $table->addColumn('content', 'text', [
             'default' => null,
             'limit' => 'TEXT_LONG',
-            'null' => true,
+            'null' => false,
         ]);
         $table->addColumn('public', 'boolean', [
             'default' => true,

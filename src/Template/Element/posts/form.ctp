@@ -2,25 +2,27 @@
 echo $this->Form->create($post, ['id' => 'postForm']);
     echo $this->Form->control('name', [
         'type' => 'text',
-        'label' => __('Name'),
-        'placeholder' => __('Give your post a name.'),
-        'required' => true,
+        'label' => false,
+        'placeholder' => __('Title'),
         'maxlength' => 255,
     ]);
 
     echo $this->Form->control('content', [
         'type' => 'textarea',
-        'label' => __('Body'),
+        'label' => false,//__('Body'),
+        'required' => true,
         'placeholder' => __('What do you want to say?'),
+        'autofocus' => true
     ]);
 
     echo $this->Form->control('source', [
         'type' => 'text',
-        'label' => __('Source'),
+        'label' => false, //__('Source'),
         'placeholder' => __('A URL where people can see the original content, if applicable. Include http(s)://...'),
         'pattern' => 'https?://.+',
     ]);
 ?>
+    <hr />
     <div class="add-post-checkboxes">
         <?php
             echo $this->Form->control('public', [

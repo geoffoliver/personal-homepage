@@ -13,6 +13,9 @@ $this->append('script', $this->Html->script('posts/view.js'));
                     <h1 class="title is-3"><?= $post->name; ?></h1>
                     <h2 class="subtitle is-6 has-text-grey">
                         <?= __('Posted'); ?>&nbsp;<time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
+                        <?php if ($post->created != $post->modified): ?>
+                            &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
+                        <?php endif; ?>
                     </h2>
                 </div>
                 <div class="post-body">

@@ -2,6 +2,7 @@
 $this->assign('title', __('Add Post'));
 $this->append('css', $this->Html->css('posts/add.css'));
 $this->append('script', $this->Html->script('lib/dropzone/dropzone.js'));
+$this->append('script', $this->Html->script('lib/marked/marked.js'));
 $this->append('script', $this->Html->script('posts/add.js'));
 ?>
 <section class="section" id="addPostForm">

@@ -72,10 +72,9 @@ class PostsTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->scalar('name')
-            ->maxLength('name', 255)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->scalar('content')
+            ->requirePresence('content', 'create')
+            ->notEmptyString('content');
 
         $validator
             ->boolean('public')

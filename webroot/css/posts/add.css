@@ -1,3 +1,11 @@
+#name {
+  font-size: 1.5rem;
+}
+
+#content {
+  max-height: 80vh;
+}
+
 #add-post-attachments-list {
   display: flex;
   flex-direction: row;
