@@ -7,16 +7,18 @@ $this->append('script', $this->Html->script('posts/add.js'));
 ?>
 <section class="section" id="addPostForm">
     <div class="columns">
-        <div class="column is-half">
-            <h1 class="is-size-3"><?= __('Edit Post'); ?></h1>
+        <div class="column is-offset-1 is-10">
+            <div class="page-title">
+                <h1 class="is-size-3">
+                    <?= __('Edit Post'); ?>
+                </h1>
+                <ul>
+                    <li><a id="showEditor" class="active">Edit</a></li>
+                    <li><a id="showPreview">Preview</a></li>
+                </ul>
+            </div>
             <div class="box">
                 <?= $this->element('posts/form', ['post' => $post]); ?>
-            </div>
-        </div>
-        <div class="column is-half">
-            <h2 class="is-size-4" style="margin-top: 10px;"><?= __('Post Preview'); ?></h2>
-            <div class="box">
-                <div id="postPreview"></div>
             </div>
         </div>
     </div>

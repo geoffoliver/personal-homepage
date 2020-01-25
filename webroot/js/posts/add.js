@@ -5,6 +5,7 @@
     return document.querySelector(qs);
   };
 
+  var postForm = $('#postForm');
   var attachmentTpl = $('#post-attachment-template');
   var attachmentsContainer = $('#add-post-attachments');
   var templateHtml = $('#add-post-attachment-preview-template').innerHTML
@@ -38,7 +39,7 @@
     previewTemplate: templateHtml,
     previewsContainer: '#add-post-attachments',
     headers: {
-      "X-CSRF-Token": document.querySelector('[name="_csrfToken"]').value
+      "X-CSRF-Token": $('input[name="_csrfToken"]').value
     },
     init: function() {
       this.on("success", success);
@@ -48,18 +49,21 @@
   });
 
   var updatePreview = function() {
-    var titleText = title.value;
-    var previewContent = body.value;
+    var previewContent = marked(body.value);
+    var titleText = title.value.replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
 
     if (titleText) {
-      previewContent = '# ' + titleText + '\n\n' + previewContent;
+      previewContent = '<h1>' + titleText + '</h1>\n\n' + previewContent;
     }
 
     body.style.height = 'auto';
 
     body.style.height = body.scrollHeight + 'px';
 
-    preview.innerHTML = marked(previewContent);
+    preview.innerHTML = previewContent;
   }
 
   document.addEventListener('click', function(e) {
@@ -84,6 +88,18 @@
     }
   });
 
-  document.getElementById('postForm').addEventListener('input', updatePreview);
+  postForm.addEventListener('input', updatePreview);
   updatePreview();
+
+  $('#showEditor').addEventListener('click', function() {
+    postForm.classList.remove('preview');
+    $('#showEditor').classList.add('active');
+    $('#showPreview').classList.remove('active');
+  });
+
+  $('#showPreview').addEventListener('click', function() {
+    postForm.classList.add('preview');
+    $('#showPreview').classList.add('active');
+    $('#showEditor').classList.remove('active');
+  });
 })();
