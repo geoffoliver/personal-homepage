@@ -14,7 +14,9 @@
     // when the worker responds, we can update the image with the new src
     worker.onmessage = function(message) {
       var image = document.getElementById(message.data.id);
-      // image.src = message.data.src;
+      if (!image.dataset.lazySrc) {
+        return;
+      }
       image.src = image.dataset.lazySrc;
     };
   }
