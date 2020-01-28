@@ -12,9 +12,16 @@ use App\Controller\AppController;
  */
 class PostsController extends AppController
 {
+
+    private $parsedown;
+
     public function initialize()
     {
         parent::initialize();
+
+        $this->parsedown = new \Parsedown();
+        $this->parsedown->setStrictMode(true);
+
         $this->Authentication->allowUnauthenticated(['feed', 'view']);
     }
 
@@ -273,7 +280,12 @@ class PostsController extends AppController
     {
         // setup the data we're gonna pull
         $this->paginate = [
-            'contain' => ['Users', 'Medias', 'Comments']
+            'Posts' => [
+                'contain' => ['Users', 'Medias', 'Comments'],
+                'order' => [
+                    'Posts.modified' => 'DESC'
+                ]
+            ]
         ];
 
         // grab some posts
@@ -372,12 +384,15 @@ class PostsController extends AppController
             // create the text version of the post content
             $contentText = strip_tags($post->content);
 
+            // create the HTML version of the post
+            $contentHtml = $this->parsedown->text($post->content);
+
             // generate the item feed
             $postItem = [
                 'id' => $post->id,
                 'url' => $post->url_alias,
                 'title' => $post->name,
-                'content_html' => $post->content,
+                'content_html' => $contentHtml,
                 'content_text' => $contentText,
                 'summary' => substr($contentText, 0, 512),
                 'image' => 'post-image',
