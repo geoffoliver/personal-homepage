@@ -20,7 +20,7 @@ $totalComments = count($post->comments);
             <?php endif; ?>
             <?php if ($post->comments): ?>
             <div class="comments-container">
-                <? foreach ($post->comments as $comment): ?>
+                <?php foreach ($post->comments as $comment): ?>
                     <div class="comment">
                         <div class="comment-info">
                             <div class="commenter-name">
@@ -36,39 +36,41 @@ $totalComments = count($post->comments);
                         <?php if ($this->Identity->isLoggedIn()): ?>
                             <div class="level is-mobile">
                                 <div class="level-left is-size-7">
-                                    <?php if (!$comment->approved): ?>
-                                        <?= $this->Form->postLink(
-                                            '<span class="fas fa-check"></span>&nbsp;' . __('Approve'),
+                                    <?php
+                                        if (!$comment->approved) {
+                                            echo $this->Form->postLink(
+                                                '<span class="fas fa-check"></span>&nbsp;' . __('Approve'),
+                                                [
+                                                    'controller' => 'Comments',
+                                                    'action' => 'approve',
+                                                    $comment->id
+                                                ],
+                                                [
+                                                    'escape' => false,
+                                                    'class' => 'level-item',
+                                                    'confirm' => __('Are you sure you want to approve this comment?')
+                                                ]
+                                            );
+                                        }
+                                        echo $this->Form->postLink(
+                                            '<span class="fas fa-trash"></span>&nbsp;' . __('Delete'),
                                             [
                                                 'controller' => 'Comments',
-                                                'action' => 'approve',
+                                                'action' => 'delete',
                                                 $comment->id
                                             ],
                                             [
                                                 'escape' => false,
                                                 'class' => 'level-item',
-                                                'confirm' => __('Are you sure you want to approve this comment?')
+                                                'confirm' => __('Are you sure you want to delete this comment?')
                                             ]
-                                        ); ?>
-                                    <?php endif; ?>
-                                    <?= $this->Form->postLink(
-                                        '<span class="fas fa-trash"></span>&nbsp;' . __('Delete'),
-                                        [
-                                            'controller' => 'Comments',
-                                            'action' => 'delete',
-                                            $comment->id
-                                        ],
-                                        [
-                                            'escape' => false,
-                                            'class' => 'level-item',
-                                            'confirm' => __('Are you sure you want to delete this comment?')
-                                        ]
-                                    ); ?>
+                                        );
+                                    ?>
                                 </div>
                             </div>
                         <?php endif; ?>
                     </div>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </div>
             <?php endif; ?>
             <?php if ($post->allow_comments): ?>
