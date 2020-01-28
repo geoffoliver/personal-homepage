@@ -61,54 +61,6 @@ class HomepageController extends AppController
         $this->setVarsForHomepageAndFeed();
     }
 
-    private function setVarsForHomepageAndFeed()
-    {
-        $this->loadModel('Posts');
-        $this->loadModel('Medias');
-        $this->loadModel('Friends');
-        $authed = false;
-
-        if ($this->Authentication->getIdentity()) {
-            $authed = true;
-        }
-
-        $photos = $this->Medias->find()
-            ->where(['Medias.mime LIKE' => 'image/%'])
-            ->order(['Medias.created' => 'DESC']);
-
-        if (!$authed) {
-            $photos = $photos->where(['Medias.public' => true]);
-            $photos = $photos->cache('photos', 'homepage_assets');
-        }
-
-        $photos = $photos->limit(12)->all();
-
-        $videos = $this->Medias->find()
-            ->where(['Medias.mime LIKE' => 'video/%'])
-            ->order(['Medias.created' => 'DESC']);
-
-        if (!$authed) {
-            $videos = $videos->where(['Medias.public' => true]);
-            $videos = $videos->cache('videos', 'homepage_assets');
-        }
-
-        $videos = $videos->limit(12)->all();
-
-        $friends = $this->Friends->find()
-            ->order(['Friends.name' => 'ASC'])
-            ->limit(12)
-            ->cache('friends', 'homepage_assets')
-            ->all();
-
-        $this->set([
-            'user' => $this->request->getAttribute('identity'),
-            'photos' => $photos,
-            'videos' => $videos,
-            'friends' => $friends
-        ]);
-    }
-
-    /*
     public function ajaxFeed()
     {
         $this->loadModel('Friends');
@@ -172,5 +124,51 @@ class HomepageController extends AppController
             ]
         ]);
     }
-    */
+
+    private function setVarsForHomepageAndFeed()
+    {
+        $this->loadModel('Posts');
+        $this->loadModel('Medias');
+        $this->loadModel('Friends');
+        $authed = false;
+
+        if ($this->Authentication->getIdentity()) {
+            $authed = true;
+        }
+
+        $photos = $this->Medias->find()
+            ->where(['Medias.mime LIKE' => 'image/%'])
+            ->order(['Medias.created' => 'DESC']);
+
+        if (!$authed) {
+            $photos = $photos->where(['Medias.public' => true]);
+            $photos = $photos->cache('photos', 'homepage_assets');
+        }
+
+        $photos = $photos->limit(12)->all();
+
+        $videos = $this->Medias->find()
+            ->where(['Medias.mime LIKE' => 'video/%'])
+            ->order(['Medias.created' => 'DESC']);
+
+        if (!$authed) {
+            $videos = $videos->where(['Medias.public' => true]);
+            $videos = $videos->cache('videos', 'homepage_assets');
+        }
+
+        $videos = $videos->limit(12)->all();
+
+        $friends = $this->Friends->find()
+            ->order(['Friends.name' => 'ASC'])
+            ->limit(12)
+            ->cache('friends', 'homepage_assets')
+            ->all();
+
+        $this->set([
+            'user' => $this->request->getAttribute('identity'),
+            'photos' => $photos,
+            'videos' => $videos,
+            'friends' => $friends
+        ]);
+    }
 }
