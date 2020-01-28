@@ -43,7 +43,10 @@ use Cake\Utility\Hash;
                     }
                 ?>
                 <hr />
-                <?= $this->element('item-footer', ['item' => $post]); ?>
+                <?= $this->element('item-footer', [
+                    'item' => $post,
+                    'share' => !$this->Identity->isLoggedIn()
+                ]); ?>
             </div>
         </div>
     </article>

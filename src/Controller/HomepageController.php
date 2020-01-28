@@ -32,12 +32,12 @@ class HomepageController extends AppController
     {
         parent::initialize();
 
-        $this->Authentication->allowUnauthenticated(['index', 'ajaxHomepage']);
+        $this->Authentication->allowUnauthenticated(['index']);
 
         $this->modelClass = false;
     }
 
-    public function index($view = null)
+    public function index()
     {
         $this->setVarsForHomepageAndFeed();
 
@@ -54,6 +54,11 @@ class HomepageController extends AppController
             'posts' => $posts,
             'authed' => $authed
         ]);
+    }
+
+    public function feed()
+    {
+        $this->setVarsForHomepageAndFeed();
     }
 
     private function setVarsForHomepageAndFeed()
@@ -103,11 +108,7 @@ class HomepageController extends AppController
         ]);
     }
 
-    public function feed()
-    {
-        $this->setVarsForHomepageAndFeed();
-    }
-
+    /*
     public function ajaxFeed()
     {
         $this->loadModel('Friends');
@@ -171,4 +172,5 @@ class HomepageController extends AppController
             ]
         ]);
     }
+    */
 }

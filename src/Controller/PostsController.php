@@ -23,15 +23,15 @@ class PostsController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Users', 'Medias']
-        ];
-        $posts = $this->paginate($this->Posts);
+    // public function index()
+    // {
+    //     $this->paginate = [
+    //         'contain' => ['Users', 'Medias']
+    //     ];
+    //     $posts = $this->paginate($this->Posts);
 
-        $this->set(compact('posts'));
-    }
+    //     $this->set(compact('posts'));
+    // }
 
     /**
      * View method

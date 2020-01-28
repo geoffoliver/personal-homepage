@@ -7,14 +7,14 @@ echo $this->Form->create($post, ['id' => 'postForm']);
             'label' => false,
             'placeholder' => __('Title'),
             'maxlength' => 255,
+            'autofocus' => true
         ]);
 
         echo $this->Form->control('content', [
             'type' => 'textarea',
             'label' => false,
             'required' => true,
-            'placeholder' => __('What do you want to say?'),
-            'autofocus' => true
+            'placeholder' => __('What do you want to say?')
         ]);
 
         echo $this->Form->control('source', [

@@ -71,6 +71,10 @@
   padding-bottom: 20px;
 }
 
+#postPreview a {
+  pointer-events: none;
+}
+
 #add-post-attachments-list {
   display: flex;
   flex-direction: row;

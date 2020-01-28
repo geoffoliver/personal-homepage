@@ -33,6 +33,25 @@
     thumbnailUrl = thumb;
   };
 
+  var updatePostPreview = function() {
+    var previewContent = marked(body.value);
+    var titleText = title.value.replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    if (titleText) {
+      previewContent = '<h1>' + titleText + '</h1>\n\n' + previewContent;
+    }
+
+    preview.innerHTML = previewContent;
+  };
+
+  var resizeTextArea = function() {
+    body.style.height = 'auto';
+    body.style.height = body.scrollHeight + 'px';
+  };
+
   var dropzone = new Dropzone('#add-post-attachment-button', {
     url: "/medias/upload.json",
     autoProcessQueue: true,
@@ -45,26 +64,14 @@
       this.on("success", success);
       this.on("error", error);
       this.on("thumbnail", thumbnail);
+    },
+    params: function(files, xhr) {
+      return {
+        allow_comments: $('#allow-comments').checked ? '1' : '0',
+        public: $('#public').checked ? '1' : '0'
+      }
     }
   });
-
-  var updatePreview = function() {
-    var previewContent = marked(body.value);
-    var titleText = title.value.replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-
-    if (titleText) {
-      previewContent = '<h1>' + titleText + '</h1>\n\n' + previewContent;
-    }
-
-    body.style.height = 'auto';
-
-    body.style.height = body.scrollHeight + 'px';
-
-    preview.innerHTML = previewContent;
-  }
 
   document.addEventListener('click', function(e) {
     if (e.target.classList.contains('delete-post-attachment')) {
@@ -88,8 +95,7 @@
     }
   });
 
-  postForm.addEventListener('input', updatePreview);
-  updatePreview();
+  postForm.addEventListener('input', resizeTextArea);
 
   $('#showEditor').addEventListener('click', function() {
     postForm.classList.remove('preview');
@@ -98,6 +104,7 @@
   });
 
   $('#showPreview').addEventListener('click', function() {
+    updatePostPreview();
     postForm.classList.add('preview');
     $('#showPreview').classList.add('active');
     $('#showEditor').classList.remove('active');

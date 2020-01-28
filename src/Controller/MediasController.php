@@ -341,6 +341,8 @@ class MediasController extends AppController
             'name' => $this->request->getData('name'),
             'description' => $this->request->getData('description'),
             'user_id' => $user->id,
+            'allow_comments' => $this->request->getData('allow_comments', true),
+            'public' => $this->request->getData('public', true)
         ];
 
         // try to upload the file, anyway

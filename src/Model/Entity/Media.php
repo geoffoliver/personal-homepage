@@ -45,6 +45,8 @@ class Media extends Entity
         'user_id' => true,
         'created' => true,
         'modified' => true,
+        'public' => true,
+        'allow_comments' => true,
         'post' => true,
         'user' => true,
         'comments' => true

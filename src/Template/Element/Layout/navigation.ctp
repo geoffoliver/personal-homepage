@@ -1,7 +1,7 @@
 <?php
 use Cake\Utility\Hash;
 
-$routeName = isset($this->request->params['_name']) ? $this->request->params['_name'] : null;
+$routeName = $this->request->getParam('_name') ? $this->request->getParam('_name') : null;
 ?>
 <nav class="navbar is-fixed-top is-dark" aria-label="main navigation">
     <div class="container">
