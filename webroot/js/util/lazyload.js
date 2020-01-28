@@ -66,7 +66,7 @@
   }
 
   // observes an image for interaction (scrolling into view)
-  function observeImage(images, observer) {
+  function observeImage(images) {
     images.forEach(function(image) {
       if (image.isIntersecting) {
         img = image.target;
@@ -78,17 +78,14 @@
 
   // setup the intersection observer and tell it to watch all the lazy images
   function initLazyLoadImages() {
-    lazyObserver = new IntersectionObserver(observeImage);
+    lazyObserver = new IntersectionObserver(observeImage, {
+      rootMargin: '50px 0px',
+      threshold: 0
+    });
 
     lazyImages.forEach(function(image) {
       lazyObserver.observe(image);
     });
-
-    document.addEventListener("scroll", lazyload);
-    window.addEventListener("resize", lazyload);
-    window.addEventListener("orientationChange", lazyload);
-
-    lazyload();
   }
 
   // do the lazy loading of images
