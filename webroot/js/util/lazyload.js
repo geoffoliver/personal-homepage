@@ -21,6 +21,10 @@
     };
   }
 
+  function getLazyImages() {
+    lazyImages = document.querySelectorAll('img[data-lazy-src]');
+  }
+
   // puts the data-lazy-src of an image into the src of itself and then removes
   // the data-lazy-src attribute
   function loadImage(image) {
@@ -59,7 +63,7 @@
   // loads images all at once in the instance that the browser doesn't support
   // the IntersectionObserver
   function loadImages() {
-    lazyImages = document.querySelectorAll('img[data-lazy-src]');
+    getLazyImages();
     for (let i = 0; i < lazyImages.length; i++) {
       loadImage(lazyImages.item(i));
     }
@@ -79,7 +83,7 @@
   // setup the intersection observer and tell it to watch all the lazy images
   function initLazyLoadImages() {
     lazyObserver = new IntersectionObserver(observeImage, {
-      rootMargin: '50px 0px',
+      rootMargin: '200px 0px',
       threshold: 0
     });
 
@@ -95,8 +99,7 @@
     }
 
     lazyloadThrottleTimeout = requestAnimationFrame(function() {
-      lazyImages = document.querySelectorAll('img[data-lazy-src]');
-
+      getLazyImages();
       var scrollTop = window.pageYOffset;
       lazyImages.forEach(function(img) {
           if(img.offsetTop < (window.innerHeight + scrollTop)) {
@@ -107,30 +110,31 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
+    getLazyImages();
     if ("IntersectionObserver" in window) {
       initLazyLoadImages();
     } else {
       console.info('Loading all images at once, that sucks. Upgrade your browser!');
       loadImages();
     }
-  });
 
-  // create an observer that listens for changes in the DOM so we can trigger
-  // lazy loading
-  var observer = new MutationObserver(function(mutations) {
-    for (var mut of mutations) {
-      // if something was added, let's try to find and fix iframe embeds
-      if (mut.addedNodes.length > 0) {
-        // find any code blocks that aren't being/have been highlighted
-        var lazy = document.querySelectorAll('img[data-lazy-src]');
-        if (lazy.length > 0) {
-          lazyload();
+    // create an observer that listens for changes in the DOM so we can trigger
+    // lazy loading
+    var observer = new MutationObserver(function(mutations) {
+      for (var mut of mutations) {
+        // if something was added, let's try to find and fix iframe embeds
+        if (mut.addedNodes.length > 0) {
+          // find any code blocks that aren't being/have been highlighted
+          var lazy = document.querySelectorAll('img[data-lazy-src]');
+          if (lazy.length > 0) {
+            lazyload();
+          }
+          return;
         }
-        return;
       }
-    }
-  });
+    });
 
-  // tell the observer to start observing
-  observer.observe(document.body, {childList: true, subtree: true});
+    // tell the observer to start observing
+    observer.observe(document.body, {childList: true, subtree: true});
+  });
 })();
