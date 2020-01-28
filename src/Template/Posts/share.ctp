@@ -2,6 +2,7 @@
 $this->assign('title', __('Share On Your Website'));
 $this->append('css', $this->Html->css('posts/add.css'));
 $this->append('script', $this->Html->script('lib/dropzone/dropzone.js'));
+$this->append('script', $this->Html->script('lib/marked/marked.js'));
 $this->append('script', $this->Html->script('posts/add.js'));
 
 $this->start('body');
@@ -24,7 +25,15 @@ $this->start('body');
         <section class="section" id="addPostForm">
             <div class="columns">
                 <div class="column is-three-fifths is-offset-one-fifth">
-                    <h1 class="is-size-3"><?= __('Share Post'); ?></h1>
+                    <div class="page-title">
+                        <h1 class="is-size-3">
+                            <?= __('Share Post'); ?>
+                        </h1>
+                        <ul>
+                            <li><a id="showEditor" class="active">Edit</a></li>
+                            <li><a id="showPreview">Preview</a></li>
+                        </ul>
+                    </div>
                     <div class="box">
                         <?= $this->element('posts/form', ['post' => $post]); ?>
                     </div>
