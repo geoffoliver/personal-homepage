@@ -8,17 +8,6 @@ use Embed\Http\CurlDispatcher;
 
 class oEmbed {
 
-    // private static $instance = null;
-
-    private $embeddable = [
-        '/https:\/\/twitter\.com\/[^\/]+\/status\/[\d]+/',
-        '/https:\/\/youtube\.com\/watch\?v=.+/',
-        '/https:\/\/open\.spotify\.com\/.+/',
-        '/https:\/\/\.flickr\.com\/photos\/.+/',
-        '/https:\/\/www\.flickr\.com\/photos\/.+/',
-        '/https:\/\/t\.co\/.+/',
-        '/https:\/\/www\.reddit\.com\/.+/'
-    ];
 
     private $cacheName = 'o_embed';
 
@@ -128,29 +117,21 @@ class oEmbed {
 
         $result = null;
 
-        /*
-        foreach ($this->embeddable as $emb) {
-            if (preg_match($emb, $url)) {
-        */
-                try {
-                    $result = Embed::create($url, null, $this->dispatcher);
-                } catch (\Exception $ex) {
-                    $result = false;
-                    // we don't really care if this fails, but we need to catch
-                    // any exceptions that might be thrown
-                }
-
-                // save _whatever_ we got back into the cache
-                Cache::write($cacheKey, $result, $this->cacheName);
-                return $result;
-        /*
-            }
+        try {
+            $result = Embed::create($url, null, $this->dispatcher);
+        } catch (\Exception $ex) {
+            $result = false;
+            // we don't really care if this fails, but we need to catch
+            // any exceptions that might be thrown
         }
+
+        // save _whatever_ we got back into the cache
+        Cache::write($cacheKey, $result, $this->cacheName);
+        return $result;
 
         // nothing matched, whatever, we don't care. cache that and move on
         Cache::write($cacheKey, null, $this->cacheName);
         return null;
-        */
     }
 
     public function wrapEmbed($code) {
