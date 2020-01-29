@@ -18,7 +18,7 @@ echo $this->Html->tag(
 );
 
 // external dependencies
-$this->append('script', $this->Html->script('https://use.fontawesome.com/releases/v5.3.1/js/all.js', ['defer']));
+$this->append('script', $this->Html->script('https://use.fontawesome.com/releases/v5.12.0/js/all.js', ['defer']));
 
 // utilities
 $this->append('script', $this->Html->script('util/lazyload.js'));
