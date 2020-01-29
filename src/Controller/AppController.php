@@ -61,6 +61,7 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event)
     {
+        // grab the settings so we can get at them easily from the views
         $this->loadModel('Settings');
 
         $set = $this->Settings->find()->all();

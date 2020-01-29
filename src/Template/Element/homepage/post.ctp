@@ -5,17 +5,24 @@ use Cake\Utility\Hash;
     <article class="media">
         <div class="media-content">
             <div class="content">
+                <?php if ($post->name): ?>
                 <h1 class="is-marginless is-size-4">
                     <?= $this->Html->link(
                         $post->name,
                         ['_name' => 'viewPost', $post->id]
                     ); ?>
                 </h1>
+                <?php endif; ?>
                 <h5 class="is-size-7 has-text-grey-light">
                     <?php if ($post->import_source): ?>
                         <span class="fab fa-<?= $post->import_source; ?>" aria-hidden="true"></span>
                     <?php endif; ?>
-                    <time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
+                    <time><?php
+                        echo $this->Html->link(
+                            $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'),
+                            ['_name' => 'viewPost', $post->id]
+                        );
+                    ?></time>
                     <?php if ($post->created != $post->modified): ?>
                         &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
                     <?php endif; ?>

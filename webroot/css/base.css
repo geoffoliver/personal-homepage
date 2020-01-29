@@ -16,10 +16,6 @@ html.has-navbar-fixed-top {
   padding-top: 2.6rem;
 }
 
-body.popup {
-  background: #fff;
-}
-
 body.popup .section {
   padding: 1.5rem;
 }

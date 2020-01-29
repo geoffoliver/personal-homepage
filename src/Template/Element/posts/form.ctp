@@ -61,7 +61,7 @@ echo $this->Form->create($post, ['id' => 'postForm']);
     echo '</div><div id="preview"><div id="postPreview"></div></div>';
 
     echo $this->Form->button(
-        $post->id ? __('Save Post') : __('Add Post'),
+        __('{0} Post', $post->id ? __('Save') : ($sharing ? __('Share') : __('Add'))),
         [
             'type' => 'submit',
             'class' => 'button is-dark'

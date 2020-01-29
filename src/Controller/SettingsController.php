@@ -21,71 +21,86 @@ class SettingsController extends AppController
      */
     public function index()
     {
-        $timezones = [];
+        // user is saving settings
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            return $this->saveSettings();
+        }
 
+        // get a list of timezones for the user to choose from
+        $timezones = [];
         $tz = timezone_identifiers_list();
         foreach ($tz as $zone) {
             $timezones[$zone] = str_replace('_', ' ', $zone);
         }
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $this->loadModel('Medias');
-            $settings = $this->Settings->find()->all()->toArray();
+        // all done
+        $this->set(compact('timezones'));
+    }
 
-            // the user who is uploading the file
-            $user = $this->request->getAttribute('identity');
+    private function saveSettings()
+    {
+        // load the medias model
+        $this->loadModel('Medias');
 
-            $fileData = [
-                'user_id' => $user->id
-            ];
+        // get all the settings
+        $settings = $this->Settings->find()->all()->toArray();
 
-            foreach ($this->request->getData() as $key => $value) {
-                $found = false;
+        // the user who is uploading the file
+        $user = $this->request->getAttribute('identity');
 
-                if (is_array($value)) {
-                    if (isset($value['tmp_name'])) {
-                        $file = $value;
-                        $value = Hash::get($this->settings, $key);
+        $fileData = [
+            'user_id' => $user->id
+        ];
 
-                        if ($file['tmp_name']) {
-                            try {
-                                if ($media = $this->Medias->uploadAndCreate($file, true, $fileData)) {
-                                    $value = $media->id;
-                                }
-                            } catch (\Exception $ex) {
-                                dd($ex);
-                            }
+        foreach ($this->request->getData() as $key => $value) {
+            $found = false;
+
+            // fields with array values (files and... maybe other stuff?)
+            if (is_array($value)) {
+                if (isset($value['tmp_name'])) {
+                    // this is a file, just try to upload it
+                    $file = $value;
+                    $value = Hash::get($this->settings, $key);
+                    if ($file['tmp_name']) {
+                        if ($media = $this->Medias->uploadAndCreate($file, true, $fileData)) {
+                            $value = $media->id;
                         }
-                    } else {
-                        $value = json_encode($value);
                     }
-                }
-
-                foreach ($settings as $setting) {
-                    if ($setting->name === $key) {
-                        $this->Settings->patchEntity($setting, ['value' => $value]);
-                        $found = true;
-                        break;
-                    }
-                }
-
-                if (!$found) {
-                    $settings[]= $this->Settings->newEntity([
-                        'name' => $key,
-                        'value' => $value
-                    ]);
+                } else {
+                    // just encode the data and call it a day
+                    $value = json_encode($value);
                 }
             }
 
-            if ($this->Settings->saveMany($settings)) {
-                $this->Flash->success(__('Settings updated.'));
-            } else {
-                $this->Flash->error(__('Unable to update settings.'));
+            // try to find and patch a matching setting entity... this could
+            // definitely be improved.
+            foreach ($settings as $setting) {
+                if ($setting->name === $key) {
+                    $this->Settings->patchEntity($setting, ['value' => $value]);
+                    $found = true;
+                    break;
+                }
             }
 
-            return $this->redirect(['controller' => 'Settings', 'action' => 'index']);
+            // we couldn't update the setting? ok, just make a new one!
+            if (!$found) {
+                $settings[]= $this->Settings->newEntity([
+                    'name' => $key,
+                    'value' => $value
+                ]);
+            }
         }
 
-        $this->set(compact('timezones'));
+        // try to save all the settings
+        if ($this->Settings->saveMany($settings)) {
+            // yay!
+            $this->Flash->success(__('Settings updated.'));
+        } else {
+            // boooo!!
+            $this->Flash->error(__('Unable to update settings.'));
+        }
+
+        // later, gator
+        return $this->redirect(['controller' => 'Settings', 'action' => 'index']);
     }
 }

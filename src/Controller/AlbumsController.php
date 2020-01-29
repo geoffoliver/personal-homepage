@@ -18,11 +18,13 @@ class AlbumsController extends AppController
     {
         parent::initialize();
 
+        // types of albums we can display
         $this->types = [
             'photos' => __('Photo'),
             'videos' => __('Video')
         ];
 
+        // unauthed users can view indexes and details for albums
         $this->Authentication->allowUnauthenticated([
             'index',
             'view',
@@ -31,10 +33,13 @@ class AlbumsController extends AppController
 
     public function index($type = 'photos')
     {
+        // make sure a valid type is being requested
         if (!array_key_exists($type, $this->types)) {
-            return $this->redirect('/albums/photos');
+            // just send the user off to the photos page
+            return $this->redirect(['_name' => 'listAlbums', 'photos']);
         }
 
+        // try to find all the albums of the type being requested
         $albums = $this->Albums->find()
             ->where([
                 'Albums.type' => $type
@@ -52,6 +57,7 @@ class AlbumsController extends AppController
             ])
             ->all();
 
+        // easy peasy
         $this->set([
             'title' => $this->types[$type],
             'type' => $type,
@@ -67,6 +73,7 @@ class AlbumsController extends AppController
      */
     public function view($id = null)
     {
+        // get the album along with all it's media and comments
         $album = $this->Albums->get($id, [
             'contain' => [
                 'CoverMedias',
@@ -80,9 +87,9 @@ class AlbumsController extends AppController
                         'Comments.created' => 'DESC'
                     ]
                 ]
-                    ],
+            ],
         ]);
-
+        // done
         $this->set('album', $album);
     }
 
@@ -91,6 +98,7 @@ class AlbumsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
+    /*
     public function add()
     {
         $album = $this->Albums->newEntity();
@@ -105,6 +113,7 @@ class AlbumsController extends AppController
         }
         $this->set(compact('album'));
     }
+    */
 
     /**
      * Edit method
@@ -113,6 +122,7 @@ class AlbumsController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+    /*
     public function edit($id = null)
     {
         $album = $this->Albums->get($id, [
@@ -129,6 +139,7 @@ class AlbumsController extends AppController
         }
         $this->set(compact('album'));
     }
+    */
 
     /**
      * Delete method
@@ -137,6 +148,7 @@ class AlbumsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+    /*
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
@@ -149,4 +161,5 @@ class AlbumsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    */
 }

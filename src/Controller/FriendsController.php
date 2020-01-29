@@ -21,17 +21,28 @@ class FriendsController extends AppController
     {
         parent::initialize();
 
+        // allow unauthed users to view friend list and friend icons
         $this->Authentication->allowUnauthenticated(['index', 'icon']);
     }
 
     public function index()
     {
+        // get all of our friends
+        $friends = $this->Friends->find()
+            ->order([
+                'Friends.name' => 'ASC',
+                'Friends.created' => 'ASC'
+            ])
+            ->all();
+
+        // done
         $this->set([
-            'friends' => $this->paginate($this->Friends),
+            'friends' => $friends,
             'user' => $this->request->getAttribute('identity')
         ]);
     }
 
+    /*
     public function view($id = null)
     {
         $friend = $this->Friends->get($id, [
@@ -40,7 +51,8 @@ class FriendsController extends AppController
 
         $this->set('friend', $friend);
     }
-
+    */
+    /*
     public function feed($id)
     {
         if (!$id) {
@@ -61,6 +73,7 @@ class FriendsController extends AppController
             ->withType('application/json')
             ->withStringBody($friend->getFeed());
     }
+    */
 
     public function add()
     {
@@ -70,10 +83,9 @@ class FriendsController extends AppController
             $friend = $this->Friends->patchEntity($friend, $this->request->getData());
             if ($this->Friends->save($friend)) {
                 $this->Flash->success(__('The friend has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
-            dd($friend->getErrors());
+
             $this->Flash->error(__('The friend could not be saved. Please, try again.'));
         }
         $this->set(compact('friend'));

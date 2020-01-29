@@ -30,15 +30,17 @@ class PostsController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    // public function index()
-    // {
-    //     $this->paginate = [
-    //         'contain' => ['Users', 'Medias']
-    //     ];
-    //     $posts = $this->paginate($this->Posts);
+    /*
+    public function index()
+    {
+        $this->paginate = [
+            'contain' => ['Users', 'Medias']
+        ];
+        $posts = $this->paginate($this->Posts);
 
-    //     $this->set(compact('posts'));
-    // }
+        $this->set(compact('posts'));
+    }
+    */
 
     /**
      * View method
@@ -59,23 +61,28 @@ class PostsController extends AppController
         ];
 
         if ($this->Authentication->getIdentity()) {
+            // if user is authed, get all the comments
             $contain[]= 'Medias.Comments';
         } else {
+            // unauthed users can only see public+approved comments
             $contain['Medias.Comments'] = [
                 'conditions' => [
-                    'Comments.approved' => true
+                    'Comments.approved' => true,
+                    'Comments.public' => true
                 ]
             ];
             $contain['Comments']['conditions'] = [
-                'Comments.approved' => true
+                'Comments.approved' => true,
+                'Comments.public' => true
             ];
         }
 
-
+        // get the post
         $post = $this->Posts->get($id, [
             'contain' => $contain
         ]);
 
+        // set the post in the view and we're done
         $this->set('post', $post);
     }
 
@@ -88,25 +95,29 @@ class PostsController extends AppController
     {
         $post = $this->Posts->newEntity();
         $user = $this->request->getAttribute('identity');
+        $saved = false;
+        $sharing = $this->request->action === "share";
 
         if ($this->request->is('post')) {
+            // make some post data
             $postData = [
                 'name' => $this->request->getData('name'),
                 'content' => $this->request->getData('content'),
                 'source' => $this->request->getData('source'),
                 'public' => $this->request->getData('public'),
-                'allow_comments' => $this->request->getData('allow_comments')
+                'allow_comments' => $this->request->getData('allow_comments'),
+                'user_id' => $user->id
             ];
 
+            // try to create/save the post
             $post = $this->Posts->patchEntity(
                 $post,
                 $postData,
                 ['associated' => ['Medias']]
             );
 
-            $post->user_id = $user->id;
-
             if ($this->Posts->save($post)) {
+                // if there's media, attach (link) the media to the post
                 if ($att = $this->request->getData('new_media')) {
                     foreach ($att as $attId) {
                         $media = $this->Posts->Medias->find()
@@ -124,64 +135,22 @@ class PostsController extends AppController
                     }
                 }
 
-                $this->Flash->success(__('The post has been saved.'));
-                return $this->redirect(['_name' => 'viewPost', $post->id]);
-            }
+                // we're all good!
+                $this->Flash->success(__('The post has been {0}.', $sharing ? 'shared' : 'saved'));
 
-            $this->Flash->error(__('The post could not be saved. Please, try again.'));
-        }
-
-        $this->set(compact('post'));
-    }
-
-    public function share()
-    {
-        $this->viewBuilder()->setLayout('popup');
-
-        $post = $this->Posts->newEntity();
-        $user = $this->request->getAttribute('identity');
-
-        if ($this->request->is('post')) {
-            $postData = [
-                'name' => $this->request->getData('name'),
-                'content' => $this->request->getData('content'),
-                'source' => $this->request->getData('source'),
-                'public' => $this->request->getData('public'),
-                'allow_comments' => $this->request->getData('allow_comments')
-            ];
-
-            $post = $this->Posts->patchEntity(
-                $post,
-                $postData,
-                ['associated' => ['Medias']]
-            );
-
-            $post->user_id = $user->id;
-
-            if ($this->Posts->save($post)) {
-                if ($att = $this->request->getData('new_media')) {
-                    foreach ($att as $attId) {
-                        $media = $this->Posts->Medias->find()
-                            ->where([
-                                'Medias.id' => $attId,
-                                'Medias.post_id IS NULL'
-                            ])
-                            ->first();
-
-                        if (!$media) {
-                            continue;
-                        }
-
-                        $this->Posts->Medias->link($post, [$media]);
-                    }
+                if ($sharing) {
+                    // if we're sharing, just stay on the page
+                    $saved = true;
+                } else {
+                    // just a regular add/edit, send the user off the viewPost page
+                    return $this->redirect(['_name' => 'viewPost', $post->id]);
                 }
-
-                $this->Flash->success(__('The post has been saved.'));
-                $this->set('saved', true);
             } else {
+                // ugh, this is no good.
                 $this->Flash->error(__('The post could not be saved. Please, try again.'));
             }
         } else {
+            $post = $this->Posts->newEntity();
             $post->name = urldecode($this->request->getQuery('name'));
             $post->source = urldecode($this->request->getQuery('source'));
             if ($body = $this->request->getQuery('body')) {
@@ -191,7 +160,14 @@ class PostsController extends AppController
             }
         }
 
-        $this->set(compact('post'));
+        $this->set(compact('post', 'saved', 'sharing'));
+    }
+
+    public function share()
+    {
+        // all this does is change the layout, then call the `add` method
+        $this->viewBuilder()->setLayout('popup');
+        $this->add();
     }
 
     /**

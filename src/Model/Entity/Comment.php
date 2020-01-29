@@ -37,6 +37,7 @@ class Comment extends Entity
         'display_name' => true,
         'url' => true,
         'import_source' => true,
+        'ip' => true,
         'created' => true,
         'modified' => true,
         'model' => true

@@ -17,7 +17,8 @@ class HomepageController extends AppController
                 'Medias',
                 'Comments' => [
                     'conditions' => [
-                        'Comments.approved' => true
+                        'Comments.approved' => true,
+                        'Comments.public' => true
                     ]
                 ]
             ],
@@ -32,48 +33,60 @@ class HomepageController extends AppController
     {
         parent::initialize();
 
+        // everybody should be able to see the homepage
         $this->Authentication->allowUnauthenticated(['index']);
 
+        // there is no 'Homepage' model so...
         $this->modelClass = false;
     }
 
     public function index()
     {
+        // do some heavy lifting
         $this->setVarsForHomepageAndFeed();
 
-        $authed = false;
-
+        // if we're logged in, show all the posts
         if ($this->Authentication->getIdentity()) {
             unset($this->paginate['Posts']['conditions']);
-            $authed = true;
+            unset($this->paginate['Posts']['contain']['Comments']['conditions']);
         }
 
+        // get the posts!
         $posts = $this->paginate('Posts');
 
+        // tada!
         $this->set([
-            'posts' => $posts,
-            'authed' => $authed
+            'posts' => $posts
         ]);
     }
 
     public function feed()
     {
+        // we don't do much here (it all happens in `ajaxFeed`)
         $this->setVarsForHomepageAndFeed();
     }
 
     public function ajaxFeed()
     {
-        $this->loadModel('Friends');
+        // tell the view to use the ajax layout
         $this->viewBuilder()->setLayout('ajax');
 
+        // load up the friends model
+        $this->loadModel('Friends');
+
+        // get all our friends
         $friends = $this->Friends->find()->all();
 
+        // this is where we'll put the posts to display
         $posts = [];
 
         foreach ($friends as $friend) {
+            // get the feed for the friend
             $feed = $friend->getFeed(false);
 
+            // if we've got a feed and it looks good
             if ($feed && isset($feed->items) && $feed->items) {
+                // add the posts from the feed into the posts array
                 foreach ($feed->items as $item) {
                     $item->friend = $friend;
                     $posts[] = $item;
@@ -81,6 +94,7 @@ class HomepageController extends AppController
             }
         }
 
+        // sort all the posts
         usort($posts, function ($a, $b) {
             if (
                 !$a->date_published ||
@@ -93,6 +107,7 @@ class HomepageController extends AppController
             return $a->date_published->gt($b->date_published) ? -1 : 1;
         });
 
+        // paginate the posts
         $limit = 50;
         $page = 1;
         if ($this->request->getQuery('page')) {
@@ -114,6 +129,7 @@ class HomepageController extends AppController
             $next = $page + 1;
         }
 
+        // set some stuff for the view and call it a day
         $this->set([
             'posts' => $paginated,
             'friends' => $friends,
@@ -127,26 +143,29 @@ class HomepageController extends AppController
 
     private function setVarsForHomepageAndFeed()
     {
+        // load up some models
         $this->loadModel('Posts');
         $this->loadModel('Medias');
         $this->loadModel('Friends');
-        $authed = false;
 
-        if ($this->Authentication->getIdentity()) {
-            $authed = true;
-        }
+        // do this so we can be lazy;
+        $authed = $this->Authentication->getIdentity();
 
+        // get some photos for the homepage
         $photos = $this->Medias->find()
             ->where(['Medias.mime LIKE' => 'image/%'])
             ->order(['Medias.created' => 'DESC']);
 
+        // unauthed users can only see public photos
         if (!$authed) {
             $photos = $photos->where(['Medias.public' => true]);
             $photos = $photos->cache('photos', 'homepage_assets');
         }
 
+        // limit to 12 photos... this should probably be a setting.
         $photos = $photos->limit(12)->all();
 
+        // do the same thing we just did for photos, but for videos
         $videos = $this->Medias->find()
             ->where(['Medias.mime LIKE' => 'video/%'])
             ->order(['Medias.created' => 'DESC']);
@@ -158,12 +177,14 @@ class HomepageController extends AppController
 
         $videos = $videos->limit(12)->all();
 
+        // get 12 (again, probably needs to be a setting) friends
         $friends = $this->Friends->find()
-            ->order(['Friends.name' => 'ASC'])
+            ->order(['Friends.name' => 'ASC', 'Friends.created' => 'DESC'])
             ->limit(12)
             ->cache('friends', 'homepage_assets')
             ->all();
 
+        // set some variables in the view and let other stuff happen
         $this->set([
             'user' => $this->request->getAttribute('identity'),
             'photos' => $photos,

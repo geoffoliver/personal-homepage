@@ -6,6 +6,10 @@ use Cake\Utility\Hash;
 // be comments to display, that we should still display any existing comments
 // while preventing new comments if that's how this thing has been configured.
 $totalComments = count($post->comments);
+
+// try to get values for the 'name' and 'email' fields from the cookies
+$name = isset($_COOKIE['comment_name']) ? $_COOKIE['comment_name'] : '';
+$email = isset($_COOKIE['comment_email']) ? $_COOKIE['comment_email'] : '';
 ?>
 <div class="comments" id="comments">
     <div class="comments-list">
@@ -81,31 +85,37 @@ $totalComments = count($post->comments);
                             <?= __('Leave A Comment'); ?>
                         </a>
                     </h4>
-                    <?= $this->Form->create(null, [
-                        'id' => 'commentsForm',
-                        'url' => ['controller' => 'Comments', 'action' => 'add'],
-                        'style' => 'display: none;'
-                    ]); ?>
-                        <?= $this->Form->control('display_name', [
+                    <?php
+                        echo $this->Form->create(null, [
+                            'id' => 'commentsForm',
+                            'url' => ['controller' => 'Comments', 'action' => 'add'],
+                            'style' => 'display: none;'
+                        ]);
+
+                        echo $this->Form->control('display_name', [
                             'type' => 'text',
                             'label' => __('Your Name'),
                             'placeholder' => __('Used in comment attribution'),
                             'required' => true,
                             'maxlength' => 255,
-                        ]); ?>
-                        <?= $this->Form->control('posted_by', [
+                            'value' => $name
+                        ]);
+
+                        echo $this->Form->control('posted_by', [
                             'type' => 'email',
                             'label' => __('Email Address'),
                             'placeholder' => __('Not displayed on site'),
                             'required' => true,
                             'maxlength' => 255,
-                        ]); ?>
-                        <?= $this->Form->control('comment', [
+                            'value' => $email
+                        ]);
+
+                        echo $this->Form->control('comment', [
                             'type' => 'textarea',
                             'label' => __('Comment'),
                             'required' => true,
-                        ]); ?>
-                    <?php
+                        ]);
+
                         echo $this->Form->button(
                             __('Add Comment'),
                             [
@@ -115,7 +125,8 @@ $totalComments = count($post->comments);
                         );
 
                         echo $this->Form->hidden('model_id', ['value' => $post->id]);
-                    echo $this->Form->end();
+
+                        echo $this->Form->end();
                     ?>
                 </div>
             <?php endif; ?>

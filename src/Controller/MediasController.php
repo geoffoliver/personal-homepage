@@ -139,8 +139,6 @@ class MediasController extends AppController
      */
     public function download($id, $type = 'original')
     {
-        $start = microtime(true);
-
         // try to find a media entry based on the ID
         $media = $this->Medias->find()
             ->where([
@@ -246,16 +244,18 @@ class MediasController extends AppController
         // still here? ok, send a response with an etag
         $this->response = $response;
 
-
-        $end = microtime(true);
-        $runtime = $end - $start;
-
         // hand back a file response
         return $this->response->withFile($file);
     }
 
+    /**
+     * Edit an individual media item.
+     *
+     * @param $id uuid The ID of the media item you want to edit
+     */
     public function edit($id)
     {
+        // try to find the media item the user is trying to edit
         $media = $this->Medias->find()
             ->where([
                 'Medias.id' => $id
@@ -266,12 +266,14 @@ class MediasController extends AppController
             ])
             ->first();
 
+        // no media? byeee!
         if (!$media) {
             $this->Flash->error(__('Invalid media item.'));
             return $this->redirect('/');
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
+            // update the media!
             $media = $this->Medias->patchEntity($media, [
                 'name' => $this->request->getData('name'),
                 'description' => $this->request->getData('description'),
@@ -281,7 +283,6 @@ class MediasController extends AppController
 
             if ($this->Medias->save($media)) {
                 $this->Flash->success(__('The media has been saved.'));
-
                 return $this->redirect(['_name' => 'viewMedia', $media->id]);
             }
 

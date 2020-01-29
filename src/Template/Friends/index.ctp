@@ -22,7 +22,7 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                         ); ?>
                     <?php endif; ?>
                 </h1>
-                <?php if ($friends->count()): ?>
+                <?php if ($friends): ?>
                     <div class="box">
                         <div class="row">
                             <div class="columns is-multiline">
