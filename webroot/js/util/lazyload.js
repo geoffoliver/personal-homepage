@@ -4,7 +4,6 @@
   // setup some variables
   var lazyObserver;
   var lazyImages = [];
-  var lazyloadThrottleTimeout;
   var worker = null;
 
   if (window.Worker) {
@@ -60,15 +59,6 @@
     }
   }
 
-  // loads images all at once in the instance that the browser doesn't support
-  // the IntersectionObserver
-  function loadImages() {
-    getLazyImages();
-    for (let i = 0; i < lazyImages.length; i++) {
-      loadImage(lazyImages.item(i));
-    }
-  }
-
   // observes an image for interaction (scrolling into view)
   function observeImage(images) {
     images.forEach(function(image) {
@@ -82,41 +72,19 @@
 
   // setup the intersection observer and tell it to watch all the lazy images
   function initLazyLoadImages() {
-    lazyObserver = new IntersectionObserver(observeImage, {
-      rootMargin: '200px 0px',
-      threshold: 0
-    });
-
+    getLazyImages();
     lazyImages.forEach(function(image) {
       lazyObserver.observe(image);
     });
   }
 
-  // do the lazy loading of images
-  function lazyload () {
-    if(lazyloadThrottleTimeout) {
-      cancelAnimationFrame(lazyloadThrottleTimeout);
-    }
-
-    lazyloadThrottleTimeout = requestAnimationFrame(function() {
-      getLazyImages();
-      var scrollTop = window.pageYOffset;
-      lazyImages.forEach(function(img) {
-          if(img.offsetTop < (window.innerHeight + scrollTop)) {
-            loadImage(img);
-          }
-      });
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', function() {
-    getLazyImages();
-    if ("IntersectionObserver" in window) {
-      initLazyLoadImages();
-    } else {
-      console.info('Loading all images at once, that sucks. Upgrade your browser!');
-      loadImages();
-    }
+    lazyObserver = new IntersectionObserver(observeImage, {
+      rootMargin: '200px 0px',
+      threshold: 0
+    });
+
+    initLazyLoadImages();
 
     // create an observer that listens for changes in the DOM so we can trigger
     // lazy loading
@@ -124,11 +92,7 @@
       for (var mut of mutations) {
         // if something was added, let's try to find and fix iframe embeds
         if (mut.addedNodes.length > 0) {
-          // find any code blocks that aren't being/have been highlighted
-          var lazy = document.querySelectorAll('img[data-lazy-src]');
-          if (lazy.length > 0) {
-            lazyload();
-          }
+          initLazyLoadImages();
           return;
         }
       }
