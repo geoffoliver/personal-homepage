@@ -26,6 +26,9 @@ class MediasController extends AppController
 
         // these are the types in the `index` function we're capable of displaying
         $this->types = [
+            'all' => [
+                'title' => __('All Media')
+            ],
             'photos' => [
                 'where' => 'image/%',
                 'title' => __('Photos')
@@ -43,34 +46,34 @@ class MediasController extends AppController
      * @param $type string The type of media you want to view. Must be one of the
      * options from $this->types.
      */
-    public function index($type = false)
+    public function index($type = 'all')
     {
-        // assume this will fail
-        $medias = [];
-
         // give the page a default title
         $title = __('Media');
+
+        $medias = $this->Medias->find()
+            ->order([
+                'Medias.created' => 'DESC'
+            ]);
 
         // make sure we're only handling something we know how to deal with
         if (array_key_exists($type, $this->types)) {
             // set a better title
             $title = $this->types[$type]['title'];
 
-            // lookup some media
-            $medias = $this->Medias->find()
-                ->where([
-                    'Medias.mime LIKE' => $this->types[$type]['where']
-                ])
-                ->order([
-                    'Medias.created' => 'DESC'
-                ]);
-
-            // only logged in users can see private media
-            if (!$this->Authentication->getIdentity()) {
+            if (isset($this->types[$type]['where'])) {
+                // lookup some media
                 $medias = $medias->where([
-                    'Medias.public' => true
+                    'Medias.mime LIKE' => $this->types[$type]['where']
                 ]);
             }
+        }
+
+        // only logged in users can see private media
+        if (!$this->Authentication->getIdentity()) {
+            $medias = $medias->where([
+                'Medias.public' => true
+            ]);
         }
 
         // all done!

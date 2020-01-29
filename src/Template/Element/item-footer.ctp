@@ -87,6 +87,7 @@ if ($comments) {
 
 // this only applies to media items
 if ($isMedia) {
+    /*
     if ($item->album) {
         $links[]= $this->Html->link(
             '<span class="fas fa-book-open" aria-hidden="true"></span>&nbsp;' . __('View Album'),
@@ -100,6 +101,7 @@ if ($isMedia) {
             ]
         );
     }
+    */
 
     if ($item->post) {
         $links[]= $this->Html->link(

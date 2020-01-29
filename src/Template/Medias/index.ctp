@@ -10,19 +10,56 @@ $this->append('css', $this->Html->css('medias/index.css'));
                     <h1 class="is-size-2"><?= $title; ?>
                 </div>
                 <div class="level-right">
-                    <?php if ($type): ?>
-                        <?= $this->Html->link(
+                    <?php
+                        echo $this->Html->link(
+                            '<span class="fas fa-star-of-life"></span>&nbsp;' . __('All'),
+                            [
+                                'controller' => 'Medias',
+                                'action' => 'index'
+                            ],
+                            [
+                                'class' => 'is-size-5 level-item ' . ($type === 'all' ? 'has-text-dark' : null),
+                                'escape' => false
+                            ]
+                        );
+
+                        echo $this->Html->link(
+                            '<span class="fas fa-camera"></span>&nbsp;' . __('Photos'),
+                            [
+                                '_name' => 'photos',
+                            ],
+                            [
+                                'class' => 'is-size-5 level-item ' . ($type === 'photos' ? 'has-text-dark' : null),
+                                'escape' => false
+                            ]
+                        );
+
+                        echo $this->Html->link(
+                            '<span class="fas fa-video"></span>&nbsp;' . __('Videos'),
+                            [
+                                '_name' => 'videos',
+                            ],
+                            [
+                                'class' => 'is-size-5 level-item ' . ($type === 'videos' ? 'has-text-dark' : null),
+                                'escape' => false
+                            ]
+                        );
+                    /*
+                    if ($type !== 'all') {
+                        echo $this->Html->link(
                             '<span class="fas fa-book-open"></span>&nbsp;' . __('View Albums'),
                             [
                                 '_name' => 'listAlbums',
                                 $type
                             ],
                             [
-                                'class' => 'is-size-5',
+                                'class' => 'is-size-5 level-item',
                                 'escape' => false
                             ]
-                        ); ?>
-                    <?php endif; ?>
+                        );
+                    }
+                    */
+                    ?>
                 </div>
             </div>
             <div class="box">
