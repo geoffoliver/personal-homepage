@@ -1,6 +1,7 @@
 <?php
 use Cake\Utility\Hash;
 
+$this->element('social-meta-tags', ['item' => $post]);
 $this->assign('title', $post->name);
 $this->append('css', $this->Html->css('posts/view.css'));
 $this->append('script', $this->Html->script('posts/view.js'));

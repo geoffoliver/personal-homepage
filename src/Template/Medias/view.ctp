@@ -1,5 +1,7 @@
 <?php
 use Cake\Utility\Hash;
+
+$this->element('social-meta-tags', ['item' => $media]);
 $this->assign('title', $media->name);
 $this->append('css', $this->Html->css('medias/view.css'));
 $Parsedown = new Parsedown();

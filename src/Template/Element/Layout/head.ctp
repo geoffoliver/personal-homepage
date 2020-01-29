@@ -27,7 +27,21 @@
     echo $this->Html->css('base.css');
     echo $this->Html->css('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css');
 
+    $ogName = $siteName;
+    if ($siteTitle) {
+        $ogName .= ' - ' . $siteTitle;
+    }
+
+    $this->Html->meta(
+        [
+            'property' => 'og:site_name',
+            'content' => $ogName
+        ],
+        null,
+        [
+            'block' => true
+        ]
+    );
+
     echo $this->fetch('meta');
     echo $this->fetch('css');
-
-    echo "<link rel=\"dns-prefetch\" href=\"http://{$this->request->host()}/\">";
