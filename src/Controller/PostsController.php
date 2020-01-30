@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Routing\Router;
+use Cake\Utility\Hash;
 
 /**
  * Posts Controller
@@ -263,7 +265,25 @@ class PostsController extends AppController
         // setup the data we're gonna pull
         $this->paginate = [
             'Posts' => [
-                'contain' => ['Users', 'Medias', 'Comments'],
+                'limit' => 100,
+                'maxLimit' => 100,
+                'conditions' => [
+                    'Posts.public' => true
+                ],
+                'contain' => [
+                    'Users',
+                    'Medias' => [
+                        'conditions' => [
+                            'Medias.public' => true
+                        ]
+                    ],
+                    'Comments' => [
+                        'conditions' => [
+                            'Comments.approved' => true,
+                            'Comments.public' => true
+                        ]
+                    ]
+                ],
                 'order' => [
                     'Posts.modified' => 'DESC'
                 ]
@@ -271,7 +291,12 @@ class PostsController extends AppController
         ];
 
         // grab some posts
-        $posts = $this->paginate($this->Posts);
+        try {
+            $posts = $this->paginate($this->Posts);
+        } catch (\Exception $ex) {
+            // we should probably handle this?
+            $posts = [];
+        }
 
         if ($this->request->is('json')) {
             // output a JSON feed
@@ -313,20 +338,42 @@ class PostsController extends AppController
         // get the paging data so we can generate a `next_url`
         $paging = $this->request->paging['Posts'];
 
+        $homepageUrl = Router::url([
+            '_name' => 'homepage',
+        ], true);
+
+        $feedUrl = Router::url([
+            '_name' => 'jsonFeed',
+            '_ext' => 'json'
+        ], true);
+
+        $iconUrl = Router::url([
+            '_name' => 'profilePhoto'
+        ], true);
+
+        $nextUrl = null;
+        if ($paging['pageCount'] > $paging['page']) {
+            $nextUrl = Router::url([
+                '_name' => 'jsonFeed',
+                '_ext' => 'json',
+                'page' => $paging['page'] + 1
+            ], true);
+        }
+
         // set the variables for the JSON feed
         $this->set([
             'version' => 'https://jsonfeed.org/version/1',
-            'title' => 'Feed name',
-            'description' => 'Feed description',
-            'home_page_url' => 'home-page-url',
-            'feed_url' => 'feed-url',
-            'next_url' => 'next-url',
-            'icon' => 'icon',
-            'favicon' => 'favicon',
+            'title' => Hash::get($this->settings, 'site-title'),
+            'description' => Hash::get($this->settings, 'homepage-about'),
+            'home_page_url' => $homepageUrl,
+            'feed_url' => $feedUrl,
+            'next_url' => $nextUrl,
+            'icon' => $iconUrl,
+            'favicon' => $iconUrl,
             'author' => [
-                'name' => 'author-name',
-                'url' => 'author-url',
-                'avatar' => 'author-avatar'
+                'name' => Hash::get($this->settings, 'site-name'),
+                'url' => $homepageUrl,
+                'avatar' => $iconUrl
             ],
             'items' => $this->postsToJsonFeedItems($posts),
             '_serialize' => [
@@ -369,22 +416,27 @@ class PostsController extends AppController
             // create the HTML version of the post
             $contentHtml = $this->parsedown->text($post->content);
 
+            $postUrl = Router::url([
+                '_name' => 'viewPost',
+                $post->id
+            ], true);
+
             // generate the item feed
             $postItem = [
                 'id' => $post->id,
-                'url' => $post->url_alias,
+                'url' => $postUrl,
                 'title' => $post->name,
                 'content_html' => $contentHtml,
                 'content_text' => $contentText,
                 'summary' => substr($contentText, 0, 512),
-                'image' => 'post-image',
-                'banner_image' => 'post-banner-image',
+                //'image' => 'post-image',
+                //'banner_image' => 'post-banner-image',
                 'date_published' => $post->created,
                 'date_modified' => $post->modified,
                 '_page_feed' => [
                     'about' => 'Custom fields for PageFeed',
                     'comments' => [
-                        'url' => 'comments-url',
+                        'url' => $postUrl . '#comments',
                         'total' => count($post->comments)
                     ]
                 ]
@@ -396,12 +448,17 @@ class PostsController extends AppController
                 $postItem['attachments'] = [];
                 foreach ($post->medias as $media) {
                     $postItem['attachments'][]= [
-                        'url' => 'att-url',
+                        'url' => Router::url([
+                            'controller' => 'Medias',
+                            'action' => 'download',
+                            $media->id
+                        ], true),
                         'mime_type' => $media->mime,
                         'title' => $media->name,
                         'size_in_bytes' => $media->size
                     ];
                 }
+                $postItem['image'] = $postItem['attachments'][0]['url'];
             }
 
             // if there's a 'source' on the post, use it to populate the

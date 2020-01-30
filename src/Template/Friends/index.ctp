@@ -69,24 +69,15 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                                         ]
                                                     ); ?>
                                                     <?php
-                                                        echo $this->Form->create(
-                                                            null,
+                                                        echo $this->Form->postLink(
+                                                            __('Delete'),
+                                                            ['action' => 'delete', $friend->id],
                                                             [
-                                                                'url' => [
-                                                                    'action' => 'delete',
-                                                                    $friend->id
-                                                                ],
-                                                                'class' => 'level-item'
+                                                                'confirm' => __('Are you sure you want to delete this friend?'),
+                                                                'class' => 'button is-danger is-outlined is-fullwidth',
+                                                                'type' => 'submit'
                                                             ]
                                                         );
-                                                            echo $this->Form->button(
-                                                                __('Delete'),
-                                                                [
-                                                                    'class' => 'button is-danger is-outlined is-fullwidth',
-                                                                    'type' => 'submit'
-                                                                ]
-                                                            );
-                                                        echo $this->Form->end();
                                                     ?>
                                                 </div>
                                             <?php endif; ?>

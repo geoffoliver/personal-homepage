@@ -38,6 +38,42 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
+    // site info
+    $routes->connect('/site-info',
+        [
+            'controller' => 'Settings',
+            'action' => 'siteInfo',
+        ],
+        [
+            '_name' => 'siteInfo',
+            '_ext' => 'json'
+        ]
+    );
+
+    // the regular RSS feed for posts
+    $routes->connect('/posts-feed',
+        [
+            'controller' => 'Posts',
+            'action' => 'feed'
+        ],
+        [
+            '_name' => ' rssFeed',
+            '_ext' => 'xml',
+        ]
+    );
+
+    // the JSON feed for posts
+    $routes->connect('/posts-feed',
+        [
+            'controller' => 'Posts',
+            'action' => 'feed'
+        ],
+        [
+            '_name' => 'jsonFeed',
+            '_ext' => 'json'
+        ]
+    );
+
     $routes->connect('/friends',
         [
             'controller' => 'Friends',
@@ -58,22 +94,6 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    // the regular RSS feed for posts
-    $routes->connect('/feed',
-        [
-            'controller' => 'Homepage',
-            'action' => 'index', 'feed'
-        ]
-    );
-
-    // the JSON feed for posts
-    $routes->connect('/page-feed',
-        [
-            'controller' => 'Posts',
-            'action' => 'feed'
-        ]
-    );
-
     // make it easy to get the hero background
     $routes->connect('/hero-background',
         [
@@ -87,6 +107,9 @@ Router::scope('/', function (RouteBuilder $routes) {
         [
             'controller' => 'Medias',
             'action' => 'profilePhoto'
+        ],
+        [
+            '_name' => 'profilePhoto'
         ]
     );
 

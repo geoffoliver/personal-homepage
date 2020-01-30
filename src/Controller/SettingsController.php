@@ -1,9 +1,9 @@
 <?php
 namespace App\Controller;
 
-use Cake\Utility\Hash;
-
 use App\Controller\AppController;
+use Cake\Routing\Router;
+use Cake\Utility\Hash;
 
 /**
  * Settings Controller
@@ -14,6 +14,17 @@ use App\Controller\AppController;
  */
 class SettingsController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        // let everybody access a few methods
+        $this->Authentication->allowUnauthenticated([
+            'siteInfo',
+        ]);
+    }
+
     /**
      * Index method
      *
@@ -103,4 +114,30 @@ class SettingsController extends AppController
         // later, gator
         return $this->redirect(['controller' => 'Settings', 'action' => 'index']);
     }
+
+    public function siteInfo()
+    {
+        $feed = Router::url([
+            '_name' => 'jsonFeed',
+            '_ext' => 'json'
+        ], true);
+
+        $icon = Router::url([
+            '_name' => 'profilePhoto'
+        ], true);
+
+        $this->set([
+            'name' => Hash::get($this->settings, 'site-name'),
+            'description' => Hash::get($this->settings, 'homepage-about'),
+            'icon' => $icon,
+            'feed' => $feed,
+            '_serialize' => [
+                'name',
+                'description',
+                'icon',
+                'feed'
+            ]
+        ]);
+    }
+
 }

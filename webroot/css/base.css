@@ -284,11 +284,19 @@ pre .hljs {
   bottom: 0;
 }
 
+@media (max-width: 767px) {
+  .comments-list {
+    position: static;
+    max-height: 70vh;
+  }
+}
+
 .comments-container {
   flex-grow: 1;
   border: 1px solid #ddd;
   background: rgba(255, 255, 255, 0.4);
   overflow: auto;
+  min-height: 300px;
 }
 
 .comment {

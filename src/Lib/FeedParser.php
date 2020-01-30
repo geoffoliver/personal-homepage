@@ -81,14 +81,16 @@ class FeedParser
             throw new \Exception(__('Invalid response'));
         }
 
+        $feedType = $response->getHeaderLine('content-type');
+
         // cache meta info for the feed
         Cache::write($cacheKey, $response->getHeaders(), 'feed_meta');
 
-        // get the XML for the feed
-        $feedXml = $response->getStringBody();
+        // get the string body for the feed
+        $feedString = $response->getStringBody();
 
-        // no XML to parse? later
-        if (!$feedXml) {
+        // nothing to parse? later
+        if (!$feedString) {
             // we have cached data, return that
             if ($cached) {
                 return $cached;
@@ -97,9 +99,14 @@ class FeedParser
             return null;
         }
 
-        // turn the feed into JSON, because it's better that way :)
-        if ($feed = $this->jsonify($feedXml)) {
-            $feed->feed_url = $feedUrl;
+        // figure out how we're going to
+        if (strpos($feedType, '/json') !== false) {
+            $feed = $this->decodeJsonFeed($feedString);
+        } else {
+            // turn the feed into JSON feed format
+            if ($feed = $this->convertToJsonFeed($feedString)) {
+                $feed->feed_url = $feedUrl;
+            }
         }
 
         if ($cached && !$feed) {
@@ -139,7 +146,7 @@ class FeedParser
         return $feed;
     }
 
-    public function jsonify($feedXml)
+    public function convertToJsonFeed($feedXml)
     {
         // try to parse the XML
         $xml = simplexml_load_string($feedXml);
@@ -204,7 +211,7 @@ class FeedParser
 
         if ($chanAuth = $root->author) {
             if ($authName = $chanAuth->name) {
-                $author = [
+                $author = (object)[
                     'name' => (string) $authName
                 ];
             }
@@ -225,6 +232,21 @@ class FeedParser
             ),
         ];
 
+    }
+
+    public function decodeJsonFeed($feedString)
+    {
+        $feed = json_decode($feedString);
+        if (!$feed) {
+            return null;
+        }
+
+        foreach ($feed->items as $item) {
+            $item->date_published = new Time($item->date_published);
+            $item->content_html = $this->purifier->purify($item->content_html);
+        }
+
+        return $feed;
     }
 
     public function parseItems($isAtom, $namespaces, $items)

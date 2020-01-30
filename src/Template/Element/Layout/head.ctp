@@ -20,6 +20,26 @@
         }
     }
 
+    echo $this->Html->tag('link', null, [
+        'rel' => 'alternate',
+        'title' => __('{0} Feed', $siteName),
+        'type' => 'application/json',
+        'href' => $this->Url->build([
+            '_name' => 'jsonFeed',
+            '_ext' => 'json'
+        ], true)
+    ]);
+
+    echo $this->Html->tag('link', null, [
+        'rel' => 'alternate',
+        'title' => __('{0} Feed', $siteName),
+        'type' => 'application/rss+xml',
+        'href' => $this->Url->build([
+            '_name' => 'jsonFeed',
+            '_ext' => 'xml'
+        ], true)
+    ]);
+
     echo $this->Html->tag('title', $this->fetch('title'));
 
     echo $this->Html->meta('icon', '/profile-photo');

@@ -38,15 +38,15 @@
                             'class' => 'feed-post-item-friend-name'
                         ]
                     ); ?>
-                    <?php if (isset($post->author) && isset($post->author['name']) && $post->author['name']): ?>
+                    <?php if (isset($post->author) && isset($post->author->name) && $post->author->name): ?>
                         <span>
-                        <?= __('&mdash; by {0}', h($post->author['name'])); ?>
+                        <?= __('&mdash; by {0}', h($post->author->name)); ?>
                         </span>
                     <?php endif; ?>
                     &mdash;
                     <time>
                         <?= $post->date_published->nice('America/Denver'); ?>
-                        <?php if ($post->date_published != $post->date_modified): ?>
+                        <?php if (isset($post->date_modified) && $post->date_published != $post->date_modified): ?>
                             <span class="updated-time">
                                 <?= __('(Updated {0})', $post->date_modified->nice('America/Denver')); ?>
                             </span>
@@ -86,7 +86,7 @@
                                 'data-url' => urlencode($post->url),
                                 'data-share-local' => true,
                                 'data-name' => urlencode($this->Text->truncate($post->title, 255)),
-                                'data-summary' => urlencode($this->Text->truncate($post->summary, 255)),
+                                'data-summary' => isset($post->summary) ? urlencode($this->Text->truncate($post->summary, 255)) : null,
                                 'class' => 'level-item share-item'
                             ]
                         );

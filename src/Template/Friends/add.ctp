@@ -89,6 +89,9 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
     var url = $('url');
     var overlay = $('addFriendFieldOverlay');
 
+    $('feed-url').closest('.field').classList.add('hidden');
+    $('icon').closest('.field').classList.add('hidden');
+
     url.addEventListener('blur', function() {
         var urlValue = url.value.trim();
         if (!urlValue || urlValue.indexOf('http') !== 0) {
@@ -131,12 +134,12 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
             }
             $('icon').innerHTML = icons.join('');
 
-            if (response.samePlatform) {
-                $('feed-url').closest('.field').classList.add('hidden');
-                $('icon').closest('.field').classList.add('hidden');
-            } else {
+            if (!response.samePlatform) {
                 $('feed-url').closest('.field').classList.remove('hidden');
                 $('icon').closest('.field').classList.remove('hidden');
+            } else {
+                $('feed-url').closest('.field').classList.add('hidden');
+                $('icon').closest('.field').classList.add('hidden');
             }
         });
     });

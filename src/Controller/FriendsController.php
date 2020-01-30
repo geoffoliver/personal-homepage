@@ -5,6 +5,7 @@ use App\Controller\AppController;
 
 use Cake\Cache\Cache;
 use Cake\Http\Client;
+use Cake\Utility\Hash;
 
 class FriendsController extends AppController
 {
@@ -222,7 +223,7 @@ class FriendsController extends AppController
         $pageData = $client->get($url . '/site-info.json', ['redirect' => 10]);
 
         // response failed... oh well. bye!
-        if (!$pageData || $pageData->isOk()) {
+        if (!$pageData || !$pageData->isOk()) {
             return false;
         }
 
@@ -296,7 +297,7 @@ class FriendsController extends AppController
 
         for ($i = 0; $i < $feedTags->length; $i++) {
             $type = $feedTags->item($i)->attributes->getNamedItem('type');
-            if (!$type || strpos($type->value, '+xml') === false) {
+            if (!$type) {//} || strpos($type->value, '+xml') === false) {
                 continue;
             }
 
