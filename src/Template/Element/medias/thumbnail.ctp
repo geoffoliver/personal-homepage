@@ -16,25 +16,18 @@
                 ]
             )
         );
-    /*
     } elseif (strpos($media->mime, 'video/') === 0) {
         echo $this->Html->div('video-container',
-            $this->Html->media(
-                $this->Url->build([
+            $this->Html->tag('video', null, [
+                'controls' => true,
+                'loop' => true,
+                'data-lazy-src' => $this->Url->build([
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
-                ]),
-                [
-                    'fullBase' => true,
-                    'text' => $media->name . $media->description  ? (' - ' . $media->description) : '',
-                    'controls' => true,
-                    'tag' => 'video',
-                    'autoplay' => false
-                ]
-            )
+                ])
+            ])
         );
-    */
     } else {
         echo $this->Html->link(
             $this->Html->tag(

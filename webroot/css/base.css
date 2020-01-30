@@ -365,6 +365,7 @@ pre .hljs {
   padding-bottom: 56.25%; /*16:9*/
   height: 0;
   overflow: hidden;
+  width: 100%;
 }
 
 .video-container iframe,

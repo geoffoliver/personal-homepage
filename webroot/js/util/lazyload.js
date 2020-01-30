@@ -21,7 +21,7 @@
   }
 
   function getLazyImages() {
-    lazyImages = document.querySelectorAll('img[data-lazy-src]');
+    lazyImages = document.querySelectorAll('*[data-lazy-src]');
   }
 
   // puts the data-lazy-src of an image into the src of itself and then removes
@@ -38,11 +38,17 @@
     }
 
     // when the image loads, remove the data-lazy-src and the data-loading attributes
-    image.onload = function() {
+    var removeLazyloadStuff = function() {
       delete image.dataset.lazySrc;
       delete image.dataset.loading;
       delete image.onload;
     };
+
+    if (image.tagName === "VIDEO") {
+      image.oncanplay = removeLazyloadStuff;
+    } else if (image.tagName === "IMG") {
+      image.onload = removeLazyloadStuff;
+    }
 
     // so we don't try to load this image multiple times
     image.dataset.loading = true;

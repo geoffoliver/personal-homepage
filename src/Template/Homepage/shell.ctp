@@ -52,34 +52,46 @@ $this->assign('hero', true);
             <div class="sidebar sticky-sidebar">
             <?php if ($photos->count()) : ?>
                 <div class="box">
-                <h3 class="title is-6">
-                    <a href="<?= $this->Url->build(['_name' => 'photos']); ?>">
-                    <span class="fas fa-fw fa-camera"></span>
-                    &nbsp;
-                    <strong><?= __('Photos'); ?></strong>
-                    </a>
-                </h3>
-                <div id="homepage-photos" class="sidebar-thumbnail-grid">
-                    <?php foreach ($photos as $photo) : ?>
-                    <?= $this->element('medias/thumbnail', ['media' => $photo, 'size' => 'square_thumbnail']); ?>
-                    <?php endforeach; ?>
-                </div>
+                    <h3 class="title is-6">
+                        <a href="<?= $this->Url->build(['_name' => 'photos']); ?>">
+                        <span class="fas fa-fw fa-camera"></span>
+                        &nbsp;
+                        <strong><?= __('Photos'); ?></strong>
+                        </a>
+                    </h3>
+                    <div id="homepage-photos" class="sidebar-thumbnail-grid">
+                        <?php
+                            foreach ($photos as $photo) {
+                                echo $this->Html->link(
+                                    $this->element('medias/square_thumbnail', ['media' => $photo]),
+                                    ['_name' => 'viewMedia', $photo->id],
+                                    ['escape' => false]
+                                );
+                            }
+                        ?>
+                    </div>
                 </div>
             <?php endif; ?>
             <?php if ($videos->count()) : ?>
                 <div class="box">
-                <h3 class="title is-6">
-                    <a href="<?= $this->Url->build(['_name' => 'videos']); ?>">
-                    <span class="fas fa-fw fa-video"></span>
-                    &nbsp;
-                    <strong><?= __('Videos'); ?></strong>
-                    </a>
-                </h3>
-                <div id="homepage-videos" class="sidebar-thumbnail-grid">
-                    <?php foreach ($videos as $video) : ?>
-                    <?= $this->element('medias/thumbnail', ['media' => $video, 'size' => 'square_thumbnail']); ?>
-                    <?php endforeach; ?>
-                </div>
+                    <h3 class="title is-6">
+                        <a href="<?= $this->Url->build(['_name' => 'videos']); ?>">
+                        <span class="fas fa-fw fa-video"></span>
+                        &nbsp;
+                        <strong><?= __('Videos'); ?></strong>
+                        </a>
+                    </h3>
+                    <div id="homepage-videos" class="sidebar-thumbnail-grid">
+                        <?php
+                            foreach ($videos as $video) {
+                                echo $this->Html->link(
+                                    $this->element('medias/square_thumbnail', ['media' => $video]),
+                                    ['_name' => 'viewMedia', $video->id],
+                                    ['escape' => false]
+                                );
+                            }
+                        ?>
+                    </div>
                 </div>
             <?php endif; ?>
             </div>

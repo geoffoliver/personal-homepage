@@ -14,13 +14,14 @@
   display: flex;
   max-width: 50%;
   min-width: 33%;
-  padding: 0 1px;
+  /* width: 100%; */
   align-items: center;
   justify-content: center;
-  background: #f9f9f9;
-  /*
   max-height: 300px;
   overflow: hidden;
+  /*
+  background: #f9f9f9;
+  padding: 0 1px;
   align-items: flex-end;
   justify-content: flex-start;
   flex-direction: column;
@@ -30,16 +31,33 @@
 .homepage-post .post-media a:hover,
 .homepage-post .post-media a:active,
 .homepage-post .post-media a:focus {
-  background: #f2f2f2;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  background: #f8f8f8;
+  z-index: 1;
 }
+
+.homepage-post .post-media a:hover img,
+.homepage-post .post-media a:active img,
+.homepage-post .post-media a:focus img{
+  transform: scale(1.1);
+}
+
 
 .homepage-post .post-media a img {
   /* width: 100%; */
-  max-width: 100%;
+  /*min-width: 100%;*/
+  height: 100%;
   align-self: center;
+  object-fit: cover;
+  transition: all 0.2s;
 }
 
 .homepage-post .post-media a:first-child {
   max-width: 100%;
   width: 100%;
+  max-height: none;
+}
+
+.homepage-post .post-media a:first-child img {
+  /*width: 100%;*/
 }

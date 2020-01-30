@@ -12,7 +12,9 @@ $Parsedown->setStrictMode(true);
         <div class="columns">
             <div class="column is-three-quarters">
                 <div class="media-title">
-                    <h1 class="title is-3"><?= $media->name ? $media->name : __('Untitled Upload'); ?></h1>
+                    <?php if ($media->name): ?>
+                    <h1 class="title is-3"><?= $media->name; ?></h1>
+                    <?php endif; ?>
                     <h2 class="subtitle is-6 has-text-grey">
                         <?= __('Posted'); ?>&nbsp;<time><?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
                     </h2>

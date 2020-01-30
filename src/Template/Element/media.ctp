@@ -3,6 +3,16 @@
 
     if (strpos($media->mime, 'video/') === 0) {
         $render = $this->Html->div('video-container',
+            $this->Html->tag('video', null, [
+                'controls' => true,
+                'loop' => true,
+                'data-lazy-src' => $this->Url->build([
+                    'controller' => 'Medias',
+                    'action' => 'download',
+                    $media->id
+                ])
+            ])
+            /*
             $this->Html->media(
                 $this->Url->build([
                     'controller' => 'Medias',
@@ -17,6 +27,7 @@
                     'autoplay' => false
                 ]
             )
+            */
         );
     } elseif (strpos($media->mime, 'audio/') === 0){
         $render = $this->Html->div('audio-container',
