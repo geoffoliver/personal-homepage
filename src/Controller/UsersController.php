@@ -125,9 +125,23 @@ class UsersController extends AppController
     public function login()
     {
         $result = $this->Authentication->getResult();
+        $session = $this->getRequest()->getSession();
+        $attempts = $session->read('loginAttempts', 0);
+        $lastAttempt = $session->read('lastAttempt');
+
+        if (
+            $lastAttempt &&
+            $lastAttempt >= strtotime('-5 minutes') &&
+            $attempts >= 5
+        ) {
+            // user tried to login too many times and failed
+            $this->Flash->error(__('Too many failed login attempts.'));
+            return $this->redirect('/');
+        }
 
         // regardless of POST or GET, redirect if user is logged in
         if ($result->isValid()) {
+            $session->delete('loginAttempts');
             $authService = $this->Authentication->getAuthenticationService();
             $redirect = $this->request->getQuery(
                 'redirect',
@@ -137,7 +151,9 @@ class UsersController extends AppController
         }
 
         if ($this->request->is(['post']) && !$result->isValid()) {
-            $this->Flash->error('Invalid username or password');
+            $session->write('loginAttempts', $attempts + 1);
+            $session->write('lastAttempt', time());
+            $this->Flash->error(__('Invalid username or password'));
         }
     }
 
@@ -156,7 +172,7 @@ class UsersController extends AppController
     public function resetPassword($hash = null)
     {
         if (!$hash) {
-            throw new \Exception('Invalid request');
+            throw new \Exception(__('Invalid request'));
         }
 
         $user = $this->Users->find()
