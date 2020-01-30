@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Posts Controller
@@ -81,6 +82,11 @@ class PostsController extends AppController
         $post = $this->Posts->get($id, [
             'contain' => $contain
         ]);
+
+        if (!$post) {
+            $this->Flash->error(__('Invalid post.'));
+            return $this->redirect('/');
+        }
 
         // set the post in the view and we're done
         $this->set('post', $post);
@@ -166,7 +172,7 @@ class PostsController extends AppController
     public function share()
     {
         // all this does is change the layout, then call the `add` method
-        $this->viewBuilder()->setLayout('popup');
+        $this->viewBuilder()->setLayout('simple');
         $this->add();
     }
 
@@ -240,7 +246,7 @@ class PostsController extends AppController
         $post = $this->Posts->get($id);
 
         if (!$post) {
-            throw new \Exception(__('Invalid post'));
+            throw new NotFoundException(__('Invalid post'));
         }
 
         if ($this->Posts->delete($post)) {

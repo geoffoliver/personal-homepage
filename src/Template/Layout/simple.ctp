@@ -3,7 +3,7 @@
 <head>
     <?=$this->element('Layout/head');?>
 </head>
-<body class="popup">
+<body class="simple">
     <main>
         <div class="container">
             <div class="content">

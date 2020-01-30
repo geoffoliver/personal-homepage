@@ -27,6 +27,8 @@ class CommentsController extends AppController
      */
     public function add()
     {
+        $session = $this->getRequest()->getSession();
+
         // try to make sure someone's not spamming our comments. 2 minutes should
         // be enough time... right?
         $tooSoon = strtotime('-2 minutes');
@@ -50,34 +52,33 @@ class CommentsController extends AppController
         if ($recentComments > 0 ) {
             // this _should_ be here, but it could easily be fooled by clearing
             // out cookies, soooo...
-            $lastComment = $this->Session->read('lc', time());
+            $lastComment = $session->read('lc', time());
 
             if ($recentComments >= $tooMany) {
-                // if you've got more than $tooMany comments, you can piss right off.
+                // if you've got more than $tooMany comments, you can piss right off
+                // because you probably managed to do this by some sneaky means.
                 $this->Flash->error(__('You added several comments very recently. Please wait a few minutes and try again.'));
                 return $this->redirect($this->referer());
-            } elseif ($lastComment < $tooSoon) {
-                // if you posted a comment too recently, you can also piss off :-)
+            } elseif ($lastComment >= $tooSoon) {
+                // if you posted a comment too recently, you just need to wait :-)
                 $this->Flash->error(__('You added a comment very recently. Please wait a few minutes and try again.'));
                 return $this->redirect($this->referer());
             }
         }
 
-        // make a new comment entity
-        $comment = $this->Comments->newEntity();
         if ($this->request->is('post')) {
-            // build the data for the comment
-            $commentData = [
+            // make a new comment entity
+            $comment = $this->Comments->newEntity([
                 'display_name' => $this->request->getData('display_name'),
                 'posted_by' => $this->request->getData('posted_by'),
                 'comment' => $this->request->getData('comment'),
-                'model_id' => $this->request->getData('model_id')
-            ];
+                'model_id' => $this->request->getData('model_id'),
+                'ip' => $ip
+            ]);
 
             // try to create/save the comment
-            $comment = $this->Comments->patchEntity($comment, $commentData);
             if ($this->Comments->save($comment)) {
-                $this->Session->write('lc', time());
+                $session->write('lc', time());
                 // set some cookies so the comment form can populate a couple
                 // fields automatically, so users can be lazy
                 $cookieExp = strtotime('+20 years');

@@ -38,16 +38,6 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    $routes->connect('/about',
-        [
-            'controller' => 'About',
-            'action' => 'index'
-        ],
-        [
-            '_name' => 'about',
-        ]
-    );
-
     $routes->connect('/friends',
         [
             'controller' => 'Friends',
@@ -135,6 +125,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
+    // shortcut for viewing a media item
     $routes->connect('/view-media/:id',
         [
             'controller' => 'Medias',
@@ -145,7 +136,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     )->setPass(['id']);
 
-
+    // shortcut for viewing a post
     $routes->connect('/view-album/:id',
         [
             'controller' => 'Albums',
@@ -167,5 +158,37 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     )->setPass(['type']);
 
-    $routes->fallbacks(DashedRoute::class);
+    // about page
+    $routes->connect('/about',
+        [
+            'controller' => 'About',
+            'action' => 'index'
+        ],
+        [
+            '_name' => 'about',
+        ]
+    );
+
+    // wire up all the controllers
+    $controllers = [
+        'Albums' => 'albums',
+        'Comments' => 'comments',
+        'Friends' => 'friends',
+        'Medias' => 'medias',
+        'Posts' => 'posts',
+        'Settings' => 'settings',
+        'Users' => 'users',
+        'Homepage' => 'homepage'
+    ];
+
+    foreach ($controllers as $controller => $url) {
+        $routes->connect("/{$url}", ['action' => 'index', 'controller' => $controller], ['routeClass' => DashedRoute::class]);
+        $routes->connect("/{$url}/:action/*", ['controller' => $controller], ['routeClass' => DashedRoute::class]);
+    }
+
+    // pages routing
+    $routes->connect('**', [
+        'controller' => 'Pages',
+        'action' => 'view'
+    ]);
 });

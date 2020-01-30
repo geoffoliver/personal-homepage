@@ -104,9 +104,6 @@ class MediasController extends AppController
                     'sort' => [
                         'Comments.created' => 'DESC'
                     ],
-                    'conditions' => [
-                        'Comments.approved' => true
-                    ]
                 ]
             ]);
 
@@ -114,6 +111,15 @@ class MediasController extends AppController
         if (!$this->Authentication->getIdentity()) {
             $media = $media->where([
                 'Medias.public' => true
+            ])->contain([
+                'Comments' => [
+                    'sort' => [
+                        'Comments.created' => 'DESC'
+                    ],
+                    'conditions' => [
+                        'Comments.approved' => true
+                    ]
+                ]
             ]);
         }
 
