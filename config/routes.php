@@ -51,19 +51,19 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // the regular RSS feed for posts
-    $routes->connect('/posts-feed',
+    $routes->connect('/atom',
         [
             'controller' => 'Posts',
             'action' => 'feed'
         ],
         [
-            '_name' => ' rssFeed',
+            '_name' => 'rssFeed',
             '_ext' => 'xml',
         ]
     );
 
     // the JSON feed for posts
-    $routes->connect('/posts-feed',
+    $routes->connect('/json',
         [
             'controller' => 'Posts',
             'action' => 'feed'

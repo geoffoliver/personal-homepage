@@ -33,7 +33,7 @@
     echo $this->Html->tag('link', null, [
         'rel' => 'alternate',
         'title' => __('{0} Feed', $siteName),
-        'type' => 'application/rss+xml',
+        'type' => 'application/atom+xml',
         'href' => $this->Url->build([
             '_name' => 'jsonFeed',
             '_ext' => 'xml'

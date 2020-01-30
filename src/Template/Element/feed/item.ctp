@@ -45,10 +45,10 @@
                     <?php endif; ?>
                     &mdash;
                     <time>
-                        <?= $post->date_published->nice('America/Denver'); ?>
+                        <?= $post->date_published->nice(Hash::get($settings, 'timezone')); ?>
                         <?php if (isset($post->date_modified) && $post->date_published != $post->date_modified): ?>
                             <span class="updated-time">
-                                <?= __('(Updated {0})', $post->date_modified->nice('America/Denver')); ?>
+                                <?= __('(Updated {0})', $post->date_modified->nice(Hash::get($settings, 'timezone'))); ?>
                             </span>
                         <?php endif; ?>
                     </time>

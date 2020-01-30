@@ -317,12 +317,10 @@ class PostsController extends AppController
 
     private function setRssFeedVars($posts)
     {
-        die('Not implemented');
-    }
-
-    private function postsToRssFeedItems($posts)
-    {
-        die('Not implemented');
+        $this->set('posts', $posts);
+        // $this->response->type(['atom' => 'application/xml']);
+        // $this->response = $this->response->withType('atom');
+        return $this->response;
     }
 
     /**
