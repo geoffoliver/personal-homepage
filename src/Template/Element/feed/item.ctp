@@ -1,3 +1,6 @@
+<?php
+use Cake\Utility\Hash;
+?>
 <div class="box">
     <div class="feed-post-item">
         <div class="feed-post-item-header">

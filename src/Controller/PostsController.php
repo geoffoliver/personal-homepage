@@ -63,27 +63,45 @@ class PostsController extends AppController
             ]
         ];
 
+        // get the post
+        $post = $this->Posts->find()
+            ->where([
+                'Posts.id' => $id,
+            ]);
+
         if ($this->Authentication->getIdentity()) {
             // if user is authed, get all the comments
-            $contain[]= 'Medias.Comments';
+            $post = $post->contain([
+                'Medias.Comments',
+                'Comments'
+            ]);
         } else {
             // unauthed users can only see public+approved comments
-            $contain['Medias.Comments'] = [
-                'conditions' => [
-                    'Comments.approved' => true,
-                    'Comments.public' => true
+            $post = $post->where([
+                    'Posts.public' => true
+                ])
+                ->contain([
+                'Medias' => [
+                    'conditions' => [
+                        'Medias.public' => true
+                    ],
+                    'Comments' => [
+                        'conditions' => [
+                            'Comments.approved' => true,
+                            'Comments.public' => true
+                        ]
+                    ],
+                ],
+                'Comments' => [
+                    'conditions' => [
+                        'Comments.approved' => true,
+                        'Comments.public' => true
+                    ]
                 ]
-            ];
-            $contain['Comments']['conditions'] = [
-                'Comments.approved' => true,
-                'Comments.public' => true
-            ];
+            ]);
         }
 
-        // get the post
-        $post = $this->Posts->get($id, [
-            'contain' => $contain
-        ]);
+        $post = $post->first();
 
         if (!$post) {
             $this->Flash->error(__('Invalid post.'));

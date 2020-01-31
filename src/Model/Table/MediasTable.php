@@ -59,7 +59,8 @@ class MediasTable extends Table
             'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Comments', [
-            'foreignKey' => 'model_id'
+            'foreignKey' => 'model_id',
+            'dependent' => true
         ]);
     }
 

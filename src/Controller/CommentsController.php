@@ -76,6 +76,11 @@ class CommentsController extends AppController
                 'ip' => $ip
             ]);
 
+            // auto approved comments from logged in users
+            if ($this->Authentication->getIdentity()) {
+                $comment->approved = true;
+            }
+
             // try to create/save the comment
             if ($this->Comments->save($comment)) {
                 $session->write('lc', time());
@@ -84,13 +89,104 @@ class CommentsController extends AppController
                 $cookieExp = strtotime('+20 years');
                 setcookie("comment_email", $comment->posted_by, $cookieExp, '/');
                 setcookie("comment_name", $comment->display_name, $cookieExp, '/');
-                $this->Flash->success(__('Your comment has been added. It will not appear until it has been approved.'));
+
+                // different message if comment is approved (authed user)
+                if ($comment->approved) {
+                    $this->Flash->success(__('Your comment has been added.'));
+                } else {
+                    $this->Flash->success(__('Your comment has been added. It will not appear until it has been approved.'));
+                }
             } else {
                 $this->Flash->error(__('Your comment could not be added. Please, try again.'));
             }
         }
 
         return $this->redirect($this->referer());
+    }
+
+    public function unapproved()
+    {
+        $this->loadModel('Posts');
+        $this->loadModel('Medias');
+
+        if ($this->request->is('post')) {
+            // what do we want to do?
+            $action = $this->request->getData('group_action');
+            // what do we want to do it to?
+            $commentIds = $this->request->getData('comment');
+
+            if ($action === 'delete') {
+                // delete comments
+                $deleted = 0;
+                foreach ($commentIds as $cid) {
+                    $comment = $this->Comments->find()->where(['Comments.id' => $cid])->first();
+                    if ($comment && $this->Comments->delete($comment)) {
+                        $deleted++;
+                    }
+                }
+                $this->Flash->success(__('{0} comments deleted.', number_format($deleted)));
+            } elseif ($action === 'approve') {
+                // approve comments
+                $approved = [];
+                foreach ($commentIds as $cid) {
+                    $comment = $this->Comments->find()->where(['Comments.id' => $cid])->first();
+                    if ($comment) {
+                        $comment = $this->Comments->patchEntity($comment, ['approved' => true]);
+                        $approved[]= $comment;
+                    }
+                }
+
+                if ($this->Comments->saveMany($approved)) {
+                    $this->Flash->success(__('{0} comments approved.', number_format(count($commentIds))));
+                }
+            }
+
+            return $this->redirect(['controller' => 'Comments', 'action' => 'unapproved']);
+        }
+
+        // get all the unapproved comments
+        $comments = $this->Comments->find()
+            ->where([
+                'Comments.approved' => false
+            ])
+            ->order([
+                'Comments.created' => 'DESC'
+            ])
+            ->all();
+
+        // try to the thing that the comment is for
+        foreach ($comments as $comment) {
+            $comment->item = null;
+            $comment->onPost = false;
+            $comment->onMedia = false;
+
+            $post = $this->Posts->find()
+                ->where([
+                    'Posts.id' => $comment->model_id
+                ])
+                ->first();
+
+            if ($post) {
+                $comment->onPost = true;
+                $comment->item = $post;
+                continue;
+            }
+
+            $media = $this->Medias->find()
+                ->where([
+                    'Medias.id' => $comment->model_id
+                ])
+                ->first();
+
+            if ($media) {
+                $comment->onMedia = true;
+                $comment->item = $media;
+            }
+        }
+
+        $this->set([
+            'comments' => $comments
+        ]);
     }
 
     public function approve($id = null)

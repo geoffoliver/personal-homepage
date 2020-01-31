@@ -60,6 +60,26 @@ body > nav.navbar > .container {
   left: 10px;
 }
 
+.navbar-item.unapproved-comments {
+  position: relative;
+}
+
+.navbar-item.unapproved-comments span.count {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal;
+  font-size: 0.6rem;
+  color: #fff;
+  background: red;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  right: 10px;
+  top: 33%;
+}
+
 @media (min-width: 1024px) {
   .navbar-menu {
     font-size: 0.8rem;
@@ -75,6 +95,12 @@ body > nav.navbar > .container {
   .navbar-menu a span:last-child,
   .navbar-menu button span:last-child {
     display: none;
+  }
+
+  .navbar-item.unapproved-comments span.count {
+    right: 3px;
+    bottom: 3px;
+    top: auto;
   }
 }
 

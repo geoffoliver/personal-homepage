@@ -43,6 +43,7 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
                     echo '<div class="nav-divider"></div>';
 
                     if ($this->Identity->isLoggedIn()) {
+
                         echo $this->Html->link(
                                 '<span class="fas fa-fw fa-globe"></span>&nbsp;' . __('Feed'),
                                 ['_name' => 'feed'],
@@ -68,6 +69,9 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
                                 ['class' => 'navbar-item', 'title' => __('Homepage'), 'escape' => false]
                         );
                         */
+
+                        echo $this->cell('UnapprovedComments', [$routeName]);
+
                         echo $this->Html->link(
                                 '<span class="fas fa-fw fa-cog"></span><span>&nbsp;' . __('Settings') . '</span>',
                                 ['controller' => 'Settings', 'action' => 'index'],

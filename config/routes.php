@@ -94,6 +94,16 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
+    $routes->connect('/comments/unapproved',
+        [
+            'controller' => 'Comments',
+            'action' => 'unapproved'
+        ],
+        [
+            '_name' => 'unapprovedComments'
+        ]
+    );
+
     // make it easy to get the hero background
     $routes->connect('/hero-background',
         [
