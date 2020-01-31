@@ -32,6 +32,8 @@ class PagesController extends AppController
             throw new \Exception(__('Pages directory does is not a directory.'));
         }
 
+        $page = trim($page, '/');
+
         $pageFile = new File($pagesDir . DS . $page . '.html');
 
         if (!$pageFile->exists()) {
