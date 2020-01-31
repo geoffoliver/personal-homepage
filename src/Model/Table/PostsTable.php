@@ -51,7 +51,8 @@ class PostsTable extends Table
         ]);
         $this->hasMany('Medias', [
             'foreignKey' => 'post_id',
-            'saveStrategy' => 'replace'
+            'saveStrategy' => 'replace',
+            'dependent' => true
         ]);
         $this->hasMany('Comments', [
             'foreignKey' => 'model_id',
