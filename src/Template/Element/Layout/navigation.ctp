@@ -62,13 +62,6 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
                                     'escape' => false
                                 ]
                         );
-                        /*
-                        echo $this->Html->link(
-                                '<span class="fas fa-fw fa-user"></span><span>&nbsp;' . __('Homepage') . '</span>',
-                                ['controller' => 'Homepage', 'action' => 'index', 'homepage'],
-                                ['class' => 'navbar-item', 'title' => __('Homepage'), 'escape' => false]
-                        );
-                        */
 
                         echo $this->cell('UnapprovedComments', [$routeName]);
 
@@ -81,6 +74,7 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
                                     'escape' => false
                                 ]
                         );
+
                         echo $this->Form->create(null, [
                                 'id' => 'nav-logout-form',
                                 'url' => [
@@ -88,13 +82,15 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
                                     'action' => 'logout'
                                 ]
                         ]);
-                        echo $this->Form->button(
-                                '<span class="fas fa-fw fa-sign-out-alt"></span><span>&nbsp;' . __('Logout') . '</span>',
-                                [
-                                    'type' => 'submit',
-                                    'title' => __('Logout')
-                                ]
-                        );
+
+                            echo $this->Form->button(
+                                    '<span class="fas fa-fw fa-sign-out-alt"></span><span>&nbsp;' . __('Logout') . '</span>',
+                                    [
+                                        'type' => 'submit',
+                                        'title' => __('Logout')
+                                    ]
+                            );
+
                         echo $this->Form->end();
                     } else {
                         echo $this->Html->link(
