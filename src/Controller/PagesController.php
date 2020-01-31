@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Filesystem\File;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Utility\Hash;
 
 /**
  * Pages Controller
@@ -51,6 +52,10 @@ class PagesController extends AppController
             $this->viewBuilder()->setLayout($config->layout);
         }
 
+        if (isset($config->auth)) {
+            $this->authorize($config->auth);
+        }
+
         $pageConfig->close();
 
         $content = $pageFile->read();
@@ -61,5 +66,25 @@ class PagesController extends AppController
             'pageContent' => $content,
             'config' => $config
         ]);
+    }
+
+    private function authorize($auth)
+    {
+        $authUser = env('PHP_AUTH_USER');
+        $authPw = env('PHP_AUTH_PW');
+
+        if (
+            $authUser &&
+            $authPw &&
+            $authUser == $auth->username &&
+            $authPw == $auth->password
+        ) {
+            return true;
+        }
+
+        HEADER('WWW-Authenticate: Basic realm="Login to view page"');
+        HEADER('HTTP/1.0 401 Unauthorized');
+        echo "You must login to view this page.";
+        exit;
     }
 }
