@@ -16,6 +16,7 @@
     </main>
     <?php
         $this->append('script', $this->Html->script('https://use.fontawesome.com/releases/v5.12.0/js/all.js', ['defer']));
+        $this->append('script', $this->Html->script('util/lazyload.js'));
         echo $this->fetch('script');
     ?>
 </body>
