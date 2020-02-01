@@ -28,9 +28,4 @@ $this->append('script', $this->Html->script('util/highlight-code.js'));
 $this->append('script', $this->Html->script('util/external-links.js'));
 $this->append('script', $this->Html->script('util/share.js'));
 
-// code highlighting
-/*
-$this->append('script', $this->Html->script('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js'));
-$this->append('script', $this->Html->scriptBlock('hljs.initHighlightingOnLoad();'));
-*/
 echo $this->fetch('script');
