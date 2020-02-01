@@ -15,19 +15,19 @@ $this->assign('title', __('Settings'));
                     echo $this->Form->create(null, ['type' => 'file']);
                         echo $this->Html->tag('h4', __('General'), ['class' => 'title is-4']);
 
-                        echo $this->Form->input('site-name', [
+                        echo $this->Form->control('site-name', [
                             'label' => __('Name'),
                             'type' => 'text',
                             'value' => Hash::get($settings, 'site-name')
                         ]);
 
-                        echo $this->Form->input('site-title', [
+                        echo $this->Form->control('site-title', [
                             'label' => __('Title'),
                             'type' => 'text',
                             'value' => Hash::get($settings, 'site-title')
                         ]);
 
-                        echo $this->Form->input('picture', [
+                        echo $this->Form->control('picture', [
                             'label' => __('Picture'),
                             'type' => 'file'
                         ]);
@@ -55,13 +55,13 @@ $this->assign('title', __('Settings'));
 
                         echo $this->Html->tag('h4', __('About'), ['class' => 'title is-4']);
 
-                        echo $this->Form->input('homepage-about', [
+                        echo $this->Form->control('homepage-about', [
                             'label' => __('Homepage blurb/"About" page intro'),
                             'type' => 'text',
                             'value' => Hash::get($settings, 'homepage-about')
                         ]);
 
-                        echo $this->Form->input('about-page', [
+                        echo $this->Form->control('about-page', [
                             'label' => __('"About" page'),
                             'type' => 'textarea',
                             'value' => Hash::get($settings, 'about-page')
@@ -71,19 +71,19 @@ $this->assign('title', __('Settings'));
 
                         echo $this->Html->tag('h4', __('Homepage Cover'), ['class' => 'title is-4']);
 
-                        echo $this->Form->input('cover-title', [
+                        echo $this->Form->control('cover-title', [
                             'label' => __('Title'),
                             'type' => 'text',
                             'value' => Hash::get($settings, 'cover-title')
                         ]);
 
-                        echo $this->Form->input('cover-subtitle', [
+                        echo $this->Form->control('cover-subtitle', [
                             'label' => __('Subtitle'),
                             'type' => 'text',
                             'value' => Hash::get($settings, 'cover-subtitle')
                         ]);
 
-                        echo $this->Form->input('cover-photo', [
+                        echo $this->Form->control('cover-photo', [
                             'label' => __('Background Picture'),
                             'type' => 'file'
                         ]);
@@ -111,7 +111,7 @@ $this->assign('title', __('Settings'));
 
                         echo $this->Html->tag('h4', __('Other'), ['class' => 'title is-4']);
 
-                        echo $this->Form->input('timezone', [
+                        echo $this->Form->control('timezone', [
                             'label' => __('Timezone'),
                             'type' => 'select',
                             'value' => Hash::get($settings, 'timezone'),
