@@ -122,7 +122,7 @@ class PostsController extends AppController
         $post = $this->Posts->newEntity();
         $user = $this->request->getAttribute('identity');
         $saved = false;
-        $sharing = $this->request->action === "share";
+        $sharing = $this->request->getParam('action') === "share";
 
         if ($this->request->is('post')) {
             // make some post data
@@ -351,8 +351,12 @@ class PostsController extends AppController
      */
     private function setJsonFeedVars($posts)
     {
+        $paging = null;
+
         // get the paging data so we can generate a `next_url`
-        $paging = $this->request->paging['Posts'];
+        if ($p = $this->request->getParam('paging')) {
+            $paging = $p['Posts'];
+        }
 
         $homepageUrl = Router::url([
             '_name' => 'homepage',
@@ -368,7 +372,7 @@ class PostsController extends AppController
         ], true);
 
         $nextUrl = null;
-        if ($paging['pageCount'] > $paging['page']) {
+        if ($paging && $paging['pageCount'] > $paging['page']) {
             $nextUrl = Router::url([
                 '_name' => 'jsonFeed',
                 '_ext' => 'json',
