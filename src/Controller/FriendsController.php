@@ -293,7 +293,7 @@ class FriendsController extends AppController
 
         // try to find RSS feeds
         $feeds = [];
-        $feedTags = $domXpath->query('/html/head/link[@rel="alternate"]');
+        $feedTags = $domXpath->query('/html/*/link[@rel="alternate"]');
 
         for ($i = 0; $i < $feedTags->length; $i++) {
             $type = $feedTags->item($i)->attributes->getNamedItem('type');
@@ -318,9 +318,9 @@ class FriendsController extends AppController
         // try to find an icon
         $icons = [];
         // prefer apple icons because they should always be PNGs
-        $appleIcons = $domXpath->query('/html/head/link[@rel="apple-touch-icon"]');
-        $favicons = $domXpath->query('/html/head/link[@rel="shortcut icon"]');
-        $moreFavicons = $domXpath->query('/html/head/link[@rel="icon"]');
+        $appleIcons = $domXpath->query('/html/*/link[@rel="apple-touch-icon"]');
+        $favicons = $domXpath->query('/html/*/link[@rel="shortcut icon"]');
+        $moreFavicons = $domXpath->query('/html/*/link[@rel="icon"]');
 
         for ($i = 0; $i < $appleIcons->length; $i++) {
             if ($iIcon = $appleIcons->item($i)->attributes->getNamedItem('href')) {
@@ -343,11 +343,10 @@ class FriendsController extends AppController
                 if (!$icon) {
                     continue;
                 }
-
                 if (strpos($icon, 'http') === false && strpos($icon, $url) === false) {
                     $icon = rtrim($url, '/') . '/' . ltrim($icon, '/');
                 }
-                $icons[]= $iIcon->value;
+                $icons[]= $icon;
             }
         }
 
@@ -361,7 +360,7 @@ class FriendsController extends AppController
                 if (strpos($icon, 'http') === false && strpos($icon, $url) === false) {
                     $icon = rtrim($url, '/') . '/' . ltrim($icon, '/');
                 }
-                $icons[]= $iIcon->value;
+                $icons[]= $icon;
             }
         }
 
