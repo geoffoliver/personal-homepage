@@ -1,3 +1,12 @@
+.homepage-post .post-content h1,
+.homepage-post .post-content h2,
+.homepage-post .post-content h3,
+.homepage-post .post-content h4,
+.homepage-post .post-content h5,
+.homepage-post .post-content h6 {
+  font-size: 1.3rem;
+}
+
 .homepage-post .post-media {
   margin: 1rem -20px 1.5rem;
   display: flex;
@@ -14,18 +23,10 @@
   display: flex;
   max-width: 50%;
   min-width: 33%;
-  /* width: 100%; */
   align-items: center;
   justify-content: center;
   max-height: 300px;
   overflow: hidden;
-  /*
-  background: #f9f9f9;
-  padding: 0 1px;
-  align-items: flex-end;
-  justify-content: flex-start;
-  flex-direction: column;
-  */
 }
 
 .homepage-post .post-media a:hover,
@@ -44,8 +45,6 @@
 
 
 .homepage-post .post-media a img {
-  /* width: 100%; */
-  /*min-width: 100%;*/
   height: 100%;
   align-self: center;
   object-fit: cover;
@@ -56,8 +55,4 @@
   max-width: 100%;
   width: 100%;
   max-height: none;
-}
-
-.homepage-post .post-media a:first-child img {
-  /*width: 100%;*/
 }
