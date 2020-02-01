@@ -12,25 +12,26 @@ and take back control of your data.
 - Posts
 - Media (Photos and Videos)
 - Comments
-- Albums
 - Privacy
 - Sharing
 - RSS+JSON Feeds
 
 # Why the hell am I doing this?
 
-The goal with this was to make something as simple as possible that could mimic,
-to a certain extent, what people like about using social networks, which is (I think):
+The goal with this was to make something as simple as possible that could
+mimic, to a certain extent, what people like about using social networks,
+which is (I think):
 
 - They can see all the stuff their friends post in one place
 - They can leave comments on that stuff
 - They can share that stuff on their own profile.
 
 No doubt people enjoy the free aspect of the social networks, but who knows.
-I think there's at least some people out there willing to pay $5/month to setup
-and run their own website, and maybe this will be useful for them. Also, I wanted
-a way for people to be able to take their data from the existing social networks
-and do something with it other than leave it in sitting in a zip file.
+I think there's at least some people out there willing to pay $5/month to
+setup and run their own website, and maybe this will be useful for them.
+Also, I wanted a way for people to be able to take their data from the
+existing social networks and do something with it other than leave it in
+sitting in a zip file.
 
 # Supported Data Import Sources
 
@@ -54,12 +55,9 @@ Fuck if I know.
 
 # Importing data
 
-Once you've got a copy of your data (and your site is setup), extract it and put
-it in a folder that PageFeed can access. I suggest the `tmp` folder. The files
-you extracted should only be _one level deep_. So, if you extract your twitter
-data and it gives you a folder called "someusername-data-1231a", just put that
-folder in the `tmp` folder (or wherever). If your data is in a folder _in a folder_
-the importer will fail. After all that, run an importer!
+Once you've got a copy of your data (and your site is setup), put it in a
+folder that PageFeed can access. I suggest the `tmp` folder. After that, run
+an importer!
 
 ## Data importers
 
@@ -70,10 +68,11 @@ All importers are run from the terminal (for now). To run a data importer:
 importer you want to run and `/path/to/data` is, duh, where you put the data for
 the network you're trying to import data for.
 
-You can optionally provide a third argument (an email address) to each importer
-that will be used as the user to attribute posts, media, and whatever else to.
-The email address provided must exist in the database, or the importer will fail.
-If no user argument is provided, the first (oldest) user in the database will be used.
+You can optionally provide a third argument (an email address) to each
+importer that will be used as the user to attribute posts, media, and
+whatever else to. The email address provided must exist in the database, or
+the importer will fail. If no user argument is provided, the first (oldest)
+user in the database will be used.
 
 ### Available Importers
 
@@ -83,9 +82,9 @@ If no user argument is provided, the first (oldest) user in the database will be
 
 # Homepage
 
-This is what people see when they come to your site, and it's just a list of your
-posts in descending order, with some details about you, your friends, and some
-photos and videos in sidebars.
+This is what people see when they come to your site, and it's just a list of
+your posts in descending order, with some details about you, your friends,
+and some photos and videos in sidebars.
 
 # "Feed" page
 
@@ -102,23 +101,19 @@ and photo and/or video uploads. The post body field also supports markdown via
 # Media (Photos and Videos)
 
 Photos and videos are created by making a post. Upload as many photos and videos
-as you want to an individual post. You can also configure privacy setting and
-album settings when you're uploading media.
+as you want to an individual post. You can also configure privacy settings
+when you're uploading media.
 
 # Comments
 
 Allow visitors to your site to leave comments on your posts and media. Comments
 require approval before they will appear on to the public.
 
-# Albums
-
-Organize your media into albums for easy viewing.
-
 # Privacy
 
-Posts and media can be made private, so that they will only be listed on your site
-to you when you are logged in. Additionally, comments can be disabled for individual
-posts and media.
+Posts and media can be made private, so that they will only be listed on your
+site to you when you are logged in. Additionally, comments can be disabled
+for individual posts and media.
 
 # Sharing
 
@@ -127,8 +122,8 @@ kind of like you share things on regular social networks... Hopefully.
 
 # RSS+JSON Feeds
 
-RSS and JSON feeds of your homepage, media, and albums are available. Additionally,
-PageFeed uses RSS and JSON feeds to populate your feed.
+RSS and JSON feeds of your post are available. Additionally, PageFeed uses
+RSS and JSON feeds to populate your feed.
 
 # Software/Tech Used
 
@@ -176,21 +171,14 @@ _not_ part of what ships with Cake.
 
 - Video thumbnails (with ffmpeg and [php-ffmpeg](https://github.com/PHP-FFMpeg/PHP-FFMpeg))
 - Image thumbnails with [ImageMagick](https://imagemagick.org/index.php)
--
 
 # What this doesn't do
 
-- No spam prevention for comments
-- No login throttling to prevent someone from trying to brute force your admin account
 - No video transcoding. What you upload is what gets sent down the wire.
 - No image resizing. Like video, what you upload is what people get.
 
 # TODO
 
 - [ ] Password reset
-- [ ] Partial GET for RSS feeds
-- [ ] Sharing
 - [ ] Editing media details on add/edit post
-- [ ] Settings
-- [ ] Audio uploads
 - [ ] Themes
