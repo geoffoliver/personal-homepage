@@ -163,6 +163,7 @@ class FeedParser
         $description = null;
 
         $posts = [];
+        $items = [];
 
         $root = $xml;
         $isAtom = false;
@@ -171,6 +172,8 @@ class FeedParser
             $root = $xml->channel;
 
             if ($itm = $root->item) {
+                $items = $itm;
+            } elseif ($itm = $xml->item) {
                 $items = $itm;
             }
 
@@ -364,7 +367,15 @@ class FeedParser
             $title = (string) $item->title;
             $url = (string) $item->link;
             $source = (string) $item->source;
-            $pubDate = (string) $item->pubDate;
+
+            if ($pd = $item->pubDate) {
+                $pubDate = (string) $pd;
+            } else {
+                if ($pd = $item->xpath("dc:date")) {
+                    $pubDate = (string) $pd[0];
+                }
+            }
+
             $modDate = $pubDate;
             $summary = (string)$item->description;
 
@@ -414,7 +425,9 @@ class FeedParser
                 }
             }
 
-            $commentsUrl = (string) $item->comments;
+            if ($comUrl = $item->comments) {
+                $commentsUrl = (string) $comUrl;
+            }
         }
 
         $readMore = [
@@ -435,6 +448,12 @@ class FeedParser
             '[&hellip;]'
         ];
 
+        if ($totalComments && !$commentsUrl) {
+            // there is a comment count, but there's no URL to the page where
+            // comments can be found, so just use the URL for the post
+            $commentsUrl = $url;
+        }
+
         $contentText = strip_tags($contentHtml);
         $contentText = str_ireplace($readMore, '', $contentText);
 
@@ -454,13 +473,16 @@ class FeedParser
             }
         }
 
+        $pubDate = $pubDate ? new Time($pubDate) : null;
+        $modDate = $modDate ? new Time($modDate) : $pubDate;
+
         return (object)[
             'id' => $id,
             'title' => $title,
             'url' => $url,
             'external_url' => $source,
-            'date_published' => new Time($pubDate),
-            'date_modified' => new Time($modDate),
+            'date_published' => $pubDate,
+            'date_modified' => $modDate,
             'summary' => $summary,
             'content_html' => $this->purifier->purify($contentHtml),
             'content_text' => $contentText,
