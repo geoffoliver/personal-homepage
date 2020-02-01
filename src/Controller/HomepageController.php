@@ -52,8 +52,12 @@ class HomepageController extends AppController
             unset($this->paginate['Posts']['contain']['Comments']['conditions']);
         }
 
-        // get the posts!
-        $posts = $this->paginate('Posts');
+        try {
+            // get the posts!
+            $posts = $this->paginate('Posts');
+        } catch (\Exception $ex) {
+            return $this->redirect('/');
+        }
 
         // tada!
         $this->set([
