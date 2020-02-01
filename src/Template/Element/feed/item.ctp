@@ -51,7 +51,7 @@ use Cake\Utility\Hash;
                         <?= $post->date_published->nice(Hash::get($settings, 'timezone')); ?>
                         <?php if (isset($post->date_modified) && $post->date_published != $post->date_modified): ?>
                             <span class="updated-time">
-                                <?= __('(Updated {0})', $post->date_modified->nice(Hash::get($settings, 'timezone'))); ?>
+                                &middot; <?= __('Updated {0}', $post->date_modified->nice(Hash::get($settings, 'timezone'))); ?>
                             </span>
                         <?php endif; ?>
                     </time>
@@ -111,7 +111,7 @@ use Cake\Utility\Hash;
                             $post->_page_feed->comments->url
                         ) {
                             echo $this->Html->link(
-                                $this->Html->tag('i', '', ['class' => 'fas fa-comment']) . '&nbsp;' . __('{0} Comments', $post->_page_feed->comments->total),
+                                $this->Html->tag('i', '', ['class' => 'fas fa-comment']) . '&nbsp;' . __('{0} Comments', number_format($post->_page_feed->comments->total)),
                                 $post->_page_feed->comments->url,
                                 [
                                     'title' => 'View Comments',
