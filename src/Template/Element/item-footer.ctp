@@ -73,7 +73,7 @@ if (!isset($comments)) {
 
 if ($comments) {
     $links[]= $this->Html->link(
-        '<span class="fas fa-comment" aria-hidden="true"></span>&nbsp;' . __('{0} Comments', count($item->comments)),
+        '<span class="fas fa-comment" aria-hidden="true"></span>&nbsp;' . __('{0} Comments', number_format(count($item->comments))),
         [
             '_name' => $isPost ? 'viewPost' : 'viewMedia',
             $item->id . '#comments',
