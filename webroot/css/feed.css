@@ -1,9 +1,6 @@
 .feed-post-item img {
   max-width: 100%;
-  width: 800px;
   height: auto;
-  display: block;
-  margin: 0 auto;
 }
 
 .feed-post-item-header {
