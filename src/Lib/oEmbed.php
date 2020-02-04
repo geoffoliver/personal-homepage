@@ -17,19 +17,19 @@ class oEmbed {
     {
         // nothing happens here
         $this->dispatcher = new CurlDispatcher([
-            CURLOPT_HTTPHEADER => [],
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => 10,
-            CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_FORBID_REUSE => true,
-            CURLOPT_FRESH_CONNECT => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_AUTOREFERER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_USERAGENT => 'Embed PHP library',
-            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+            \CURLOPT_HTTPHEADER => [],
+            \CURLOPT_MAXREDIRS => 10,
+            \CURLOPT_CONNECTTIMEOUT => 10,
+            \CURLOPT_TIMEOUT => 10,
+            \CURLOPT_SSL_VERIFYHOST => 0,
+            \CURLOPT_SSL_VERIFYPEER => false,
+            \CURLOPT_FORBID_REUSE => true,
+            \CURLOPT_FRESH_CONNECT => true,
+            \CURLOPT_ENCODING => '',
+            \CURLOPT_AUTOREFERER => true,
+            \CURLOPT_FOLLOWLOCATION => true,
+            \CURLOPT_USERAGENT => 'Embed PHP library',
+            \CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
         ]);
     }
 
