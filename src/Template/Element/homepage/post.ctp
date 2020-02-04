@@ -19,12 +19,12 @@ use Cake\Utility\Hash;
                     <?php endif; ?>
                     <time><?php
                         echo $this->Html->link(
-                            $post->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'),
+                            $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
                             ['_name' => 'viewPost', $post->id]
                         );
                     ?></time>
                     <?php if ($post->created != $post->modified): ?>
-                        &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
+                        &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
                     <?php endif; ?>
                 </h5>
                 <?php

@@ -118,6 +118,12 @@ $this->assign('title', __('Settings'));
                             'options' => $timezones
                         ]);
 
+                        echo $this->Form->control('time-format', [
+                            'label' => __('Time Format'),
+                            'type' => 'text',
+                            'value' => Hash::get($settings, 'time-format', 'F j, Y \a\t g:i a')
+                        ]);
+
                         echo '<hr />';
 
                         echo $this->Form->button(

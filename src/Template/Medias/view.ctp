@@ -16,7 +16,7 @@ $Parsedown->setStrictMode(true);
                     <h1 class="title is-3"><?= $media->name; ?></h1>
                     <?php endif; ?>
                     <h2 class="subtitle is-6 has-text-grey">
-                        <?= __('Posted'); ?>&nbsp;<time><?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?></time>
+                        <?= __('Posted'); ?>&nbsp;<time><?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
                     </h2>
                 </div>
                 <div class="media-body">

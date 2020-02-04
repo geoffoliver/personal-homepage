@@ -31,7 +31,7 @@ $email = isset($_COOKIE['comment_email']) ? $_COOKIE['comment_email'] : '';
                                 <?= $comment->display_name; ?>
                             </div>
                             <time>
-                                <?= $comment->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y \a\t g:i a'); ?>
+                                <?= $comment->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?>
                             </time>
                         </div>
                         <div class="comment-content">

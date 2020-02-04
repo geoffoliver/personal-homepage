@@ -66,7 +66,7 @@ echo $this->Form->end();
             <div class="field">
                 <label class="label"><?= __('Uploaded'); ?></label>
                 <div>
-                    <?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format('F j, Y g:i A'); ?>
+                    <?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?>
                 </div>
             </div>
             <div class="field">

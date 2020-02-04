@@ -46,7 +46,7 @@ $this->append('script', $this->Html->script('comments/unapproved.js'));
                             <input type="checkbox" name="comment[]" value="<?= $comment->id; ?>" />
                         </td>
                         <td>
-                            <time><?= $comment->created->nice(Hash::get($settings, 'timezone')) ; ?></time>
+                            <time><?= $comment->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')) ; ?></time>
                         </td>
                         <td class="comment-name">
                             <div><?= h($comment->display_name); ?></div>

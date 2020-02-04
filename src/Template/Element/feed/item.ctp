@@ -48,10 +48,10 @@ use Cake\Utility\Hash;
                     <?php endif; ?>
                     &mdash;
                     <time>
-                        <?= $post->date_published->nice(Hash::get($settings, 'timezone')); ?>
+                        <?= $post->date_published->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?>
                         <?php if (isset($post->date_modified) && $post->date_published != $post->date_modified): ?>
                             <span class="updated-time">
-                                &middot; <?= __('Updated {0}', $post->date_modified->nice(Hash::get($settings, 'timezone'))); ?>
+                                &middot; <?= __('Updated {0}', $post->date_modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format'))); ?>
                             </span>
                         <?php endif; ?>
                     </time>
