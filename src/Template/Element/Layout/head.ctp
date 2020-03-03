@@ -35,7 +35,7 @@
         'title' => __('{0} Feed', $siteName),
         'type' => 'application/atom+xml',
         'href' => $this->Url->build([
-            '_name' => 'jsonFeed',
+            '_name' => 'rssFeed',
             '_ext' => 'xml'
         ], true)
     ]);
