@@ -52,6 +52,8 @@
     body.style.height = body.scrollHeight + 'px';
   };
 
+  resizeTextArea();
+
   var dropzone = new Dropzone('#add-post-attachment-button', {
     url: "/medias/upload.json",
     autoProcessQueue: true,
@@ -95,7 +97,7 @@
     }
   });
 
-  postForm.addEventListener('input', resizeTextArea);
+  body.addEventListener('input', resizeTextArea);
 
   $('#showEditor').addEventListener('click', function() {
     postForm.classList.remove('preview');
