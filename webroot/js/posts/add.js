@@ -33,6 +33,75 @@
     thumbnailUrl = thumb;
   };
 
+  // thank you https://stackoverflow.com/a/43041683 for giving me this magic power
+  var drop = function(event) {
+    var imageUrl = event.dataTransfer.getData('URL');
+
+    if (!imageUrl) {
+      // no url, this is just a regular drop operation, so nothing to do
+      return;
+    }
+
+    var fileName = imageUrl.split('/').pop().split('?').shift();
+    var extension = fileName.split('.').pop();
+
+    // make up a new filename
+    fileName = 'drag-drop-upload-' + new Date().getTime().toString() + '.' + extension;
+
+    // set the effectAllowed for the drag item
+    event.dataTransfer.effectAllowed = 'copy';
+
+    function getDataUri(url, callback) {
+      var image = new Image();
+      // var image = document.createElement('img');
+
+      image.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+        canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+        canvas.getContext('2d').drawImage(this, 0, 0);
+
+        // Get raw image data
+        // callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+        // ... or get as Data URI
+        callback(canvas.toDataURL('image/jpeg'));
+      };
+
+      image.setAttribute('crossOrigin', 'anonymous');
+      image.src = url;
+    }
+
+    function dataURItoBlob(dataURI) {
+      var byteString,
+          mimestring
+
+      if (dataURI.split(',')[0].indexOf('base64') !== -1) {
+        byteString = atob(dataURI.split(',')[1])
+      } else {
+        byteString = decodeURI(dataURI.split(',')[1])
+      }
+
+      mimestring = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+      var content = new Array();
+      for (var i = 0; i < byteString.length; i++) {
+        content[i] = byteString.charCodeAt(i)
+      }
+
+      return new Blob([new Uint8Array(content)], {
+        type: mimestring
+      });
+    }
+
+    getDataUri(imageUrl, function(dataUri) {
+      var blob = dataURItoBlob(dataUri);
+      blob.name = fileName;
+      dropzone.addFile(blob);
+    });
+  };
+
   var updatePostPreview = function() {
     var previewContent = marked(body.value);
     var titleText = title.value.replace(/&/g, '&amp;')
@@ -66,6 +135,7 @@
       this.on("success", success);
       this.on("error", error);
       this.on("thumbnail", thumbnail);
+      this.on("drop", drop);
     },
     params: function(files, xhr) {
       return {
