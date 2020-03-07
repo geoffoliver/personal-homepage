@@ -8,6 +8,7 @@
         'content' => 'width=device-width, initial-scale=1.0'
     ]);
 
+    // generate the title for the window/tab
     $siteName = Hash::get($settings, 'site-name');
 
     if ($siteTitle = Hash::get($settings, 'site-title')) {
@@ -20,6 +21,9 @@
         }
     }
 
+    echo $this->Html->tag('title', $this->fetch('title'));
+
+    // JSON feed
     echo $this->Html->tag('link', null, [
         'rel' => 'alternate',
         'title' => __('{0} Feed', $siteName),
@@ -30,6 +34,18 @@
         ], true)
     ]);
 
+    // ATOM feed
+    echo $this->Html->tag('link', null, [
+        'rel' => 'alternate',
+        'title' => __('{0} Feed', $siteName),
+        'type' => 'application/atom+xml',
+        'href' => $this->Url->build([
+            '_name' => 'rssFeed',
+            '_ext' => 'xml'
+        ], true)
+    ]);
+
+    // indie auth authorization endpoint
     echo $this->Html->tag('link', null, [
         'rel' => 'authorization_endpoint',
         'href' => $this->Url->build([
@@ -56,23 +72,7 @@
     //     ], true)
     // ]);
 
-    echo $this->Html->tag('link', null, [
-        'rel' => 'alternate',
-        'title' => __('{0} Feed', $siteName),
-        'type' => 'application/atom+xml',
-        'href' => $this->Url->build([
-            '_name' => 'rssFeed',
-            '_ext' => 'xml'
-        ], true)
-    ]);
-
-    echo $this->Html->tag('title', $this->fetch('title'));
-
-    echo $this->Html->meta('icon', '/profile-photo');
-
-    echo $this->Html->css('base.css');
-    echo $this->Html->css('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css');
-
+    // make the og:site_name meta tag
     $ogName = $siteName;
     if ($siteTitle) {
         $ogName .= ' - ' . $siteTitle;
@@ -89,5 +89,14 @@
         ]
     );
 
+    // favicon
+    echo $this->Html->meta('icon', '/profile-photo');
+
+    // base stylesheet
+    echo $this->Html->css('base.css');
+
+    // meta blocks
     echo $this->fetch('meta');
+
+    // css blocks
     echo $this->fetch('css');

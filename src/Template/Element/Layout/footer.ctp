@@ -17,7 +17,14 @@ echo $this->Html->tag(
     ]
 );
 
+
 // external dependencies
+
+// highlightjs styles. just echo it instead of putting it into the 'css' block
+// so we can keep it at the bottom of the page
+echo $this->Html->css('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css');
+
+// fontawesome
 $this->append('script', $this->Html->script('https://use.fontawesome.com/releases/v5.12.0/js/all.js', ['defer']));
 
 // utilities
