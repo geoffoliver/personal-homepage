@@ -201,3 +201,71 @@ Type::build('timestamp')
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
+
+/**
+ * Lifted from https://github.com/Inklings-io/selfauth/blob/master/index.php
+ * and tweaked a bit
+ */
+function filter_var_regexp($variable, $regexp, $flags = null)
+{
+    $options = [
+        'options' => [
+            'regexp' => $regexp
+        ]
+    ];
+
+    if ($flags !== null) {
+        $options['flags'] = $flags;
+    }
+
+    return filter_var(
+        $variable,
+        FILTER_VALIDATE_REGEXP,
+        $options
+    );
+}
+
+// Signed codes always have an time-to-live, by default 1 year (31536000 seconds).
+function create_signed_code($message, $ttl = 31536000, $appended_data = '')
+{
+    $key = Security::getSalt();
+    $expires = time() + $ttl;
+    $body = $message . $expires . $appended_data;
+    $signature = hash_hmac('sha256', $body, $key);
+    return dechex($expires) . ':' . $signature . ':' . base64_url_encode($appended_data);
+}
+
+function verify_signed_code($message, $code)
+{
+    $key = Security::getSalt();
+    $code_parts = explode(':', $code, 3);
+    if (count($code_parts) !== 3) {
+        return false;
+    }
+    $expires = hexdec($code_parts[0]);
+    if (time() > $expires) {
+        return false;
+    }
+    $body = $message . $expires . base64_url_decode($code_parts[2]);
+    $signature = hash_hmac('sha256', $body, $key);
+    return hash_equals($signature, $code_parts[1]);
+}
+
+function base64_url_encode($string)
+{
+    $string = base64_encode($string);
+    $string = rtrim($string, '=');
+    $string = strtr($string, '+/', '-_');
+    return $string;
+}
+
+function base64_url_decode($string)
+{
+    $string = strtr($string, '-_', '+/');
+    $padding = strlen($string) % 4;
+    if ($padding !== 0) {
+        $string .= str_repeat('=', 4 - $padding);
+    }
+    $string = base64_decode($string);
+    return $string;
+}

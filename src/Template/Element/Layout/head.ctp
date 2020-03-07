@@ -31,6 +31,32 @@
     ]);
 
     echo $this->Html->tag('link', null, [
+        'rel' => 'authorization_endpoint',
+        'href' => $this->Url->build([
+            'controller' => 'users',
+            'action' => 'indieAuth'
+        ], true)
+    ]);
+
+    // TODO: implement token endpoint stuff
+    // echo $this->Html->tag('link', null, [
+    //     'rel' => 'token_endpoint',
+    //     'href' => $this->Url->build([
+    //         'controller' => 'users',
+    //         'action' => 'indieToken'
+    //     ], true)
+    // ]);
+
+    // TODO: implement micropub stuff
+    // echo $this->Html->tag('link', null, [
+    //     'rel' => 'micropub',
+    //     'href' => $this->Url->build([
+    //         'controller' => '??',
+    //         'action' => '??'
+    //     ], true)
+    // ]);
+
+    echo $this->Html->tag('link', null, [
         'rel' => 'alternate',
         'title' => __('{0} Feed', $siteName),
         'type' => 'application/atom+xml',
