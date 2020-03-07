@@ -9,7 +9,7 @@ $user = $this->Identity->get();
         <div id="hero-main">
           <div id="hero-profile-photo">
             <figure class="image <?= $this->fetch('miniHero') ? 'is-48x48' : 'is-128x128'; ?>">
-              <img class="is-rounded" data-lazy-src="/profile-photo" />
+              <img class="is-rounded" data-lazy-src="/profile-photo" loading="lazy" />
             </figure>
           </div>
           <div id="hero-copy">

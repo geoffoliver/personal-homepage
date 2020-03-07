@@ -10,7 +10,8 @@
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
-                ])
+                ]),
+                'loading' => 'lazy'
             ])
             /*
             $this->Html->media(
@@ -51,7 +52,8 @@
                 'controller' => 'Medias',
                 'action' => 'download',
                 $media->id,
-            ])
+            ]),
+            'loading' => 'lazy'
         ]);
     } else {
         $render = $this->Html->link(

@@ -67,7 +67,8 @@ use Cake\Utility\Hash;
                         'img',
                         null,
                         [
-                            'data-lazy-src' => $post->media
+                            'data-lazy-src' => $post->media,
+                            'loading' => 'lazy'
                         ]
                     ) . $content;
                 }

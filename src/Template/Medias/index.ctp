@@ -77,7 +77,8 @@ $this->append('css', $this->Html->css('medias/index.css'));
                                             'action' => 'download',
                                             $media->id,
                                             'thumbnail'
-                                        ])
+                                        ]),
+                                        'loading' => 'lazy',
                                     ]
                                 ),
                                 [

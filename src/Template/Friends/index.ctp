@@ -39,7 +39,8 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                                             'action' => 'icon',
                                                             $friend->id
                                                         ]),
-                                                        'alt' => "Icon for {$friend->name}"
+                                                        'alt' => "Icon for {$friend->name}",
+                                                        'loading' => 'lazy'
                                                     ]
                                                 ); ?>
                                             </div>

@@ -1,10 +1,9 @@
-// TODO: Add functionality to display a throbber while the image is loading
-
 (function() {
   // setup some variables
   var lazyObserver;
   var lazyImages = [];
   var worker = null;
+  var useNative = ('loading' in HTMLImageElement.prototype);
 
   if (window.Worker) {
     // make a worker for lazyloading images
@@ -80,7 +79,13 @@
   function initLazyLoadImages() {
     getLazyImages();
     lazyImages.forEach(function(image) {
-      lazyObserver.observe(image);
+      if (useNative) {
+        // yay, native lazy loading support!!
+        image.src = image.dataset.lazySrc;
+        delete image.dataset.lazySrc;
+      } else {
+        lazyObserver.observe(image);
+      }
     });
   }
 

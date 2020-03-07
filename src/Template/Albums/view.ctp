@@ -26,7 +26,8 @@ $this->append('css', $this->Html->css('albums/view.css'));
                                             'action' => 'download',
                                             $media->id,
                                             'thumbnail'
-                                        ])
+                                        ]),
+                                        'loading' => 'lazy'
                                     ]
                                 ),
                                 [

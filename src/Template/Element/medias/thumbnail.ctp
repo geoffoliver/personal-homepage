@@ -25,7 +25,8 @@
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
-                ])
+                ]),
+                'loading' => 'lazy',
             ])
         );
     } else {
@@ -39,7 +40,8 @@
                         'action' => 'download',
                         $media->id,
                         isset($size) ? $size : 'thumbnail'
-                    ])
+                    ]),
+                    'loading' => 'lazy',
                 ]
             ),
             [

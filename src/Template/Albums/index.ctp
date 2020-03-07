@@ -35,7 +35,8 @@ $routeName = ($type === 'photos' ? 'photoAlbum' : 'videoAlbum');
                                             'action' => 'download',
                                             $coverImage->id,
                                             'square_thumbnail'
-                                        ])
+                                        ]),
+                                        'loading' => 'lazy'
                                     ]
                                 ) . $cover;
                             }

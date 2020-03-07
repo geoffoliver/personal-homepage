@@ -38,6 +38,7 @@ $this->assign('hero', true);
                                             'action' => 'icon',
                                             $friend->id
                                         ]),
+                                        'loading' => 'lazy',
                                         'alt' => "Icon for {$friend->name}"
                                     ]
                                 ); ?>

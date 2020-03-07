@@ -7,6 +7,7 @@
             'action' => 'download',
             $media->id,
             'square_thumbnail'
-        ])
+        ]),
+        'loading' => 'lazy',
     ]
 );
