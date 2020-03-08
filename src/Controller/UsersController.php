@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+use Cake\Utility\Hash;
 /**
  * Users Controller
  *
@@ -207,6 +208,7 @@ class UsersController extends AppController
         return $this->indieAuthAuthenticate($request);
     }
 
+    // TODO: implement h-card display - https://indieweb.org/h-card
     private function indieAuthAuthenticate($request)
     {
         $result = $this->Authentication->getResult();
@@ -228,7 +230,7 @@ class UsersController extends AppController
         if ($this->request->is('post') && !$result->isValid()) {
             $session->write('loginAttempts', $attempts + 1);
             $session->write('lastAttempt', time());
-            $this->Flash->error(implode(', ', $result->getErrors()));
+            $this->Flash->error(implode(', ', array_values(Hash::flatten($result->getErrors()))));
             return $this->redirect($this->referer());
         }
 
@@ -264,7 +266,9 @@ class UsersController extends AppController
 
             if ($scope) {
                 // convert scope back into a spaced string
-                $scope = implode(' ', $scope);
+                $scope = trim(implode(' ', $scope));
+            } else {
+                $scope = '';
             }
 
             // create a code that we'll verify later
@@ -292,8 +296,6 @@ class UsersController extends AppController
 
             // clean up any login attempts
             $session->delete('loginAttempts');
-
-            dd($redir);
 
             // send the user on their way
             return $this->redirect($redir);
@@ -350,6 +352,7 @@ class UsersController extends AppController
     // TODO: implement token endpoint
     // - https://indieweb.org/token-endpoint
     // - https://indieweb.org/obtaining-an-access-token
+    // - https://indieweb.org/scope
     public function indieToken()
     {
         die(__('Not implemented'));
@@ -363,7 +366,7 @@ class UsersController extends AppController
             $proto .= 's';
         }
 
-        return $proto . '//' . env('SERVER_NAME');
+        return $proto . '://' . env('SERVER_NAME') . '/';
     }
 
 }

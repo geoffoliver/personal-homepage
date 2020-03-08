@@ -8,9 +8,15 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+    $csrf = new CsrfProtectionMiddleware([
         'httpOnly' => true
-    ]));
+    ]);
+
+    $csrf->whitelistCallback(function($request) {
+        return $request->getParam('action') !== "indie-auth";
+    });
+
+    $routes->registerMiddleware('csrf', $csrf);
 
     $routes->setExtensions(['json', 'xml']);
 
