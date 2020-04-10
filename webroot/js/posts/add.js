@@ -128,9 +128,7 @@
     autoProcessQueue: true,
     previewTemplate: templateHtml,
     previewsContainer: '#add-post-attachments',
-    headers: {
-      "X-CSRF-Token": $('input[name="_csrfToken"]').value
-    },
+    withCredentials: true,
     init: function() {
       this.on("success", success);
       this.on("error", error);
