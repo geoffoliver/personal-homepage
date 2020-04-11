@@ -362,7 +362,7 @@ class UsersController extends AppController
     {
         $proto = 'http';
 
-        if (env('SERVER_PORT') === 443) {
+        if (env('SERVER_PORT') == 443) {
             $proto .= 's';
         }
 
