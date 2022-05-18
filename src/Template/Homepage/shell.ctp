@@ -4,7 +4,7 @@ $this->assign('hero', true);
 ?>
 <div id="<?= $this->fetch('pageId'); ?>">
     <div class="columns">
-        <div class="column is-one-quarter">
+        <?php /* <div class="column is-one-quarter">
             <div class="sidebar sticky-sidebar">
                 <div class="box">
                     <h3 class="title is-6">
@@ -47,9 +47,9 @@ $this->assign('hero', true);
                     </div>
                 <?php endif; ?>
             </div>
-        </div>
+	</div> */ ?>
         <?= $this->fetch("main"); ?>
-        <div class="column is-one-quarter">
+	<?php /* <div class="column is-one-quarter">
             <div class="sidebar sticky-sidebar">
             <?php if ($photos->count()) : ?>
                 <div class="box">
@@ -96,7 +96,7 @@ $this->assign('hero', true);
                 </div>
             <?php endif; ?>
             </div>
-        </div>
+         </div> */ ?>
     </div>
 </div>
 <?= $this->fetch('body'); ?>

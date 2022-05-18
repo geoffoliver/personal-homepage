@@ -9,7 +9,7 @@ $this->extend('/Homepage/shell');
 
 $this->start('main');
 ?>
-  <div class="column is-half" id="homepagePosts">
+  <div class="column" id="homepagePosts">
   <?php
         if (count($posts) === 0) {
             echo $this->Html->div('box', implode('', [

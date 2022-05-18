@@ -166,7 +166,7 @@ class HomepageController extends AppController
             $photos = $photos->where(['Medias.public' => true]);
             $photos = $photos->cache('photos', 'homepage_assets');
         }
-
+	/*
         // limit to 12 photos... this should probably be a setting.
         $photos = $photos->limit(12)->all();
 
@@ -188,13 +188,13 @@ class HomepageController extends AppController
             ->limit(12)
             ->cache('friends', 'homepage_assets')
             ->all();
-
+	*/
         // set some variables in the view and let other stuff happen
         $this->set([
             'user' => $this->request->getAttribute('identity'),
-            'photos' => $photos,
-            'videos' => $videos,
-            'friends' => $friends
+            // 'photos' => $photos,
+            // 'videos' => $videos,
+            // 'friends' => $friends
         ]);
     }
 }
