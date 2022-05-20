@@ -5,7 +5,7 @@ apt-get update
 apt-get install -y ffmpeg
 
 # install some things that we'll need
-apt-get install -y imagemagick php7.2-imagick php7.2-mbstring php7.2-zip php7.2-intl php7.2-xml
+apt-get install -y apache2 php php-fpm php-mbstring php-zip php-intl php-curl php-dom php-mysql php-bcmath php-pdo-sqlite mysql-server php-imagick
 
 echo '<VirtualHost *:80>
         ServerAdmin webmaster@localhost
