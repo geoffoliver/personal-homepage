@@ -21,7 +21,7 @@ $Parsedown->setStrictMode(true);
 <?php foreach ($posts as $post): ?>
     <entry>
         <title type="html"><?= $post->name; ?></title>
-        <link href="<?= $this->Url->build(['_name' => 'viewPost', $post->id]); ?>" />
+        <link href="<?= $this->Url->build(['_name' => 'viewPost', $post->id], true); ?>" />
         <updated><?= $post->modified->format('c'); ?></updated>
         <content type="html"><![CDATA[<?= $Parsedown->text($post->content); ?>]]></content>
     </entry>
