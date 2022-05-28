@@ -148,6 +148,17 @@ body > nav.navbar {
   font-size: 0.8rem;
 }
 
+#hero-copy h1 {
+  margin-bottom: 0;
+}
+
+#hero-copy h1 span,
+#hero-copy h2 span {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 12px;
+}
+
 #hero.mini .hero-body {
   padding: 1.5rem;
 }
