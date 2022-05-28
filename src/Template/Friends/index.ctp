@@ -23,69 +23,67 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                     <?php endif; ?>
                 </h1>
                 <?php if ($friends): ?>
-                    <div class="box">
-                        <div class="row">
-                            <div class="columns is-multiline">
-                                <?php foreach ($friends as $friend): ?>
-                                    <div class="column is-one-third">
-                                        <div class="friends-list-friend">
-                                            <div class="friends-list-friend-icon">
-                                                <?= $this->Html->tag(
-                                                    'img',
-                                                    null,
-                                                    [
-                                                        'data-lazy-src' => $this->Url->build([
-                                                            'controller' => 'Friends',
-                                                            'action' => 'icon',
-                                                            $friend->id
-                                                        ]),
-                                                        'alt' => "Icon for {$friend->name}",
-                                                        'loading' => 'lazy'
-                                                    ]
-                                                ); ?>
-                                            </div>
-                                            <div class="friends-list-friend-info">
-                                                <p>
-                                                    <strong><?= $friend->name; ?></strong>
-                                                </p>
-                                                <?= $this->Html->link(
-                                                    __('View Website'),
-                                                    $friend->url,
-                                                    [
-                                                        'target' => '_blank',
-                                                        'class' => 'is-size-7'
-                                                    ]
-                                                ); ?>
-                                            </div>
-                                            <?php if ($user): ?>
-                                                <div class="friends-list-friend-buttons buttons are-small">
-                                                    <?= $this->Html->Link(
-                                                        __('Edit'),
-                                                        [
-                                                            'action' => 'edit',
-                                                            $friend->id
-                                                        ],
-                                                        [
-                                                            'class' => 'level-item button is-dark is-outlined is-fullwidth',
-                                                        ]
-                                                    ); ?>
-                                                    <?php
-                                                        echo $this->Form->postLink(
-                                                            __('Delete'),
-                                                            ['action' => 'delete', $friend->id],
-                                                            [
-                                                                'confirm' => __('Are you sure you want to delete this friend?'),
-                                                                'class' => 'button is-danger is-outlined is-fullwidth',
-                                                                'type' => 'submit'
-                                                            ]
-                                                        );
-                                                    ?>
-                                                </div>
-                                            <?php endif; ?>
+                    <div class="row">
+                        <div class="columns is-multiline">
+                            <?php foreach ($friends as $friend): ?>
+                                <div class="column is-one-third">
+                                    <div class="friends-list-friend">
+                                        <div class="friends-list-friend-icon">
+                                            <?= $this->Html->tag(
+                                                'img',
+                                                null,
+                                                [
+                                                    'data-lazy-src' => $this->Url->build([
+                                                        'controller' => 'Friends',
+                                                        'action' => 'icon',
+                                                        $friend->id
+                                                    ]),
+                                                    'alt' => "Icon for {$friend->name}",
+                                                    'loading' => 'lazy'
+                                                ]
+                                            ); ?>
                                         </div>
+                                        <div class="friends-list-friend-info">
+                                            <p>
+                                                <strong><?= $friend->name; ?></strong>
+                                            </p>
+                                            <?= $this->Html->link(
+                                                __('View Website'),
+                                                $friend->url,
+                                                [
+                                                    'target' => '_blank',
+                                                    'class' => 'is-size-7'
+                                                ]
+                                            ); ?>
+                                        </div>
+                                        <?php if ($user): ?>
+                                            <div class="friends-list-friend-buttons buttons are-small">
+                                                <?= $this->Html->Link(
+                                                    __('Edit'),
+                                                    [
+                                                        'action' => 'edit',
+                                                        $friend->id
+                                                    ],
+                                                    [
+                                                        'class' => 'level-item button is-dark is-outlined is-fullwidth',
+                                                    ]
+                                                ); ?>
+                                                <?php
+                                                    echo $this->Form->postLink(
+                                                        __('Delete'),
+                                                        ['action' => 'delete', $friend->id],
+                                                        [
+                                                            'confirm' => __('Are you sure you want to delete this friend?'),
+                                                            'class' => 'button is-danger is-outlined is-fullwidth',
+                                                            'type' => 'submit'
+                                                        ]
+                                                    );
+                                                ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endforeach; ?>
-                            </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 <?php else: ?>

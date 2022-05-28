@@ -10,36 +10,36 @@ $Parsedown->setStrictMode(true);
 <section class="section" id="viewMedia">
     <article>
         <div class="columns">
-            <div class="column is-three-quarters">
+            <div class="column">
                 <div class="media-title">
                     <?php if ($media->name): ?>
-                    <h1 class="title is-3"><?= $media->name; ?></h1>
+                    <h1 class="title"><?= $media->name; ?></h1>
                     <?php endif; ?>
-                    <h2 class="subtitle is-6 has-text-grey">
+                    <h2 class="subtitle is-size-7 has-text-grey media-date">
                         <?= __('Posted'); ?>&nbsp;<time><?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
                     </h2>
                 </div>
                 <div class="media-body">
-                    <div class="box">
-                        <?= $this->element('media', ['media' => $media]); ?>
-                        <?php if($media->description): ?>
-                            <div class="media-description">
-                                <hr />
-                                <?= nl2br(h($media->description)); ?>
-                            </div>
-                        <?php endif; ?>
-                        <?php if ($media->post && $media->post->content): ?>
+                    <?= $this->element('media', ['media' => $media]); ?>
+                    <?php if($media->description): ?>
+                        <div class="media-description">
                             <hr />
-                            <p>
-                                <?= $Parsedown->text($media->post->content); ?>
-                            </p>
-                        <?php endif; ?>
+                            <?= nl2br(h($media->description)); ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($media->post && $media->post->content): ?>
                         <hr />
-                        <?= $this->element('item-footer', ['item' => $media, 'comments' => false]); ?>
-                    </div>
+                        <p>
+                            <?= $Parsedown->text($media->post->content); ?>
+                        </p>
+                    <?php endif; ?>
+                    <hr />
+                    <?= $this->element('item-footer', ['item' => $media, 'comments' => false]); ?>
                 </div>
             </div>
-            <div class="column is-one-quarter">
+        </div>
+        <div class="columns">
+            <div class="column">
                 <?= $this->element('comments', ['post' => $media]); ?>
             </div>
         </div>

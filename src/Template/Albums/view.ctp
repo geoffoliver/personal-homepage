@@ -12,37 +12,35 @@ $this->append('css', $this->Html->css('albums/view.css'));
             <?php if ($album->description): ?>
                 <p class="is-size-4"><?= h($album->description); ?></p>
             <?php endif; ?>
-            <div class="box">
-                <div class="content">
-                    <div class="album-entries medias">
-                        <?php
-                        foreach ($album->medias as $media) {
-                            echo $this->Html->link(
-                                $this->Html->image(
-                                    '#',
-                                    [
-                                        'data-lazy-src' => $this->Url->build([
-                                            'controller' => 'Medias',
-                                            'action' => 'download',
-                                            $media->id,
-                                            'thumbnail'
-                                        ]),
-                                        'loading' => 'lazy'
-                                    ]
-                                ),
+            <div class="content">
+                <div class="album-entries medias">
+                    <?php
+                    foreach ($album->medias as $media) {
+                        echo $this->Html->link(
+                            $this->Html->image(
+                                '#',
                                 [
-                                    'controller' => 'Medias',
-                                    'action' => 'view',
-                                    $media->id
-                                ],
-                                [
-                                    'escape' => false,
-                                    'class' => 'media-link',
+                                    'data-lazy-src' => $this->Url->build([
+                                        'controller' => 'Medias',
+                                        'action' => 'download',
+                                        $media->id,
+                                        'thumbnail'
+                                    ]),
+                                    'loading' => 'lazy'
                                 ]
-                            );
-                        }
-                        ?>
-                    </div>
+                            ),
+                            [
+                                'controller' => 'Medias',
+                                'action' => 'view',
+                                $media->id
+                            ],
+                            [
+                                'escape' => false,
+                                'class' => 'media-link',
+                            ]
+                        );
+                    }
+                    ?>
                 </div>
             </div>
         </div>

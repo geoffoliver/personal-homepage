@@ -6,7 +6,7 @@
 <body class="has-navbar-fixed-top">
   <?= $this->element('Layout/navigation'); ?>
   <main>
-    <div class="container">
+    <div class="container is-max-desktop">
       <?= $this->Flash->render() ?>
       <?= $this->element('Layout/hero'); ?>
       <div class="content">

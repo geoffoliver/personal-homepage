@@ -23,9 +23,10 @@ body.simple .section {
 /**
  * Navigation
  */
-body > nav.navbar,
-body > nav.navbar > .container {
+body > nav.navbar {
   min-height: 2.6rem;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 .nav-divider {
@@ -286,6 +287,11 @@ main > .container > article.message {
 /**
  * For highlighting code
  */
+.post-content pre {
+  border: 1px solid #efefef;
+  background: #fff;
+}
+
 pre .hljs {
   background-color: transparent;
   padding: 0;
@@ -294,29 +300,6 @@ pre .hljs {
 /**
  * Comments
  */
- #comments {
-  position: relative;
-  height: 100%;
-  padding-top: 20px;
-}
-
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 0;
-  top: 20px;
-  right: 0;
-  bottom: 0;
-}
-
-@media (max-width: 767px) {
-  .comments-list {
-    position: static;
-    max-height: 70vh;
-  }
-}
-
 .comments-container {
   flex-grow: 1;
   border: 1px solid #ddd;
@@ -513,4 +496,16 @@ img[data-lazy-src] {
 
 .pf-oembed twitter-widget {
   margin: 0 auto;
+}
+
+/**
+ * Bulma overrides
+ */
+.content blockquote {
+  padding: 0 1.5rem;
+  margin: 1.25rem 0;
+}
+
+hr {
+  background: #dfdfdf;
 }

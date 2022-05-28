@@ -62,38 +62,36 @@ $this->append('css', $this->Html->css('medias/index.css'));
                     ?>
                 </div>
             </div>
-            <div class="box">
-                <div class="content">
-                    <div class="medias">
-                        <?php
-                        foreach ($medias as $media) {
-                            echo $this->Html->link(
-                                $this->Html->tag(
-                                    'img',
-                                    null,
-                                    [
-                                        'data-lazy-src' => $this->Url->build([
-                                            'controller' => 'Medias',
-                                            'action' => 'download',
-                                            $media->id,
-                                            'thumbnail'
-                                        ]),
-                                        'loading' => 'lazy',
-                                    ]
-                                ),
+            <div class="content">
+                <div class="medias">
+                    <?php
+                    foreach ($medias as $media) {
+                        echo $this->Html->link(
+                            $this->Html->tag(
+                                'img',
+                                null,
                                 [
-                                    'controller' => 'Medias',
-                                    'action' => 'view',
-                                    $media->id
-                                ],
-                                [
-                                    'escape' => false,
-                                    'class' => 'media-link',
+                                    'data-lazy-src' => $this->Url->build([
+                                        'controller' => 'Medias',
+                                        'action' => 'download',
+                                        $media->id,
+                                        'thumbnail'
+                                    ]),
+                                    'loading' => 'lazy',
                                 ]
-                            );
-                        }
-                        ?>
-                    </div>
+                            ),
+                            [
+                                'controller' => 'Medias',
+                                'action' => 'view',
+                                $media->id
+                            ],
+                            [
+                                'escape' => false,
+                                'class' => 'media-link',
+                            ]
+                        );
+                    }
+                    ?>
                 </div>
             </div>
         </div>

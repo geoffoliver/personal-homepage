@@ -1,5 +1,22 @@
+#viewMedia .media-date {
+  margin: 1rem 0;
+  font-weight: normal;
+}
+
+#viewMedia .post-comments {
+  margin-top: 2rem;
+}
+
 #viewMedia .media-container {
   text-align: center;
+}
+
+#viewMedia .media-title h2 {
+  margin-top: 0;
+}
+
+#viewMedia .media-title h1 + h2 {
+  margin-top: 1rem;
 }
 
 #viewMedia .media-container img {

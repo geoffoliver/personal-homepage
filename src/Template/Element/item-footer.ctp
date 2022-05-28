@@ -119,7 +119,7 @@ if ($isMedia) {
 }
 
 ?>
-<nav class="level is-mobile is-size-7">
+<nav class="level is-mobile is-size-7 item-footer">
     <div class="level-left">
         <?= implode('', $links); ?>
     </div>

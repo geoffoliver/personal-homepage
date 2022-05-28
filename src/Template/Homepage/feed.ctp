@@ -17,9 +17,7 @@ $this->append('script', $this->Html->scriptBlock("(function() {
 ?>
     <div class="column">
         <div id="feedItems">
-            <div class="box">
-                <span class="fas fa-spin fa-spinner"></span> <?= __('Loading Feed...'); ?>
-            </div>
+            <span class="fas fa-spin fa-spinner"></span> <?= __('Loading Feed...'); ?>
         </div>
     </div>
 <?php

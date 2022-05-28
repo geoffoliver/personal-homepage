@@ -1,3 +1,12 @@
+#viewPost .post-date {
+  margin: 1rem 0;
+  font-weight: normal;
+}
+
+#viewPost .post-comments {
+  margin-top: 2rem;
+}
+
 .post-media {
   margin: 15px -20px 15px;
   border-top: 1px solid #e3e3e3;

@@ -17,9 +17,7 @@ $this->append('script', $this->Html->script('posts/add.js'));
                     <li><a id="showPreview">Preview</a></li>
                 </ul>
             </div>
-            <div class="box">
-                <?= $this->element('posts/form', ['post' => $post]); ?>
-            </div>
+            <?= $this->element('posts/form', ['post' => $post]); ?>
         </div>
     </div>
 </section>

@@ -5,7 +5,7 @@
 </head>
 <body class="simple">
     <main>
-        <div class="container">
+        <div class="container is-max-desktop">
             <div class="content">
                 <?php
                     echo $this->Flash->render();

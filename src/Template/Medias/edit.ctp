@@ -6,22 +6,20 @@ $this->append('css', $this->Html->css('medias/edit.css'));
     <div class="columns">
         <div class="column is-three-fifths is-offset-one-fifth">
             <h1 class="is-size-3"><?= __('Edit Media'); ?></h1>
-            <div class="box">
-                <?= $this->element('medias/form', ['media' => $media]); ?>
-                <hr />
-                <?= $this->Form->postLink(
-                    '<span class="fas fa-trash" aria-hidden="true"></span>&nbsp;' . __('Delete'),
-                    [
-                        'controller' => 'Medias',
-                        'action' => 'delete',
-                        $media->id
-                    ],
-                    [
-                        'confirm' => __('Are you sure you want to delete this item?\n\nYou can not undo this!'),
-                        'escape' => false
-                    ]
-                ); ?>
-            </div>
+            <?= $this->element('medias/form', ['media' => $media]); ?>
+            <hr />
+            <?= $this->Form->postLink(
+                '<span class="fas fa-trash" aria-hidden="true"></span>&nbsp;' . __('Delete'),
+                [
+                    'controller' => 'Medias',
+                    'action' => 'delete',
+                    $media->id
+                ],
+                [
+                    'confirm' => __('Are you sure you want to delete this item?\n\nYou can not undo this!'),
+                    'escape' => false
+                ]
+            ); ?>
         </div>
     </div>
 </section>
