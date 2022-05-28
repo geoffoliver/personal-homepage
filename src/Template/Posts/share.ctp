@@ -25,7 +25,7 @@ if (isset($saved) && $saved) {
         <div class="columns">
             <div class="column is-three-fifths is-offset-one-fifth">
                 <div class="page-title">
-                    <h1 class="is-size-3">
+                    <h1 class="title">
                         <?= __('Share Post'); ?>
                     </h1>
                     <ul>

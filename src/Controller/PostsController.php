@@ -191,7 +191,7 @@ class PostsController extends AppController
             }
 
             if ($post->name) {
-                $post->name = "Shared {$post->name}";
+                $post->name = "Shared: {$post->name}";
             }
 
         }

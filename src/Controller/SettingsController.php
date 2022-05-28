@@ -44,8 +44,10 @@ class SettingsController extends AppController
             $timezones[$zone] = str_replace('_', ' ', $zone);
         }
 
+        $bookmarklet = @file_get_contents(WWW_ROOT . DS . 'js' . DS . 'util' . DS . 'bookmarklet.js');
+
         // all done
-        $this->set(compact('timezones'));
+        $this->set(compact('timezones', 'bookmarklet'));
     }
 
     private function saveSettings()

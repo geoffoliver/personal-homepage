@@ -120,6 +120,7 @@ body > nav.navbar {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 }
 
 #hero-profile-photo {
@@ -129,7 +130,8 @@ body > nav.navbar {
 }
 
 #hero-copy {
-  padding-left: 25px;
+  padding: 0 25px;
+  text-align: center
 }
 
 #hero-copy h1,

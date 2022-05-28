@@ -10,6 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 0.5rem;
 }
 
 #addPostForm .page-title h1 {
@@ -17,7 +18,7 @@
 }
 
 #addPostForm .page-title ul {
-  margin: 0 15px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
@@ -29,20 +30,19 @@
 }
 
 #addPostForm .page-title ul li + li {
-  margin-top: 0;
+  margin: 0 0 0 15px;
 }
 
 #addPostForm .page-title ul li a {
   display: block;
-  border: 1px solid transparent;
+  border: 1px solid #efefef;
+  background: #f8f8f8;
   padding: 10px 18px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-radius: 6px;
 }
 
 #addPostForm .page-title ul li a.active {
-  border: 1px solid #efefef;
-  border-bottom-color: #fff;
+  border-color: #ddd;
   background: #fff;
   color: #000;
 }
@@ -54,6 +54,7 @@
 
 #postForm.preview #preview {
   display: block;
+  margin: 1rem 0;
 }
 
 #postPreview:empty::after {

@@ -7,6 +7,7 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Http\Middleware\EncryptedCookieMiddleware;
 
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceProviderInterface;
@@ -36,13 +37,17 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
     public function middleware($middlewareQueue)
     {
+
+        $cookies = new EncryptedCookieMiddleware(['secrets'], Configure::read('Security.cookieKey'));
+
         $middlewareQueue
             ->add(new ErrorHandlerMiddleware(null, Configure::read('Error')))
             ->add(new AssetMiddleware([
                 'cacheTime' => Configure::read('Asset.cacheTime')
             ]))
             ->add(new RoutingMiddleware($this))
-            ->add(new AuthenticationMiddleware($this));
+            ->add(new AuthenticationMiddleware($this))
+            ->add($cookies);
 
         return $middlewareQueue;
     }
@@ -68,11 +73,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         ];
 
         $service->setConfig([
-            'unauthenticatedRedirect' => '/users/login'
+            'unauthenticatedRedirect' => '/users/login',
+            'queryParam' => 'redirect'
         ]);
 
         $service->loadIdentifier('Authentication.Password', ['fields' => $fields]);
         $service->loadAuthenticator('Authentication.Session');
+        $service->loadAuthenticator('Authentication.Cookie');
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
             'loginUrl' => [

@@ -19,6 +19,14 @@ $this->assign('title', __('Login'));
                     'required' => true
                 ]);
 
+                echo $this->Form->control('remember_me', [
+                    'type' => 'checkbox',
+                    'label' => [
+                        'text' => ' Remember Me',
+                        'class' => 'checkbox'
+                    ],
+                ]);
+
                 echo $this->Form->button(__('Login'), [
                     'type' => 'submit',
                     'class' => 'button is-dark'

@@ -6,6 +6,9 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
 <nav class="navbar is-fixed-top is-dark" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="<?=$this->Url->build(['_name' => 'homepage']);?>" title="Home">
+            <figure class="image is-24x24">
+                <img class="is-rounded" data-lazy-src="/profile-photo" loading="lazy" />
+            </figure>
             <?=Hash::get($settings, 'site-name');?>
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="primaryNav">
