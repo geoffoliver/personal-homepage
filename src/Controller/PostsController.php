@@ -179,11 +179,21 @@ class PostsController extends AppController
             $post = $this->Posts->newEntity();
             $post->name = urldecode($this->request->getQuery('name'));
             $post->source = urldecode($this->request->getQuery('source'));
+
             if ($body = $this->request->getQuery('body')) {
                 $post->content = urldecode($body);
             } else {
                 $post->content = $post->source;
             }
+
+            if ($post->content) {
+                $post->content = "> {$post->content}";
+            }
+
+            if ($post->name) {
+                $post->name = "Shared {$post->name}";
+            }
+
         }
 
         $this->set(compact('post', 'saved', 'sharing'));
