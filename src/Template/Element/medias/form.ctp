@@ -44,7 +44,7 @@ echo $this->Form->create($media, ['id' => 'mediaForm']);
 echo $this->Form->end();
 ?>
     <hr />
-    <h2 class="title is-5"><?= __('Thumbnails'); ?></h2>
+    <h2 class="title"><?= __('Thumbnails'); ?></h2>
     <div class="thumbnails">
         <figure class="preview">
             <?= $this->Html->image(
@@ -60,7 +60,7 @@ echo $this->Form->end();
         </figure>
     </div>
     <hr />
-    <h2 class="title is-5"><?= __('Additional Information'); ?></h2>
+    <h2 class="title"><?= __('Additional Information'); ?></h2>
     <div class="columns">
         <div class="column">
             <div class="field">

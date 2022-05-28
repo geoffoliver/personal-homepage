@@ -7,7 +7,7 @@ $this->assign('title', __('About Me'));
 <section class="section" id="aboutMe">
     <div class="columns">
         <div class="column">
-            <h1 class="title is-3"><?= __('About Me'); ?></h1>
+            <h1 class="title"><?= __('About Me'); ?></h1>
             <?php
                 if ($aboutIntro) {
                     echo $this->Html->para('is-size-4', $aboutIntro->value);

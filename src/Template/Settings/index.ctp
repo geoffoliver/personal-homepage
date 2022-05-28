@@ -12,7 +12,7 @@ $this->assign('title', __('Settings'));
             <h1 class="is-size-3"><?= __('Settings'); ?></h1>
             <?php
                 echo $this->Form->create(null, ['type' => 'file']);
-                    echo $this->Html->tag('h4', __('General'), ['class' => 'title is-4']);
+                    echo $this->Html->tag('h4', __('General'), ['class' => 'title']);
 
                     echo $this->Form->control('site-name', [
                         'label' => __('Name'),
@@ -52,7 +52,7 @@ $this->assign('title', __('Settings'));
 
                     echo '<hr />';
 
-                    echo $this->Html->tag('h4', __('About'), ['class' => 'title is-4']);
+                    echo $this->Html->tag('h4', __('About'), ['class' => 'title']);
 
                     echo $this->Form->control('homepage-about', [
                         'label' => __('Homepage blurb/"About" page intro'),
@@ -68,7 +68,7 @@ $this->assign('title', __('Settings'));
 
                     echo '<hr />';
 
-                    echo $this->Html->tag('h4', __('Homepage Cover'), ['class' => 'title is-4']);
+                    echo $this->Html->tag('h4', __('Homepage Cover'), ['class' => 'title']);
 
                     echo $this->Form->control('cover-title', [
                         'label' => __('Title'),
@@ -108,7 +108,7 @@ $this->assign('title', __('Settings'));
 
                     echo '<hr />';
 
-                    echo $this->Html->tag('h4', __('Other'), ['class' => 'title is-4']);
+                    echo $this->Html->tag('h4', __('Other'), ['class' => 'title']);
 
                     echo $this->Form->control('timezone', [
                         'label' => __('Timezone'),

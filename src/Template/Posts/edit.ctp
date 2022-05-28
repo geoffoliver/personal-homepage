@@ -7,7 +7,7 @@ $this->append('script', $this->Html->script('posts/add.js'));
 ?>
 <section class="section" id="addPostForm">
     <div class="columns">
-        <div class="column is-offset-1 is-10">
+        <div class="column is-offset-1">
             <div class="page-title">
                 <h1 class="is-size-3">
                     <?= __('Edit Post'); ?>

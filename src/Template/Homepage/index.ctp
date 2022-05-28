@@ -14,7 +14,7 @@ $this->start('main');
         if (count($posts) === 0) {
             echo $this->Html->div('box', implode('', [
                 $this->Html->tag('h4', __('There is nothing to show here.'), [
-                    'class' => 'title is-6'
+                    'class' => 'title'
                 ]),
                 $this->Html->para('', __('If you are the site owner, you should add your first post!'))
             ]));
