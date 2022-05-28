@@ -7,7 +7,7 @@ $this->append('css', $this->Html->css('medias/index.css'));
         <div class="column">
             <div class="level">
                 <div class="level-left">
-                    <h1 class="is-size-2"><?= $title; ?>
+                    <h1 class="title"><?= $title; ?>
                 </div>
                 <div class="level-right">
                     <?php
