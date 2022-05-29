@@ -79,7 +79,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
         $service->loadIdentifier('Authentication.Password', ['fields' => $fields]);
         $service->loadAuthenticator('Authentication.Session');
-        $service->loadAuthenticator('Authentication.Cookie');
+        $service->loadAuthenticator('Authentication.Cookie', [
+            'fields' => $fields,
+            'cookie' => [
+                'secure' => true,
+                'httpOnly' => true,
+            ]
+        ]);
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
             'loginUrl' => [
