@@ -24,6 +24,10 @@
   margin-top: 1rem;
 }
 
+.homepage-post .post-name a {
+  color: #000;
+}
+
 .homepage-post .post-content h1,
 .homepage-post .post-content h2,
 .homepage-post .post-content h3,

@@ -45,9 +45,8 @@ $this->append('script', $this->Html->script('posts/view.js'));
                                 );
                             }
                         ?>
-                        <hr />
-                        <?= $this->element('item-footer', ['item' => $post, 'comments' => false]); ?>
                     </div>
+                    <?= $this->element('item-footer', ['item' => $post, 'comments' => false]); ?>
                 </div>
             </div>
         </div>

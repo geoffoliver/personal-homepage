@@ -92,6 +92,7 @@ $email = $this->Identity->get('email') ? $this->Identity->get('email') : (isset(
                             'style' => 'display: none;'
                         ]);
 
+                        echo '<div class="columns"><div class="column">';
                         echo $this->Form->control('display_name', [
                             'type' => 'text',
                             'label' => __('Your Name'),
@@ -100,7 +101,7 @@ $email = $this->Identity->get('email') ? $this->Identity->get('email') : (isset(
                             'maxlength' => 255,
                             'value' => $name
                         ]);
-
+                        echo '</div><div class="column">';
                         echo $this->Form->control('posted_by', [
                             'type' => 'email',
                             'label' => __('Email Address'),
@@ -109,7 +110,7 @@ $email = $this->Identity->get('email') ? $this->Identity->get('email') : (isset(
                             'maxlength' => 255,
                             'value' => $email
                         ]);
-
+                        echo '</div></div>';
                         echo $this->Form->control('comment', [
                             'type' => 'textarea',
                             'label' => __('Comment'),
