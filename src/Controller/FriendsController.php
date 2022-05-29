@@ -67,7 +67,7 @@ class FriendsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $friend = $this->Friends->patchEntity($friend, $this->request->getData());
             if ($this->Friends->save($friend)) {
-                Cache::delete($friend->id, 'icons');
+                Cache::delete($id, 'icons');
                 $this->Flash->success(__('The friend has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
