@@ -1,10 +1,7 @@
 <?php
-use Cake\Utility\Hash;
 $this->assign('hero', true);
 ?>
 <div id="<?= $this->fetch('pageId'); ?>">
-    <div class="columns">
-        <?= $this->fetch("main"); ?>
-    </div>
+    <?= $this->fetch("main"); ?>
 </div>
 <?= $this->fetch('body'); ?>
