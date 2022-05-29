@@ -57,7 +57,6 @@
 .homepage-post .post-media a:hover,
 .homepage-post .post-media a:active,
 .homepage-post .post-media a:focus {
-  /* background: #f8f8f8; */
   z-index: 1;
 }
 
@@ -83,4 +82,11 @@
 
 .homepage-post + .load-next {
   margin-top: 3rem;
+}
+
+@media screen and (max-width: 1023px) {
+  .homepage-post {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }

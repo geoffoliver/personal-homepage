@@ -25,7 +25,7 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                 <div class="row">
                     <div class="columns is-multiline">
                         <?php foreach ($friends as $friend): ?>
-                            <div class="column is-one-third">
+                            <div class="column is-half">
                                 <div class="friends-list-friend">
                                     <div class="friends-list-friend-icon">
                                         <?= $this->Html->tag(
