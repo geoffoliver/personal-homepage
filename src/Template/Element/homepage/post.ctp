@@ -17,7 +17,13 @@ use Cake\Utility\Hash;
                     <?php if ($post->import_source): ?>
                         <span class="fab fa-<?= $post->import_source; ?>" aria-hidden="true"></span>
                     <?php endif; ?>
-                    <time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
+                    <time>
+                        <?= $this->Html->link(
+                            $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
+                            ['_name' => 'viewPost', $post->id],
+                            ['class' => 'has-text-grey-light']
+                        ); ?>
+                    </time>
                     <?php if ($post->created != $post->modified): ?>
                         &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
                     <?php endif; ?>

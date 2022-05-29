@@ -2,7 +2,7 @@
 use Cake\Utility\Hash;
 
 $this->element('social-meta-tags', ['item' => $post]);
-$this->assign('title', $post->name);
+$this->assign('title', $post->name ?? $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')));
 $this->append('css', $this->Html->css('posts/view.css'));
 $this->append('script', $this->Html->script('posts/view.js'));
 ?>
@@ -12,7 +12,7 @@ $this->append('script', $this->Html->script('posts/view.js'));
             <div class="column">
                 <div class="post-name">
                     <?php if ($post->name): ?>
-                    <h1 class="title is-marginless"><?= $post->name; ?></h1>
+                        <h1 class="title is-marginless"><?= $post->name; ?></h1>
                     <?php endif; ?>
                     <h2 class="subtitle is-size-7 has-text-grey post-date">
                         <?= __('Posted'); ?>&nbsp;<time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>

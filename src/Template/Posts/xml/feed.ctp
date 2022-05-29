@@ -20,7 +20,7 @@ $Parsedown->setStrictMode(true);
     </author>
 <?php foreach ($posts as $post): ?>
     <entry>
-        <title type="html"><?= $post->name; ?></title>
+        <title type="html"><?= $post->name ?? $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></title>
         <link href="<?= $this->Url->build(['_name' => 'viewPost', $post->id], true); ?>" />
         <updated><?= $post->modified->format('c'); ?></updated>
         <content type="html"><![CDATA[<?= $Parsedown->text($post->content); ?>]]></content>

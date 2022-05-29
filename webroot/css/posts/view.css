@@ -1,4 +1,8 @@
-#viewPost .post-date {
+#viewPost .post-name .post-date {
+  margin-top: 0;
+}
+
+#viewPost .title + .post-date {
   margin: 1rem 0;
   font-weight: normal;
 }
