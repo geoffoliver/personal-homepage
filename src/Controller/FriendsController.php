@@ -43,39 +43,6 @@ class FriendsController extends AppController
         ]);
     }
 
-    /*
-    public function view($id = null)
-    {
-        $friend = $this->Friends->get($id, [
-            'contain' => []
-        ]);
-
-        $this->set('friend', $friend);
-    }
-    */
-    /*
-    public function feed($id)
-    {
-        if (!$id) {
-            throw new \Exception('Missing friend ID');
-        }
-
-        $friend = $this->Friends->find()
-            ->where([
-                'Friends.id' => $id
-            ])
-            ->first();
-
-        if (!$friend) {
-            throw new \Exception('Invalid friend ID');
-        }
-
-        return $this->response
-            ->withType('application/json')
-            ->withStringBody($friend->getFeed());
-    }
-    */
-
     public function add()
     {
         $friend = $this->Friends->newEntity();
@@ -100,6 +67,7 @@ class FriendsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $friend = $this->Friends->patchEntity($friend, $this->request->getData());
             if ($this->Friends->save($friend)) {
+                Cache::delete($friend->id, 'icons');
                 $this->Flash->success(__('The friend has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
