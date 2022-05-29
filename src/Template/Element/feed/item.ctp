@@ -75,7 +75,6 @@ use Cake\Utility\Hash;
             echo $this->Html->div('feed-post-item-summary', $content);
         ?>
     </div>
-    <hr />
     <div class="feed-post-item-footer">
         <nav class="level is-mobile is-size-7">
             <div class="level-left">

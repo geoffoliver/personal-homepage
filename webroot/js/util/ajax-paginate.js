@@ -12,7 +12,7 @@
     var container = document.getElementById(props.container);
 
     // a nice error message in case things go wrong
-    var loadErrorMessage = "<div class='box'><?= __('Error loading page'); ?></div>";
+    var loadErrorMessage = "<div class='has-text-danger pt-4' style='text-align: center;'>Error loading page</div>";
 
     // this does all the work of retrieving the page and stuffing the result
     // back into the page
