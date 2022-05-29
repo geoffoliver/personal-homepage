@@ -8,8 +8,8 @@ use Cake\Utility\Hash;
 $totalComments = count($post->comments);
 
 // try to get values for the 'name' and 'email' fields from the cookies
-$name = isset($_COOKIE['comment_name']) ? $_COOKIE['comment_name'] : '';
-$email = isset($_COOKIE['comment_email']) ? $_COOKIE['comment_email'] : '';
+$name = $this->Identity->get('name') ? $this->Identity->get('name') : (isset($_COOKIE['comment_name']) ? $_COOKIE['comment_name'] : '');
+$email = $this->Identity->get('email') ? $this->Identity->get('email') : (isset($_COOKIE['comment_email']) ? $_COOKIE['comment_email'] : '');
 ?>
 <div class="comments" id="comments">
     <div class="comments-list">
