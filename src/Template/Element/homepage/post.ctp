@@ -1,15 +1,17 @@
 <?php
 use Cake\Utility\Hash;
+$linkSpan = '<span class="fas ml-2 fa-link" aria-hidden="true"></span>';
 ?>
 <div class="homepage-post">
     <article class="media">
         <div class="media-content">
             <div class="content">
                 <?php if ($post->name): ?>
-                <h1 class="is-marginless is-size-4 post-name">
+                <h1 class="is-marginless post-name<?= $post->is_link ? ' is-link' : ''; ?>">
                     <?= $this->Html->link(
-                        $post->name,
-                        ['_name' => 'viewPost', $post->id]
+                        $post->name . ($post->is_link ? $linkSpan : ''),
+                        ($post->is_link && $post->source) ? $post->source : ['_name' => 'viewPost', $post->id,],
+                        ['escape' => false],
                     ); ?>
                 </h1>
                 <?php endif; ?>

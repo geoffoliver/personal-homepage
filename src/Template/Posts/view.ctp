@@ -12,7 +12,12 @@ $this->append('script', $this->Html->script('posts/view.js'));
             <div class="column">
                 <div class="post-name">
                     <?php if ($post->name): ?>
-                        <h1 class="title is-marginless"><?= $post->name; ?></h1>
+                        <h1 class="title is-marginless">
+                            <?= $post->name; ?>
+                            <?php if ($post->is_link): ?>
+                                <span class="fas fa-link ml-2" aria-hidden="true"></span>
+                            <?php endif; ?>
+                        </h1>
                     <?php endif; ?>
                     <h2 class="subtitle is-size-7 has-text-grey post-date">
                         <?= __('Posted'); ?>&nbsp;<time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>

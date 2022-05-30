@@ -132,7 +132,8 @@ class PostsController extends AppController
                 'source' => $this->request->getData('source'),
                 'public' => $this->request->getData('public'),
                 'allow_comments' => $this->request->getData('allow_comments'),
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'is_link' => $this->request->getData('is_link'),
             ];
 
             // try to create/save the post
@@ -179,6 +180,7 @@ class PostsController extends AppController
             $post = $this->Posts->newEntity();
             $post->name = urldecode($this->request->getQuery('name'));
             $post->source = urldecode($this->request->getQuery('source'));
+            $post->is_link = urldecode($this->request->getQuery('isLink'));
 
             if ($body = $this->request->getQuery('body')) {
                 $post->content = urldecode($body);
@@ -228,7 +230,8 @@ class PostsController extends AppController
                 'source' => $this->request->getData('source'),
                 'public' => $this->request->getData('public'),
                 'allow_comments' => $this->request->getData('allow_comments'),
-                'medias' => $this->request->getData('medias', [])
+                'medias' => $this->request->getData('medias', []),
+                'is_link' => $this->request->getData('is_link'),
             ];
 
             $post = $this->Posts->patchEntity($post, $postData);

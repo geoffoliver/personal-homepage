@@ -32,11 +32,16 @@ echo $this->Form->create($post, ['id' => 'postForm']);
                 'label' => __('Public'),
                 'checked' => $post->id ? $post->public : true
             ]),
-                $this->Form->control('allow_comments', [
+            $this->Form->control('allow_comments', [
                 'type' => 'checkbox',
                 'label' => __('Allow Comments'),
                 'checked' => $post->id ? $post->allow_comments : true
-            ])
+            ]),
+            $this->Form->control('is_link', [
+                'type' => 'checkbox',
+                'label' => __('Display as link'),
+                'checked' => $post->id ? $post->is_link : true
+            ]),
         ]));
 ?>
         <div id="add-post-attachments-container">

@@ -1,5 +1,17 @@
+.homepage-post .post-name + .post-date {
+  margin-top: 1rem;
+}
+
+.homepage-post .post-name {
+  font-size: 1.3rem;
+}
+
+.homepage-post .post-name.is-link {
+  font-size: 1.1rem;
+}
+
 .homepage-post .post-date {
-  margin: 1rem 0;
+  margin-bottom: 1rem;
 }
 
 .homepage-post + .homepage-post {
