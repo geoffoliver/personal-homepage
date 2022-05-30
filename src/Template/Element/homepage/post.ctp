@@ -10,8 +10,8 @@ $linkSpan = '<span class="fas ml-2 fa-link" aria-hidden="true"></span>';
                 <h1 class="is-marginless post-name<?= $post->is_link ? ' is-link' : ''; ?>">
                     <?= $this->Html->link(
                         $post->name . ($post->is_link ? $linkSpan : ''),
-                        ($post->is_link && $post->source) ? $post->source : ['_name' => 'viewPost', $post->id,],
-                        ['escape' => false],
+                        ($post->is_link && $post->source) ? $post->source : ['_name' => 'viewPost', $post->id],
+                        ['escape' => false]
                     ); ?>
                 </h1>
                 <?php endif; ?>
