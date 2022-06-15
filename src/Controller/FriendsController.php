@@ -45,7 +45,7 @@ class FriendsController extends AppController
 
     public function add()
     {
-        $friend = $this->Friends->newEntity();
+        $friend = $this->Friends->newEmptyEntity();
 
         if ($this->request->is('post')) {
             $friend = $this->Friends->patchEntity($friend, $this->request->getData());

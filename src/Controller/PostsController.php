@@ -119,7 +119,7 @@ class PostsController extends AppController
      */
     public function add()
     {
-        $post = $this->Posts->newEntity();
+        $post = $this->Posts->newEmptyEntity();
         $user = $this->request->getAttribute('identity');
         $saved = false;
         $sharing = $this->request->getParam('action') === "share";
@@ -177,7 +177,6 @@ class PostsController extends AppController
                 $this->Flash->error(__('The post could not be saved. Please, try again.'));
             }
         } else {
-            $post = $this->Posts->newEntity();
             $post->name = urldecode($this->request->getQuery('name'));
             $post->source = urldecode($this->request->getQuery('source'));
             $post->is_link = urldecode($this->request->getQuery('isLink'));

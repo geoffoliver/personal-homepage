@@ -89,6 +89,8 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
                         [
                             'type' => 'submit',
                             'title' => __('Logout'),
+                            'escapeTitle' => false,
+                            'escape' => false,
                         ]
                     );
 

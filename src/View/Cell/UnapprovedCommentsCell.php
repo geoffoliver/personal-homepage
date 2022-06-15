@@ -21,7 +21,7 @@ class UnapprovedCommentsCell extends Cell
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
     }
 
@@ -32,7 +32,7 @@ class UnapprovedCommentsCell extends Cell
      */
     public function display($routeName)
     {
-        $this->loadModel('Comments');
+        $this->Comments = $this->fetchTable('Comments');
 
         $unapproved = $this->Comments->find()
             ->where([

@@ -106,8 +106,8 @@ class CommentsController extends AppController
 
     public function unapproved()
     {
-        $this->loadModel('Posts');
-        $this->loadModel('Medias');
+        $this->Posts = $this->fetchTable('Posts');
+        $this->Medias = $this->fetchTable('Medias');
 
         if ($this->request->is('post')) {
             // what do we want to do?

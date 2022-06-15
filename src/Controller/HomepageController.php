@@ -77,7 +77,7 @@ class HomepageController extends AppController
         $this->viewBuilder()->setLayout('ajax');
 
         // load up the friends model
-        $this->loadModel('Friends');
+        $this->Friends = $this->fetchTable('Friends');
 
         // get all our friends
         $friends = $this->Friends->find()->all();
@@ -149,9 +149,9 @@ class HomepageController extends AppController
     private function setVarsForHomepageAndFeed()
     {
         // load up some models
-        $this->loadModel('Posts');
-        $this->loadModel('Medias');
-        $this->loadModel('Friends');
+        $this->Posts = $this->fetchTable('Posts');
+        $this->Medias = $this->fetchTable('Medias');
+        $this->Friends = $this->fetchTable('Friends');
 
         // do this so we can be lazy;
         $authed = $this->Authentication->getIdentity();

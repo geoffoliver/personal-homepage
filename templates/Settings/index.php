@@ -108,6 +108,13 @@ $this->assign('title', __('Settings'));
                     );
                 }
 
+                echo $this->Form->control('indieweb-me-links', [
+                    'label' => __('Indieweb "Me" links')  ,
+                    'type' => 'textarea',
+                    'value' => Hash::get($settings, 'indieweb-me-links'),
+                    'after' => 'Hey!'
+                ]);
+
                 echo '<hr />';
 
                 echo $this->Html->tag('h4', __('Other'), ['class' => 'title']);

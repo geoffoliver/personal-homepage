@@ -355,8 +355,8 @@ class MediasController extends AppController
             'public' => $this->request->getData('public', true)
         ];
 
-        // try to upload the file, anyway
-        if ($created = $this->Medias->uploadAndCreate($file, false, $data)) {
+        // try to upload the file
+        if ($created = $this->Medias->uploadAndCreate($file, true, $data)) {
             $media = $created;
             $success = true;
         }
@@ -381,7 +381,7 @@ class MediasController extends AppController
     public function heroBackground()
     {
         // we need settings because that's where this data is stored
-        $this->loadModel('Settings');
+        $this->Settings = $this->fetchTable('Settings');
 
         // the default hero background
         $file = WWW_ROOT . 'img' . DS . 'default-hero-background.jpg';

@@ -53,7 +53,7 @@ class SettingsController extends AppController
     private function saveSettings()
     {
         // load the medias model
-        $this->loadModel('Medias');
+        $this->Medias = $this->fetchTable('Medias');
 
         // get all the settings
         $settings = $this->Settings->find()->all()->toArray();
@@ -69,20 +69,22 @@ class SettingsController extends AppController
             $found = false;
 
             // fields with array values (files and... maybe other stuff?)
-            if (is_array($value)) {
-                if (isset($value['tmp_name'])) {
-                    // this is a file, just try to upload it
-                    $file = $value;
-                    $value = Hash::get($this->settings, $key);
-                    if ($file['tmp_name']) {
-                        if ($media = $this->Medias->uploadAndCreate($file, true, $fileData)) {
-                            $value = $media->id;
-                        }
+            if ($value instanceof \Laminas\Diactoros\UploadedFile) {
+                // this is a file, just try to upload it
+                if ($value->getSize() > 0) {
+                    if ($media = $this->Medias->uploadAndCreate($value, true, $fileData)) {
+                        $value = $media->id;
+                    } else {
+                        $value = Hash::get($this->settings, $key);
                     }
                 } else {
-                    // just encode the data and call it a day
-                    $value = json_encode($value);
+                    $value = Hash::get($this->settings, $key);
                 }
+            }
+
+            if (is_array($value)) {
+                // just encode the data and call it a day
+                $value = json_encode($value);
             }
 
             // try to find and patch a matching setting entity... this could
@@ -109,6 +111,8 @@ class SettingsController extends AppController
             // yay!
             $this->Flash->success(__('Settings updated.'));
         } else {
+            var_dump($settings);
+            die();
             // boooo!!
             $this->Flash->error(__('Unable to update settings.'));
         }

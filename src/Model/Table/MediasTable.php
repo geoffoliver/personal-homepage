@@ -1,13 +1,10 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
-use Cake\Utility\Hash;
 use Cake\Utility\Text;
 use Cake\Datasource\EntityInterface;
 
@@ -118,23 +115,13 @@ class MediasTable extends Table
         return $rules;
     }
 
-    public function uploadAndCreate($file, $shouldBeUploaded = true, $extraData = [])
+    public function uploadAndCreate(\Laminas\Diactoros\UploadedFile $file, $shouldBeUploaded = true, $extraData = [])
     {
-        $tmp = Hash::get($file, 'tmp_name');
-
-        if (!$tmp) {
-            throw new \Exception(__('Invalid file'));
-        }
-
-        if ($shouldBeUploaded && !is_uploaded_file($tmp)) {
-            throw new \Exception(__('Invalid upload'));
-        }
-
-        if ($shouldBeUploaded && !Hash::get($file, 'size')) {
+        if ($shouldBeUploaded && !$file->getSize()) {
             throw new \Exception(__('Invalid file size'));
         }
 
-        $filename = Hash::get($file, 'name');
+        $filename = $file->getClientFilename();
 
         $uploadsRoot = $this->mediaPath;
         $uploadFolder = date('Y') . DS . date('m') . DS . date('d');
@@ -147,7 +134,12 @@ class MediasTable extends Table
             $uploadFolder = date('Y', $created) . DS . date('m', $created) . DS . date('d', $created);
         }
 
-        $uploadDest = new Folder($uploadsRoot . DS . $uploadFolder, true);
+        $uploadDest = $uploadsRoot . DS . $uploadFolder;
+
+        if (!file_exists($uploadDest)) {
+            mkdir($uploadDest, 0777, true);
+        }
+
         $uploadFilename = Text::uuid();
 
         if ($filename && strpos($filename, '.') !== false) {
@@ -156,20 +148,23 @@ class MediasTable extends Table
             $uploadFilename .= ".{$ext}";
         }
 
-        $uploadFileDest = $uploadDest->path . DS . $uploadFilename;
+        $uploadFileDest = $uploadDest . DS . $uploadFilename;
 
         $moved = false;
 
         if ($shouldBeUploaded) {
-            $moved = move_uploaded_file($tmp, $uploadFileDest);
+            $file->moveTo($uploadFileDest);
+            $moved = true;
         } else {
-            $moved = copy($tmp, $uploadFileDest);
+            die('Implement copying files that should not be uploaded!');
+            // $moved = copy($file, $uploadFileDest);
         }
 
         if ($moved) {
-            $mediaFile = new File($uploadFileDest);
+            // $mediaFile = new File($uploadFileDest);
+            $mediaFile = new \SplFileInfo($uploadFileDest);
 
-            try {
+            // try {
                 $thumbnailFilename = $this->generateThumbnail($mediaFile);
                 if ($thumbnailFilename) {
                     $thumbnailFilename = $uploadFolder . DS . $thumbnailFilename;
@@ -180,11 +175,12 @@ class MediasTable extends Table
                     $squareThumbnailFilename = $uploadFolder . DS . $squareThumbnailFilename;
                 }
 
-                $mime = $mediaFile->mime();
+                // $mime = $mediaFile->mime();
+                $mime = mime_content_type($uploadFileDest);
 
                 $newMedia = $this->newEntity(array_merge([
                     'mime' => $mime,
-                    'size' => $mediaFile->size(),
+                    'size' => $mediaFile->getSize(),
                     'thumbnail' => $thumbnailFilename,
                     'square_thumbnail' => $squareThumbnailFilename,
                     'local_filename' => $uploadFolder . DS . $uploadFilename,
@@ -203,22 +199,22 @@ class MediasTable extends Table
                     throw new \Exception(implode(". ", $err));
                 }
 
-                $mediaFile->close();
+                // $mediaFile->close();
 
                 if ($this->save($newMedia)) {
                     return $newMedia;
                 }
-            } catch (\Exception $ex) {
-                $mediaFile->close();
-            }
+            // } catch (\Exception $ex) {
+            //     // $mediaFile->close();
+            // }
         }
 
         return null;
     }
 
-    private function generateThumbnail($file, $square = false)
+    private function generateThumbnail(\SplFileInfo $file, $square = false)
     {
-        $thumbPath = $file->path . '-thumbnail';
+        $thumbPath = $file->getPathname() . '-thumbnail';
 
         if ($square) {
             $thumbPath.= '-square';
@@ -226,10 +222,11 @@ class MediasTable extends Table
 
         $width = 500;
         $height = 500;
-        $mime = $file->mime();
+        $mime = mime_content_type($file->getPathname());
+        // $mime = $file->mime();
 
         if (strpos($mime, 'image') === 0) {
-            if ($ext = $file->ext()) {
+            if ($ext = $file->getExtension()) {
                 $thumbPath.= '.' . $ext;
             }
 
@@ -237,7 +234,8 @@ class MediasTable extends Table
                 unlink($thumbPath);
             }
 
-            if (!$file->copy($thumbPath)) {
+            // if (!$file->copy($thumbPath)) {
+            if (!copy($file->getPathname(), $thumbPath)) {
                 return false;
             }
 
@@ -263,7 +261,7 @@ class MediasTable extends Table
         if (strpos($mime, 'video') === 0) {
             try {
                 $ffmpeg = \FFMpeg\FFMpeg::create();
-                $video = $ffmpeg->open($file->path);
+                $video = $ffmpeg->open($file->getPathname());
                 $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(0));
 
                 // turn the video filename into a jpg filename
