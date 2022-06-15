@@ -12,13 +12,17 @@ use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
+use Authentication\AuthenticationServiceInterface;
+use Authentication\Identifier\IdentifierInterface;
+use Cake\Http\MiddlewareQueue;
+use Cake\Routing\Router;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Application extends BaseApplication implements AuthenticationServiceProviderInterface
 {
-    public function bootstrap()
+    public function bootstrap(): void
     {
         parent::bootstrap();
 
@@ -35,9 +39,8 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $this->addPlugin('WyriHaximus/MinifyHtml', ['bootstrap' => true]);
     }
 
-    public function middleware($middlewareQueue)
+    public function middleware(\Cake\Http\MiddlewareQueue $middlewareQueue): \Cake\Http\MiddlewareQueue
     {
-
         $cookies = new EncryptedCookieMiddleware(['secrets'], Configure::read('Security.cookieKey'));
 
         $middlewareQueue
@@ -52,7 +55,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         return $middlewareQueue;
     }
 
-    protected function bootstrapCli()
+    protected function bootstrapCli(): void
     {
         try {
             $this->addPlugin('Bake');
@@ -63,7 +66,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $this->addPlugin('Migrations');
     }
 
-    public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
+    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $service = new AuthenticationService();
 

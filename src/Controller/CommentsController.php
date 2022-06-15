@@ -14,7 +14,7 @@ use Cake\Http\Cookie\CookieCollection;
  */
 class CommentsController extends AppController
 {
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->Authentication->allowUnauthenticated(['add']);

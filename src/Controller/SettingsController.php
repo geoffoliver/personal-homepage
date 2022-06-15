@@ -15,7 +15,7 @@ use Cake\Utility\Hash;
 class SettingsController extends AppController
 {
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 

@@ -16,7 +16,7 @@ class UsersController extends AppController
     // valid response types
     private $responseTypes = ['id', 'code'];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->Authentication->allowUnauthenticated([

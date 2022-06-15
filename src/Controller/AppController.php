@@ -28,21 +28,21 @@ use Cake\Event\Event;
 class AppController extends Controller
 {
 
-    public $helpers = [
-        'Authentication.Identity',
-        'Form' => [
-            'templates' => 'bulma_form'
-        ],
-        'Paginator' => [
-            'templates' => 'bulma_pagination'
-        ]
-    ];
-
     protected $settings = [];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
+
+        $this->viewBuilder()->setHelpers([
+            'Authentication.Identity',
+            'Form' => [
+                'templates' => 'bulma_form'
+            ],
+            'Paginator' => [
+                'templates' => 'bulma_pagination'
+            ],
+        ]);
 
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
@@ -59,7 +59,7 @@ class AppController extends Controller
         //$this->loadComponent('Security');
     }
 
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         // grab the settings so we can get at them easily from the views
         $this->loadModel('Settings');

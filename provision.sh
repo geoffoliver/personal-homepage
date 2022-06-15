@@ -33,7 +33,7 @@ php -r "unlink('composer-setup.php');"
 
 # install dependencies
 cd /var/www
-composer install
+composer install --no-dev
 
 bin/cake migrations migrate
 bin/cake migrations seed

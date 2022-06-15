@@ -7,7 +7,7 @@ use Cake\Validation\Validator;
 
 class CommentsTable extends Table
 {
-  public function initialize(array $config)
+  public function initialize(array $config): void
   {
     parent::initialize($config);
 
@@ -34,7 +34,7 @@ class CommentsTable extends Table
 
   }
 
-  public function validationDefault(Validator $validator)
+  public function validationDefault(Validator $validator): \Cake\Validation\Validator
   {
     $validator
       ->uuid('id')
@@ -62,7 +62,7 @@ class CommentsTable extends Table
     return $validator;
   }
 
-  public function buildRules(RulesChecker $rules)
+  public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
   {
       // TODO: Figure out how to fix this
       // $rules->add($rules->existsIn(['model_id'], 'Models'));

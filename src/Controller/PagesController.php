@@ -11,7 +11,7 @@ use Cake\Utility\Hash;
  */
 class PagesController extends AppController
 {
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 

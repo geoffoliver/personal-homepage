@@ -11,7 +11,7 @@ class MediasController extends AppController
 {
     private $types = [];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 

@@ -18,7 +18,7 @@ class PostsController extends AppController
 
     private $parsedown;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -367,7 +367,7 @@ class PostsController extends AppController
         $paging = null;
 
         // get the paging data so we can generate a `next_url`
-        if ($p = $this->request->getParam('paging')) {
+        if ($p = $this->request->getAttribute('paging')) {
             $paging = $p['Posts'];
         }
 

@@ -14,7 +14,7 @@ class AlbumsController extends AppController
 {
     public $types = [];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
