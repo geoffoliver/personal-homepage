@@ -161,52 +161,45 @@ class MediasTable extends Table
         }
 
         if ($moved) {
-            // $mediaFile = new File($uploadFileDest);
             $mediaFile = new \SplFileInfo($uploadFileDest);
 
-            // try {
-                $thumbnailFilename = $this->generateThumbnail($mediaFile);
-                if ($thumbnailFilename) {
-                    $thumbnailFilename = $uploadFolder . DS . $thumbnailFilename;
-                }
+            $thumbnailFilename = $this->generateThumbnail($mediaFile);
+            if ($thumbnailFilename) {
+                $thumbnailFilename = $uploadFolder . DS . $thumbnailFilename;
+            }
 
-                $squareThumbnailFilename = $this->generateThumbnail($mediaFile, true);
-                if ($squareThumbnailFilename) {
-                    $squareThumbnailFilename = $uploadFolder . DS . $squareThumbnailFilename;
-                }
+            $squareThumbnailFilename = $this->generateThumbnail($mediaFile, true);
+            if ($squareThumbnailFilename) {
+                $squareThumbnailFilename = $uploadFolder . DS . $squareThumbnailFilename;
+            }
 
-                // $mime = $mediaFile->mime();
-                $mime = mime_content_type($uploadFileDest);
+            // $mime = $mediaFile->mime();
+            $mime = mime_content_type($uploadFileDest);
 
-                $newMedia = $this->newEntity(array_merge([
-                    'mime' => $mime,
-                    'size' => $mediaFile->getSize(),
-                    'thumbnail' => $thumbnailFilename,
-                    'square_thumbnail' => $squareThumbnailFilename,
-                    'local_filename' => $uploadFolder . DS . $uploadFilename,
-                    'original_filename' => $filename,
-                ], $extraData));
+            $newMedia = $this->newEntity(array_merge([
+                'mime' => $mime,
+                'size' => $mediaFile->getSize(),
+                'thumbnail' => $thumbnailFilename,
+                'square_thumbnail' => $squareThumbnailFilename,
+                'local_filename' => $uploadFolder . DS . $uploadFilename,
+                'original_filename' => $filename,
+            ], $extraData));
 
-                if ($newMedia->getErrors()) {
-                    $errors = $newMedia->getErrors();
-                    $err = [];
-                    foreach ($errors as $field => $ers) {
-                        foreach ($ers as $e) {
-                            $err[]= "{$field}: " . print_r($e, true);
-                        }
+            if ($newMedia->getErrors()) {
+                $errors = $newMedia->getErrors();
+                $err = [];
+                foreach ($errors as $field => $ers) {
+                    foreach ($ers as $e) {
+                        $err[]= "{$field}: " . print_r($e, true);
                     }
-
-                    throw new \Exception(implode(". ", $err));
                 }
 
-                // $mediaFile->close();
+                throw new \Exception(implode(". ", $err));
+            }
 
-                if ($this->save($newMedia)) {
-                    return $newMedia;
-                }
-            // } catch (\Exception $ex) {
-            //     // $mediaFile->close();
-            // }
+            if ($this->save($newMedia)) {
+                return $newMedia;
+            }
         }
 
         return null;
