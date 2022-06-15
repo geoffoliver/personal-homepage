@@ -44,7 +44,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $cookies = new EncryptedCookieMiddleware(['secrets'], Configure::read('Security.cookieKey'));
 
         $middlewareQueue
-            ->add(new ErrorHandlerMiddleware(null, Configure::read('Error')))
+            ->add(new ErrorHandlerMiddleware(Configure::read('Error')))
             ->add(new AssetMiddleware([
                 'cacheTime' => Configure::read('Asset.cacheTime')
             ]))

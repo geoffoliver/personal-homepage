@@ -1,29 +1,30 @@
 <?php
+/** @var \Cake\Routing\RouteBuilder $routes */
 
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
 
-Router::defaultRouteClass(DashedRoute::class);
+// Router::defaultRouteClass(DashedRoute::class);
 
-Router::scope('/', function (RouteBuilder $routes) {
+$routes->scope('/', function (RouteBuilder $rbRoutes) {
     $csrf = new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httponly' => true
     ]);
 
-    $csrf->whitelistCallback(function($request) {
+    $csrf->skipCheckCallback(function($request) {
         return $request->getParam('action') !== "indie-auth";
     });
 
-    $routes->registerMiddleware('csrf', $csrf);
+    $rbRoutes->registerMiddleware('csrf', $csrf);
 
-    $routes->setExtensions(['json', 'xml']);
+    $rbRoutes->setExtensions(['json', 'xml']);
 
-    $routes->applyMiddleware('csrf');
+    $rbRoutes->applyMiddleware('csrf');
 
     // the homepage
-    $routes->connect('/',
+    $rbRoutes->connect('/',
         [
             'controller' => 'Homepage',
             'action' => 'index'
@@ -34,7 +35,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // news feed (posts from your friends)
-    $routes->connect('/feed',
+    $rbRoutes->connect('/feed',
         [
             'controller' => 'Homepage',
             'action' => 'feed'
@@ -45,7 +46,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // site info
-    $routes->connect('/site-info',
+    $rbRoutes->connect('/site-info',
         [
             'controller' => 'Settings',
             'action' => 'siteInfo',
@@ -57,7 +58,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // the regular RSS feed for posts
-    $routes->connect('/atom',
+    $rbRoutes->connect('/atom',
         [
             'controller' => 'Posts',
             'action' => 'feed'
@@ -69,7 +70,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // the JSON feed for posts
-    $routes->connect('/json',
+    $rbRoutes->connect('/json',
         [
             'controller' => 'Posts',
             'action' => 'feed'
@@ -80,7 +81,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    $routes->connect('/friends',
+    $rbRoutes->connect('/friends',
         [
             'controller' => 'Friends',
             'action' => 'index'
@@ -90,7 +91,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    $routes->connect('/add-post',
+    $rbRoutes->connect('/add-post',
         [
             'controller' => 'Posts',
             'action' => 'add'
@@ -100,7 +101,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    $routes->connect('/comments/unapproved',
+    $rbRoutes->connect('/comments/unapproved',
         [
             'controller' => 'Comments',
             'action' => 'unapproved'
@@ -111,7 +112,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // make it easy to get the hero background
-    $routes->connect('/hero-background',
+    $rbRoutes->connect('/hero-background',
         [
             'controller' => 'Medias',
             'action' => 'heroBackground'
@@ -119,7 +120,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // make it easy to get the profile photo
-    $routes->connect('/profile-photo',
+    $rbRoutes->connect('/profile-photo',
         [
             'controller' => 'Medias',
             'action' => 'profilePhoto'
@@ -130,7 +131,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // view a post
-    $routes->connect('/view-post/:id',
+    $rbRoutes->connect('/view-post/{id}',
         [
             'controller' => 'Posts',
             'action' => 'view'
@@ -141,7 +142,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     )->setPass(['id']);
 
     // shortcut for viewing photos (/medias/photos)
-    $routes->connect('/photos',
+    $rbRoutes->connect('/photos',
         [
             'controller' => 'Medias',
             'action' => 'index',
@@ -153,7 +154,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // shortcut for viewing videos (/medias/videos)
-    $routes->connect('/videos',
+    $rbRoutes->connect('/videos',
         [
             'controller' => 'Medias',
             'action' => 'index',
@@ -165,7 +166,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // shortcut for viewing a media item
-    $routes->connect('/view-media/:id',
+    $rbRoutes->connect('/view-media/{id}',
         [
             'controller' => 'Medias',
             'action' => 'view'
@@ -176,7 +177,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     )->setPass(['id']);
 
     // shortcut for viewing a post
-    $routes->connect('/view-album/:id',
+    $rbRoutes->connect('/view-album/{id}',
         [
             'controller' => 'Albums',
             'action' => 'view',
@@ -187,7 +188,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     )->setPass(['id']);
 
     // shortcut for viewing albums
-    $routes->connect('/albums/:type',
+    $rbRoutes->connect('/albums/{type}',
         [
             'controller' => 'Albums',
             'action' => 'index'
@@ -198,7 +199,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     )->setPass(['type']);
 
     // about page
-    $routes->connect('/about',
+    $rbRoutes->connect('/about',
         [
             'controller' => 'About',
             'action' => 'index'
@@ -221,12 +222,12 @@ Router::scope('/', function (RouteBuilder $routes) {
     ];
 
     foreach ($controllers as $controller => $url) {
-        $routes->connect("/{$url}", ['action' => 'index', 'controller' => $controller], ['routeClass' => DashedRoute::class]);
-        $routes->connect("/{$url}/:action/*", ['controller' => $controller], ['routeClass' => DashedRoute::class]);
+        $rbRoutes->connect("/{$url}", ['action' => 'index', 'controller' => $controller], ['routeClass' => DashedRoute::class]);
+        $rbRoutes->connect("/{$url}/:action/*", ['controller' => $controller], ['routeClass' => DashedRoute::class]);
     }
 
     // pages routing
-    $routes->connect('**', [
+    $rbRoutes->connect('**', [
         'controller' => 'Pages',
         'action' => 'view'
     ]);

@@ -34,7 +34,7 @@ class AppController extends Controller
     {
         parent::initialize();
 
-        $this->viewBuilder()->setHelpers([
+        $this->viewBuilder()->addHelpers([
             'Authentication.Identity',
             'Form' => [
                 'templates' => 'bulma_form'
