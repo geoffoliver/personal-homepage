@@ -45,10 +45,10 @@ class ImportFacebookDataCommand extends Command
     {
         parent::initialize();
         // load up some models
-        $this->loadModel('Medias');
-        $this->loadModel('Posts');
-        $this->loadModel('Albums');
-        $this->loadModel('Users');
+        $this->Medias = $this->fetchTable('Medias');
+        $this->Posts = $this->fetchTable('Posts');
+        $this->Albums = $this->fetchTable('Albums');
+        $this->Users = $this->fetchTable('Users');
     }
 
     /**
