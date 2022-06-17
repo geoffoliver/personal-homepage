@@ -41,7 +41,7 @@ class oEmbed {
 
     //     return self::$instance;
     // }
-
+    /*
     public function getEmbeds(\ArrayObject $entity)
     {
         $embeds = [];
@@ -68,6 +68,7 @@ class oEmbed {
 
         return $embeds;
     }
+    */
 
     public function embed($content)
     {
@@ -110,7 +111,7 @@ class oEmbed {
         $cacheKey = md5($url);
         $cached = Cache::read($cacheKey, $this->cacheName);
 
-        if ($cached) {
+        if (false && $cached) {
             // we've already worked with this URL, hand back the info we have
             return $cached;
         }
@@ -118,7 +119,8 @@ class oEmbed {
         $result = null;
 
         try {
-            $result = Embed::create($url, null, $this->dispatcher);
+            $embed = Embed::create($url, null, $this->dispatcher);
+            $result = isset($embed->code) ? $embed->code : false;
         } catch (\Exception $ex) {
             $result = false;
             // we don't really care if this fails, but we need to catch
@@ -128,10 +130,6 @@ class oEmbed {
         // save _whatever_ we got back into the cache
         Cache::write($cacheKey, $result, $this->cacheName);
         return $result;
-
-        // nothing matched, whatever, we don't care. cache that and move on
-        Cache::write($cacheKey, null, $this->cacheName);
-        return null;
     }
 
     public function wrapEmbed($code) {

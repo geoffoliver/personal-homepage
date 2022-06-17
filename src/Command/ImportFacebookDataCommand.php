@@ -41,7 +41,7 @@ class ImportFacebookDataCommand extends Command
         ],
     ];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // load up some models
@@ -59,7 +59,7 @@ class ImportFacebookDataCommand extends Command
      * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
-    public function buildOptionParser(ConsoleOptionParser $parser)
+    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 

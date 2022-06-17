@@ -115,14 +115,16 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
 /*
  * Register application error and exception handlers.
  */
+(new ErrorTrap(Configure::read('Error')))->register();
 $isCli = PHP_SAPI === 'cli';
+/*
 if ($isCli) {
     (new ConsoleErrorHandler(Configure::read('Error')))->register();
 } else {
     // (new ErrorHandler(Configure::read('Error')))->register();
     (new ErrorTrap(Configure::read('Error')))->register();
 }
-
+*/
 /*
  * Include the CLI bootstrap overrides.
  */

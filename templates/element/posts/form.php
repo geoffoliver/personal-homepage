@@ -24,6 +24,13 @@ echo $this->Form->create($post, ['id' => 'postForm']);
             'pattern' => 'https?://.+',
         ]);
 
+        if ($post->id && $post->embeds && $post->show_embeds) {
+            echo $this->Form->control('embeds', [
+                'label' => __('Embeds Code'),
+                'type' => 'textarea',
+            ]);
+        }
+
         echo $this->Html->tag('hr');
 
         echo $this->Html->div('add-post-checkboxes', implode('', [
@@ -41,6 +48,11 @@ echo $this->Form->create($post, ['id' => 'postForm']);
                 'type' => 'checkbox',
                 'label' => __('Display as link'),
                 'checked' => $post->id ? $post->is_link : false
+            ]),
+            $this->Form->control('show_embeds', [
+                'type' => 'checkbox',
+                'label' => __('Show Embed'),
+                'checked' => $post->id ? $post->show_embeds : true
             ]),
         ]));
 ?>

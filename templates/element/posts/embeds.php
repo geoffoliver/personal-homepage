@@ -1,4 +1,8 @@
 <?php
+    if (!$post->show_embeds) {
+        return;
+    }
+
     $embeds = [];
 
     if ($post->embeds) {

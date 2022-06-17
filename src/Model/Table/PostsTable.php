@@ -101,7 +101,11 @@ class PostsTable extends Table
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
         $oEmbed = new oEmbed();
-        $embeds = [];
+        $embeds = isset($data['embeds']) && $data['embeds'] ? $data['embeds'] : [];
+
+        if ($embeds || (isset($data['show_embeds']) && !$data['show_embeds'])) {
+            return $data;
+        }
 
         $data['content'] = trim($data['content']);
 
@@ -118,18 +122,12 @@ class PostsTable extends Table
         }
 
         if (isset($data['source']) && $data['source']) {
-            $embedInfo = $oEmbed->getEmbedInfo($data['source']);
+            $embed = $oEmbed->getEmbedInfo($data['source']);
 
-            if ($embedInfo && $embedInfo->code) {
-                $embeds = [$embedInfo->code];
+            if ($embed) {
+                $embeds = [$embed];
             }
         }
-
-        // if (!$embeds) {
-        //     if ($emb = $oEmbed->getEmbeds($data)) {
-        //         $embeds = $emb;
-        //     }
-        // }
 
         $data['embeds'] = json_encode($embeds);
 

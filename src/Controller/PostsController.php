@@ -134,6 +134,7 @@ class PostsController extends AppController
                 'allow_comments' => $this->request->getData('allow_comments'),
                 'user_id' => $user->id,
                 'is_link' => $this->request->getData('is_link'),
+                'show_embeds' => $this->request->getData('show_embeds'),
             ];
 
             // try to create/save the post
@@ -231,6 +232,8 @@ class PostsController extends AppController
                 'allow_comments' => $this->request->getData('allow_comments'),
                 'medias' => $this->request->getData('medias', []),
                 'is_link' => $this->request->getData('is_link'),
+                'show_embeds' => $this->request->getData('show_embeds'),
+                'embeds' => $this->request->getData('embeds'),
             ];
 
             $post = $this->Posts->patchEntity($post, $postData);
