@@ -7,12 +7,12 @@ $this->append('css', $this->Html->css('posts/view.css'));
 $this->append('script', $this->Html->script('posts/view.js'));
 ?>
 <section class="section" id="viewPost">
-    <article>
+    <article class="h-entry">
         <div class="columns">
             <div class="column">
                 <div class="post-name">
                     <?php if ($post->name): ?>
-                        <h1 class="title is-marginless">
+                        <h1 class="title is-marginless p-name">
                             <?= $post->name; ?>
                             <?php if ($post->is_link): ?>
                                 <span class="fas fa-link ml-2" aria-hidden="true"></span>
@@ -20,14 +20,19 @@ $this->append('script', $this->Html->script('posts/view.js'));
                         </h1>
                     <?php endif; ?>
                     <h2 class="subtitle is-size-7 has-text-grey post-date">
-                        <?= __('Posted'); ?>&nbsp;<time><?= $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
+                        <?= __('Posted'); ?>&nbsp;
+                            <?= $this->Html->link(
+                                '<time class="dt-published">' . $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')) . '</time>',
+                                ['_name' => 'viewPost', $post->id],
+                                ['class' => 'has-text-grey-light u-url', 'escape' => false]
+                            ); ?>
                         <?php if ($post->created != $post->modified): ?>
                             &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
                         <?php endif; ?>
                     </h2>
                 </div>
                 <div class="post-body">
-                    <div class="post-content content">
+                    <div class="post-content content e-content">
                         <?php
                             if ($post->content) {
                                 echo $this->element(
