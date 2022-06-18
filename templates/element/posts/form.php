@@ -51,7 +51,7 @@ echo $this->Form->create($post, ['id' => 'postForm']);
             ]),
             $this->Form->control('show_embeds', [
                 'type' => 'checkbox',
-                'label' => __('Show Embed'),
+                'label' => __('Show Embeds'),
                 'checked' => $post->id ? $post->show_embeds : true
             ]),
         ]));
