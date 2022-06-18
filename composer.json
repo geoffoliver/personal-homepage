@@ -14,10 +14,11 @@
         "embed/embed": "^3.4",
         "erusev/parsedown": "dev-1.8.x-beta",
         "ezyang/htmlpurifier": "^4.12",
-        "fzaninotto/faker": "^1.8",
+        "fzaninotto/faker": "^1.5",
         "jdenticon/jdenticon": "^1.0",
         "mobiledetect/mobiledetectlib": "2.*",
-        "php-ffmpeg/php-ffmpeg": "^0.14.0",
+        "php-ffmpeg/php-ffmpeg": "^1.0",
+        "symfony/service-contracts": "^3.1",
         "wyrihaximus/minify-html": "^2.1"
     },
     "require-dev": {
