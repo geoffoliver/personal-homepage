@@ -251,8 +251,6 @@ class UsersController extends AppController
             // scopes aren't supported on 'id' response t ypes
             if ($responseType === 'id' && $scope) {
                 throw new \Exception(__('The "scope" field cannot be used with identification'));
-            } elseif ($responseType === 'code' && !$scope) {
-                throw new \Exception(__('Missing/invalid "scope" field'));
             }
 
             if (!$redirectUri) {
