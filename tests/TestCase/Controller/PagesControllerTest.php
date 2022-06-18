@@ -90,7 +90,7 @@ class PagesControllerTest extends IntegrationTestCase
      */
     public function testDirectoryTraversalProtection()
     {
-        $this->get('/pages/../Layout/ajax');
+        $this->get('/pages/../layout/ajax');
         $this->assertResponseCode(403);
         $this->assertResponseContains('Forbidden');
     }

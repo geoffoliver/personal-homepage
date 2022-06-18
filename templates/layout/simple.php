@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?=$this->element('Layout/head');?>
+    <?=$this->element('layout/head');?>
 </head>
 <body class="simple">
     <main>
