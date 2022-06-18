@@ -21,6 +21,7 @@ class FeedParser
         // make an HTML purifier we'll use for cleaning up HTML content
         $config = \HTMLPurifier_Config::createDefault();
         $config->set('AutoFormat.RemoveEmpty', true);
+        $config->set('Cache.SerializerPath', CACHE);
         if ($baseUrl) {
             $config->set('URI.Base', $baseUrl);
             $config->set('URI.MakeAbsolute', true);
