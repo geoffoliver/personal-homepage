@@ -11,6 +11,7 @@ $Parsedown->setStrictMode(true);
         <title><?= Hash::get($settings, 'site-name'); ?></title>
         <description><?= Hash::get($settings, 'site-name'); ?></description>
         <link><?= $this->Url->build('/', ['fullBase' => true]); ?></link>
+        <atom:link href="<?= $this->Url->build(['_name' => 'rssFeed', '_ext' => 'xml'], ['fullBase' => true]); ?>" rel="self" type="application/rss+xml" />
     <?php if ($posts): ?>
         <lastBuildDate><?= $posts->first()->modified->format('D, d M Y h:i:s T'); ?></lastBuildDate>
     <?php endif; ?>
