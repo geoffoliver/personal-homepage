@@ -34,20 +34,22 @@ $Parsedown->setStrictMode(true);
                         ); ?>
                     </h2>
                 </div>
-                <div class="media-body e-content">
+                <div class="media-body">
                     <?= $this->element('media', ['media' => $media]); ?>
-                    <?php if($media->description): ?>
-                        <div class="media-description">
+                    <div class="e-content">
+                        <?php if($media->description): ?>
+                            <div class="media-description">
+                                <hr />
+                                <?= nl2br(h($media->description)); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($media->post && $media->post->content): ?>
                             <hr />
-                            <?= nl2br(h($media->description)); ?>
-                        </div>
-                    <?php endif; ?>
-                    <?php if ($media->post && $media->post->content): ?>
-                        <hr />
-                        <p>
-                            <?= $Parsedown->text($media->post->content); ?>
-                        </p>
-                    <?php endif; ?>
+                            <p>
+                                <?= $Parsedown->text($media->post->content); ?>
+                            </p>
+                        <?php endif; ?>
+                    </div>
                     <hr />
                     <?= $this->element('item-footer', ['item' => $media, 'comments' => false]); ?>
                 </div>
