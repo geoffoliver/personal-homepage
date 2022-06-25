@@ -6,12 +6,13 @@
             $this->Html->tag('video', null, [
                 'controls' => true,
                 'loop' => true,
+                'loading' => 'lazy',
+                'class' => 'u-video',
                 'data-lazy-src' => $this->Url->build([
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
                 ]),
-                'loading' => 'lazy'
             ])
             /*
             $this->Html->media(
@@ -42,18 +43,21 @@
                     'fullBase' => true,
                     'controls' => true,
                     'tag' => 'audio',
-                    'autoplay' => false
+                    'autoplay' => false,
+                    'class' => 'u-audio',
                 ]
             )
         );
     } elseif (strpos($media->mime, 'image/') === 0) {
+        $iwType = 'u-photo';
         $render = $this->Html->tag('img', null, [
+            'class' => 'u-photo',
+            'loading' => 'lazy',
             'data-lazy-src' => $this->Url->build([
                 'controller' => 'Medias',
                 'action' => 'download',
                 $media->id,
             ]),
-            'loading' => 'lazy'
         ]);
     } else {
         $render = $this->Html->link(

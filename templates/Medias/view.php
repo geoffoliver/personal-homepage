@@ -35,11 +35,9 @@ $Parsedown->setStrictMode(true);
                     </h2>
                 </div>
                 <div class="media-body">
-                    <div class="e-content">
-                        <?= $this->element('media', ['media' => $media]); ?>
-                    </div>
+                    <?= $this->element('media', ['media' => $media]); ?>
                     <?php if($media->description): ?>
-                        <div class="media-description">
+                        <div class="media-description e-content">
                             <hr />
                             <?= nl2br(h($media->description)); ?>
                         </div>
