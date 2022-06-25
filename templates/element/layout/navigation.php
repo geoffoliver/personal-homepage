@@ -9,7 +9,10 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
             <figure class="image is-24x24">
                 <img class="is-rounded" src="/profile-photo" loading="lazy" />
             </figure>
-            <?=Hash::get($settings, 'site-name');?>
+            <?= Hash::get($settings, 'site-name') ;?>
+            <p class="p-note h-card-p-note">
+                <?=Hash::get($settings, 'homepage-about');?>
+            </p>
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="primaryNav">
             <span aria-hidden="true"></span>

@@ -4,7 +4,8 @@
 - [x] Add option to posts to show embeds
 - [x] Edit embeds?
 - [ ] Search feature
-
+- [ ] Indieweb features
+- [ ] Make nav editable in settings
 # Maybe
 
 - [ ] Configurable embeds

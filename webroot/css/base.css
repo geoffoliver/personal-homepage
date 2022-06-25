@@ -34,6 +34,10 @@ body > nav.navbar {
   }
 }
 
+.h-card-p-note {
+  display: none;
+}
+
 .nav-divider {
   display: inline-block;
   width: 21px;
