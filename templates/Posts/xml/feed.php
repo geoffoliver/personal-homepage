@@ -19,7 +19,7 @@ $Parsedown->setStrictMode(true);
             <guid><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></guid>
             <title><?= $post->name ?? $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></title>
             <link><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></link>
-            <pubDate><?= $post->modified->format('D, d M Y h:i:s'); ?></pubDate>
+            <pubDate><?= $post->modified->format('D, d M Y h:i:s T'); ?></pubDate>
             <description><![CDATA[<?= $Parsedown->text($post->content); ?>]]></description>
         </item>
     <?php endforeach; ?>
