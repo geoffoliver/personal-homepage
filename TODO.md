@@ -3,10 +3,10 @@
 - [ ] Update import commands to support new `MediasTable::uploadAndCreate` method
 - [x] Add option to posts to show embeds
 - [x] Edit embeds?
+- [x] Convert atom feed to RSS
 - [ ] Search feature
 - [ ] Indieweb features
 - [ ] Make nav editable in settings
-- [ ] Convert atom feed to RSS
 # Maybe
 
 - [ ] Configurable embeds
