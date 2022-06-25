@@ -22,7 +22,7 @@ $Parsedown->setStrictMode(true);
             <pubDate><?= $post->modified->format('c'); ?></pubDate>
             <description><![CDATA[<?= $Parsedown->text($post->content); ?>]]></description>
         <?php if($post->source): ?>
-            <source url="<?= urlencode($post->source); ?>"><?= $post->source; ?></source>
+            <source url="<?= urlencode($post->source); ?>"><![CDATA[<?= $post->source; ?>]]></source>
         <?php endif; ?>
         </item>
     <?php endforeach; ?>
