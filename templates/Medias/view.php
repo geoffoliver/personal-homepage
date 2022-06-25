@@ -36,7 +36,7 @@ $Parsedown->setStrictMode(true);
                 </div>
                 <div class="media-body">
                     <?= $this->element('media', ['media' => $media]); ?>
-                    <div class="e-content">
+                    <div class="e-content<?= !$media->name ? ' p-name' : ''; ?>">
                         <?php if($media->description): ?>
                             <div class="media-description">
                                 <hr />
