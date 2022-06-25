@@ -6,26 +6,25 @@ $Parsedown = new Parsedown();
 $Parsedown->setStrictMode(true);
 
 ?>
-<feed version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <title><?= Hash::get($settings, 'site-name'); ?></title>
-    <subtitle><?= Hash::get($settings, 'site-name'); ?></subtitle>
-    <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>" />
-    <link href="<?= $this->Url->build(['_name' => 'rssFeed', '_ext' => 'xml'], ['fullBase' => true]); ?>" />
-    <atom:link href="<?= $this->Url->build(['_name' => 'rssFeed', '_ext' => 'xml'], ['fullBase' => true]); ?>" rel="self" type="application/rss+xml" />
-<?php if ($posts): ?>
-    <updated><?= $posts->first()->modified->format('c'); ?></updated>
-<?php endif; ?>
-    <id><?= $this->Url->build('/', ['fullBase' => true]); ?></id>
-    <author>
-        <name><?= Hash::get($settings, 'site-name'); ?></name>
-    </author>
-<?php foreach ($posts as $post): ?>
-    <entry>
-        <id><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></id>
-        <title type="html"><?= $post->name ?? $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></title>
-        <link href="<?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?>" />
-        <updated><?= $post->modified->format('c'); ?></updated>
-        <content type="html"><![CDATA[<?= $Parsedown->text($post->content); ?>]]></content>
-    </entry>
-<?php endforeach; ?>
-</feed>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title><?= Hash::get($settings, 'site-name'); ?></title>
+        <description><?= Hash::get($settings, 'site-name'); ?></subtitle>
+        <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>" />
+    <?php if ($posts): ?>
+        <lastBuildDate><?= $posts->first()->modified->format('c'); ?></updated>
+    <?php endif; ?>
+    <?php foreach ($posts as $post): ?>
+        <item>
+            <guid><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></guid>
+            <title><?= $post->name ?? $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></title>
+            <link><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></link>
+            <pubDate><?= $post->modified->format('c'); ?></pubDate>
+            <description><![CDATA[<?= $Parsedown->text($post->content); ?>]]></description>
+        <?php if($post->source): ?>
+            <source url="<?= $post->source; ?>"><?= $post->source; ?></source>
+        <?php endif; ?>
+        </item>
+    <?php endforeach; ?>
+    </channel>
+</rss>
