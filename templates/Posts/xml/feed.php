@@ -21,9 +21,6 @@ $Parsedown->setStrictMode(true);
             <link><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></link>
             <pubDate><?= $post->modified->format('D, d M Y h:i:s'); ?></pubDate>
             <description><![CDATA[<?= $Parsedown->text($post->content); ?>]]></description>
-        <?php if($post->source): ?>
-            <source url="<?= $post->source; ?>"><![CDATA[<?= $post->source; ?>]]></source>
-        <?php endif; ?>
         </item>
     <?php endforeach; ?>
     </channel>
