@@ -19,13 +19,16 @@ $this->append('script', $this->Html->script('posts/view.js'));
                             <?php endif; ?>
                         </h1>
                     <?php endif; ?>
-                    <h2 class="subtitle is-size-7 has-text-grey post-date">
-                        <?= __('Posted'); ?>&nbsp;
-                            <?= $this->Html->link(
-                                '<time class="dt-published">' . $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')) . '</time>',
-                                ['_name' => 'viewPost', $post->id],
-                                ['class' => 'has-text-grey-light u-url', 'escape' => false]
-                            ); ?>
+                    <h2 class="subtitle is-size-7 post-date">
+                        <span class="author">
+                            <a href="/" rel="author" class="p-author h-card"><?= $post->user->name; ?></a>
+                        </span>
+                        on
+                        <?= $this->Html->link(
+                            '<time class="dt-published">' . $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')) . '</time>',
+                            ['_name' => 'viewPost', $post->id],
+                            ['class' => 'u-url', 'escape' => false]
+                        ); ?>
                         <?php if ($post->created != $post->modified): ?>
                             &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
                         <?php endif; ?>

@@ -11,6 +11,11 @@
   margin-top: 2rem;
 }
 
+.post-date,
+.post-date a {
+  color: #363636;
+}
+
 .post-media {
   margin: 15px -20px 15px;
   border-top: 1px solid #e3e3e3;

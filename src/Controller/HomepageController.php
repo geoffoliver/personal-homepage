@@ -15,13 +15,14 @@ class HomepageController extends AppController
                 'public' => true
             ],
             'contain' => [
+                'Users',
                 'Medias',
                 'Comments' => [
                     'conditions' => [
                         'Comments.approved' => true,
                         'Comments.public' => true
                     ]
-                ]
+                ],
             ],
             'order' => [
                 'Posts.modified' => 'DESC'

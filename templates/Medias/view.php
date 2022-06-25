@@ -8,19 +8,31 @@ $Parsedown = new Parsedown();
 $Parsedown->setStrictMode(true);
 ?>
 <section class="section" id="viewMedia">
-    <article>
+    <article class="h-entry">
         <div class="columns">
             <div class="column">
                 <div class="media-title">
                     <?php if ($media->name): ?>
-                    <h1 class="title"><?= $media->name; ?></h1>
+                    <h1 class="title p-name"><?= $media->name; ?></h1>
                     <?php endif; ?>
-                    <h2 class="subtitle is-size-7 has-text-grey media-date">
-                        <?= __('Posted'); ?>&nbsp;<time><?= $media->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
+                    <h2 class="subtitle is-size-7 media-date">
+                        <span class="author">
+                            <a href="/" rel="author" class="p-author h-card"><?= $media->user->name; ?></a>
+                        </span>
+                        on
+                        <time>
+                            <?= $this->Html->link(
+                                '<time class="dt-published">' . $media->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')) . '</time>',
+                                ['_name' => 'viewMedia', $media->id],
+                                ['class' => 'u-url', 'escape' => false]
+                            ); ?>
+                        </time>
                     </h2>
                 </div>
                 <div class="media-body">
-                    <?= $this->element('media', ['media' => $media]); ?>
+                    <div class="e-content">
+                        <?= $this->element('media', ['media' => $media]); ?>
+                    </div>
                     <?php if($media->description): ?>
                         <div class="media-description">
                             <hr />

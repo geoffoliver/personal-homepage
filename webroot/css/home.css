@@ -14,6 +14,10 @@
   margin-bottom: 1rem;
 }
 
+.homepage-post .post-date .author a {
+  color: #b5b5b5;
+}
+
 .homepage-post + .homepage-post {
   margin-top: 6rem;
   position: relative;

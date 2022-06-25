@@ -54,15 +54,6 @@ class PostsController extends AppController
      */
     public function view($id = null)
     {
-        $contain = [
-            'Users',
-            'Comments' => [
-                'sort' => [
-                    'Comments.created' => 'DESC'
-                ]
-            ]
-        ];
-
         // get the post
         $post = $this->Posts->find()
             ->where([
@@ -73,14 +64,15 @@ class PostsController extends AppController
             // if user is authed, get all the comments
             $post = $post->contain([
                 'Medias.Comments',
-                'Comments'
+                'Comments',
+                'Users'
             ]);
         } else {
             // unauthed users can only see public+approved comments
             $post = $post->where([
-                    'Posts.public' => true
-                ])
-                ->contain([
+                'Posts.public' => true
+            ])->contain([
+                'Users',
                 'Medias' => [
                     'conditions' => [
                         'Medias.public' => true
