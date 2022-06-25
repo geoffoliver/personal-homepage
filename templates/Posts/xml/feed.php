@@ -12,7 +12,7 @@ $Parsedown->setStrictMode(true);
         <description><?= Hash::get($settings, 'site-name'); ?></description>
         <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>" />
     <?php if ($posts): ?>
-        <lastBuildDate><?= $posts->first()->modified->format('c'); ?></updated>
+        <lastBuildDate><?= $posts->first()->modified->format('c'); ?></lastBuildDate>
     <?php endif; ?>
     <?php foreach ($posts as $post): ?>
         <item>
