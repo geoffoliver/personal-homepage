@@ -34,7 +34,7 @@ body > nav.navbar {
   }
 }
 
-.h-card-p-note {
+.navbar-brand .p-note {
   display: none;
 }
 

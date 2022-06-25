@@ -7,10 +7,10 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
     <div class="navbar-brand">
         <a class="navbar-item h-card" href="<?=$this->Url->build(['_name' => 'homepage']);?>" title="Home" rel="me">
             <figure class="image is-24x24">
-                <img class="is-rounded" src="/profile-photo" loading="lazy" />
+                <img class="is-rounded u-photo" src="/profile-photo" loading="lazy" />
             </figure>
             <?= Hash::get($settings, 'site-name') ;?>
-            <p class="p-note h-card-p-note">
+            <p class="p-note">
                 <?=Hash::get($settings, 'homepage-about');?>
             </p>
         </a>
