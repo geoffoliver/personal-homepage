@@ -34,10 +34,10 @@ $Parsedown->setStrictMode(true);
                         ); ?>
                     </h2>
                 </div>
-                <div class="media-body">
+                <div class="media-body e-content">
                     <?= $this->element('media', ['media' => $media]); ?>
                     <?php if($media->description): ?>
-                        <div class="media-description e-content">
+                        <div class="media-description">
                             <hr />
                             <?= nl2br(h($media->description)); ?>
                         </div>
