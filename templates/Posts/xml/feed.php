@@ -13,14 +13,14 @@ $Parsedown->setStrictMode(true);
         <link><?= $this->Url->build('/', ['fullBase' => true]); ?></link>
         <atom:link href="<?= $this->Url->build(['_name' => 'rssFeed', '_ext' => 'xml'], ['fullBase' => true]); ?>" rel="self" type="application/rss+xml" />
     <?php if ($posts): ?>
-        <lastBuildDate><?= $posts->first()->modified->format('D, d M Y h:i:s T'); ?></lastBuildDate>
+        <lastBuildDate><?= $posts->first()->modified->format('D, d M Y h:i:s O'); ?></lastBuildDate>
     <?php endif; ?>
     <?php foreach ($posts as $post): ?>
         <item>
             <guid><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></guid>
             <title><?= $post->name ?? $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></title>
             <link><?= $this->Url->build(['_name' => 'viewPost', $post->id], ['fullBase' => true]); ?></link>
-            <pubDate><?= $post->modified->format('D, d M Y h:i:s T'); ?></pubDate>
+            <pubDate><?= $post->modified->format('D, d M Y h:i:s O'); ?></pubDate>
             <description><![CDATA[<?= $Parsedown->text($post->content); ?>]]></description>
         </item>
     <?php endforeach; ?>
