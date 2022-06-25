@@ -20,13 +20,18 @@ $Parsedown->setStrictMode(true);
                             <a href="/" rel="author" class="p-author h-card"><?= $media->user->name; ?></a>
                         </span>
                         on
-                        <time>
-                            <?= $this->Html->link(
-                                '<time class="dt-published">' . $media->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')) . '</time>',
-                                ['_name' => 'viewMedia', $media->id],
-                                ['class' => 'u-url', 'escape' => false]
-                            ); ?>
-                        </time>
+                        <?= $this->Html->link(
+                            $this->Html->tag(
+                                'time',
+                                $media->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
+                                [
+                                    'class' => 'dt-published',
+                                    'datetime' => $media->created->format('Y-m-d H:i:s'),
+                                ]
+                            ),
+                            ['_name' => 'viewMedia', $media->id],
+                            ['class' => 'u-url', 'escape' => false]
+                        ); ?>
                     </h2>
                 </div>
                 <div class="media-body">

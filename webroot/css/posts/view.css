@@ -11,9 +11,9 @@
   margin-top: 2rem;
 }
 
-.post-date,
-.post-date a {
-  color: #363636;
+#viewPost .post-date,
+#viewPost .post-date a {
+  color: #b5b5b5;
 }
 
 .post-media {

@@ -25,13 +25,28 @@ $linkSpan = '<span class="fas ml-2 fa-link" aria-hidden="true"></span>';
                     <?php endif; ?>
                     <time>
                         <?= $this->Html->link(
-                            $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
+                            $this->Html->tag(
+                                'time',
+                                $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
+                                [
+                                    'class' => 'dt-published',
+                                    'datetime' => $post->created->format('Y-m-d H:i:s'),
+                                ]
+                            ),
                             ['_name' => 'viewPost', $post->id],
-                            ['class' => 'has-text-grey-light u-url dt-published']
+                            ['class' => 'u-url', 'escape' => false]
                         ); ?>
                     </time>
                     <?php if ($post->created != $post->modified): ?>
-                        &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
+                        &middot; <?= __('Updated'); ?>&nbsp;<?= $this->Html->tag(
+                            'time',
+                            $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
+                            [
+                                'class' => 'dt-published',
+                                'datetime' => $post->modified->format('Y-m-d H:i:s'),
+                            ]
+                        );
+                        ?>
                     <?php endif; ?>
                 </h5>
                 <div class="e-content">

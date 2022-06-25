@@ -25,12 +25,27 @@ $this->append('script', $this->Html->script('posts/view.js'));
                         </span>
                         on
                         <?= $this->Html->link(
-                            '<time class="dt-published">' . $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')) . '</time>',
+                            $this->Html->tag(
+                                'time',
+                                $post->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
+                                [
+                                    'class' => 'dt-published',
+                                    'datetime' => $post->created->format('Y-m-d H:i:s'),
+                                ]
+                            ),
                             ['_name' => 'viewPost', $post->id],
                             ['class' => 'u-url', 'escape' => false]
                         ); ?>
                         <?php if ($post->created != $post->modified): ?>
-                            &middot; <?= __('Updated'); ?>&nbsp;<time><?= $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?></time>
+                            &middot; <?= __('Updated'); ?>&nbsp;<?= $this->Html->tag(
+                                'time',
+                                $post->modified->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')),
+                                [
+                                    'class' => 'dt-published',
+                                    'datetime' => $post->modified->format('Y-m-d H:i:s'),
+                                ]
+                            );
+                            ?>
                         <?php endif; ?>
                     </h2>
                 </div>
