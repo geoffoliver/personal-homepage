@@ -6,7 +6,7 @@ $Parsedown = new Parsedown();
 $Parsedown->setStrictMode(true);
 
 ?>
-<feed version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <title><?= Hash::get($settings, 'site-name'); ?></title>
     <subtitle><?= Hash::get($settings, 'site-name'); ?></subtitle>
     <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>" />
@@ -28,4 +28,4 @@ $Parsedown->setStrictMode(true);
         <content type="html"><![CDATA[<?= $Parsedown->text($post->content); ?>]]></content>
     </entry>
 <?php endforeach; ?>
-</feed>
+</rss>
