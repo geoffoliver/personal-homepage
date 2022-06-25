@@ -6,6 +6,7 @@
 - [ ] Search feature
 - [ ] Indieweb features
 - [ ] Make nav editable in settings
+- [ ] Convert atom feed to RSS
 # Maybe
 
 - [ ] Configurable embeds
