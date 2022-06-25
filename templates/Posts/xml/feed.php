@@ -11,9 +11,7 @@ $Parsedown->setStrictMode(true);
     <subtitle><?= Hash::get($settings, 'site-name'); ?></subtitle>
     <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>" />
     <link href="<?= $this->Url->build(['_name' => 'rssFeed', '_ext' => 'xml'], ['fullBase' => true]); ?>" />
-    <channel>
-        <atom:link href="<?= $this->Url->build(['_name' => 'rssFeed', '_ext' => 'xml'], ['fullBase' => true]); ?>" rel="self" type="application/rss+xml" />
-    </channel>
+    <atom:link href="<?= $this->Url->build(['_name' => 'rssFeed', '_ext' => 'xml'], ['fullBase' => true]); ?>" rel="self" type="application/rss+xml" />
 <?php if ($posts): ?>
     <updated><?= $posts->first()->modified->format('c'); ?></updated>
 <?php endif; ?>
