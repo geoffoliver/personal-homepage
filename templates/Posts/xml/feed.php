@@ -9,7 +9,7 @@ $Parsedown->setStrictMode(true);
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title><?= Hash::get($settings, 'site-name'); ?></title>
-        <description><?= Hash::get($settings, 'site-name'); ?></subtitle>
+        <description><?= Hash::get($settings, 'site-name'); ?></description>
         <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>" />
     <?php if ($posts): ?>
         <lastBuildDate><?= $posts->first()->modified->format('c'); ?></updated>

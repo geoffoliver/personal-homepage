@@ -40,7 +40,7 @@
     echo $this->Html->tag('link', null, [
         'rel' => 'alternate',
         'title' => __('{0} Feed', $siteName),
-        'type' => 'application/atom+xml',
+        'type' => 'application/rss+xml',
         'href' => $this->Url->build([
             '_name' => 'rssFeed',
             '_ext' => 'xml'

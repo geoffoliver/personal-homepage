@@ -58,7 +58,7 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
     );
 
     // the regular RSS feed for posts
-    $rbRoutes->connect('/atom',
+    $rbRoutes->connect('/rss',
         [
             'controller' => 'Posts',
             'action' => 'feed'
