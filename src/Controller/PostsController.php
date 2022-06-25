@@ -481,7 +481,7 @@ class PostsController extends AppController
                             $media->id
                         ], true),
                         'mime_type' => $media->mime,
-                        'title' => $media->name ?? 'Untitled Media Item',
+                        'title' => $media->name ?? "Media for {$post->name}",
                         'size_in_bytes' => $media->size
                     ];
                 }
