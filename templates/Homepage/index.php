@@ -9,7 +9,7 @@ $this->extend('/Homepage/shell');
 
 $this->start('main');
 ?>
-  <div id="homepagePosts">
+  <div id="homepagePosts" class="h-feed">
   <?php
         if (count($posts) === 0) {
             echo $this->Html->div('box', implode('', [
