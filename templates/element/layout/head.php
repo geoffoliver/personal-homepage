@@ -56,6 +56,15 @@
         ], ['fullBase' => true])
     ]);
 
+    // webmentions
+    echo $this->Html->tag('link', null, [
+        'rel' => 'webmention',
+        'href' => $this->Url->build([
+            'controller' => 'webmentions',
+            'action' => 'add',
+        ], ['fullBase' => true])
+    ]);
+
     $meLinks = Hash::get($settings, 'indieweb-me-links');
     if ($meLinks) {
         $meLinks = preg_split('/(\r|\n)/', $meLinks);

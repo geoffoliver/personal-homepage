@@ -6,6 +6,7 @@
 - [x] Convert atom feed to RSS
 - [ ] Search feature
 - [ ] Indieweb features
+    - [ ] Webmentions
 - [ ] Make nav editable in settings
 # Maybe
 

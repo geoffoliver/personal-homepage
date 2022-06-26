@@ -14,7 +14,19 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
     ]);
 
     $csrf->skipCheckCallback(function($request) {
-        return $request->getParam('action') !== "indie-auth";
+        $public = [
+            'Users' => ['indie-auth'],
+            'Webmentions' => ['add'],
+        ];
+
+        $controller = $request->getParam('controller');
+        $action = $request->getParam('action');
+
+        if (array_key_exists($controller, $public)) {
+            return in_array($action, $public[$controller]);
+        }
+
+        return false;
     });
 
     $rbRoutes->registerMiddleware('csrf', $csrf);
@@ -218,12 +230,13 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
         'Posts' => 'posts',
         'Settings' => 'settings',
         'Users' => 'users',
-        'Homepage' => 'homepage'
+        'Homepage' => 'homepage',
+        'Webmentions' => 'webmentions',
     ];
 
     foreach ($controllers as $controller => $url) {
         $rbRoutes->connect("/{$url}", ['action' => 'index', 'controller' => $controller], ['routeClass' => DashedRoute::class]);
-        $rbRoutes->connect("/{$url}/:action/*", ['controller' => $controller], ['routeClass' => DashedRoute::class]);
+        $rbRoutes->connect("/{$url}/{action}/*", ['controller' => $controller], ['routeClass' => DashedRoute::class]);
     }
 
     // pages routing

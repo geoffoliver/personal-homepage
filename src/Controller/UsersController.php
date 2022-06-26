@@ -22,7 +22,6 @@ class UsersController extends AppController
         $this->Authentication->allowUnauthenticated([
             'login',
             'indieAuth',
-            // 'resetPassword'
         ]);
     }
 
@@ -137,7 +136,7 @@ class UsersController extends AppController
 
     private function indieAuthLogin($request)
     {
-        // get the stuff we need from the URL. thank
+        // get the stuff we need from the URL
         $me = filter_var($request->getQuery('me'), FILTER_VALIDATE_URL);
         $clientId = filter_var($request->getQuery('client_id'), FILTER_VALIDATE_URL);
         $redirectUri = filter_var($request->getQuery('redirect_uri'), FILTER_VALIDATE_URL);
@@ -203,7 +202,6 @@ class UsersController extends AppController
         return $this->indieAuthAuthenticate($request);
     }
 
-    // TODO: implement h-card display - https://indieweb.org/h-card
     private function indieAuthAuthenticate($request)
     {
         $result = $this->Authentication->getResult();

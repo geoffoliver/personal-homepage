@@ -1,23 +1,20 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 
 /**
- * Comment Entity
+ * Webmention Entity
  *
  * @property string $id
- * @property string $model_id
- * @property string $comment
- * @property bool|null $approved
- * @property bool|null $public
- * @property string $posted_by
+ * @property string $source
+ * @property string $target
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
- *
- * @property \App\Model\Entity\Model $model
  */
-class Comment extends Entity
+class Webmention extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -26,21 +23,12 @@ class Comment extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
-        'model_id' => true,
-        'type' => true,
-        'comment' => true,
-        'approved' => true,
-        'public' => true,
-        'posted_by' => true,
-        'display_name' => true,
-        'url' => true,
-        'import_source' => true,
-        'ip' => true,
+        'source' => true,
+        'target' => true,
         'created' => true,
         'modified' => true,
-        'model' => true
     ];
 }
