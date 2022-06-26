@@ -7,6 +7,7 @@
         - [ ] Like (https://indieweb.org/like)
         - [ ] Bookmark (https://indieweb.org/bookmark)
         - [ ] Repost (https://indieweb.org/repost)
+    - [ ] Send webmentions to brid.gy
 - [x] Add option to posts to show embeds
 - [x] Edit embeds?
 - [x] Convert atom feed to RSS

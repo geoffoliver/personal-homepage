@@ -37,7 +37,7 @@ if ($content) {
 
     $this->Html->meta([
         'name' => 'description',
-        'content' => $Parsedown->text(preg_replace("/\r\n?/", " ", substr($content, 0, 155)))
+        'content' => strip_tags($Parsedown->text(preg_replace("/\r\n?/", " ", substr($content, 0, 155))))
     ],
     null,
     [
@@ -46,7 +46,7 @@ if ($content) {
 
     $this->Html->meta([
         'property' => 'og:description',
-        'content' => $Parsedown->text(preg_replace("/\r\n?/", " ", $this->Text->truncate($content, 500)))
+        'content' => strip_tags($Parsedown->text(preg_replace("/\r\n?/", " ", $this->Text->truncate($content, 500))))
     ],
     null,
     [
