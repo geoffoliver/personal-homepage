@@ -29,6 +29,15 @@ null,
     'block' => true
 ]);
 
+$this->Html->meta([
+    'property' => 'og:image',
+    'content' => $this->Url->build('/profile-photo', ['fullBase' => true]),
+],
+null,
+[
+    'block' => true
+]);
+
 $content = isset($item->content) ? $item->content : (isset($item->description) ? $item->description : null);
 
 if ($content) {
