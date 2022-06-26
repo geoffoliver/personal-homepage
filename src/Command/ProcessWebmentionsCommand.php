@@ -244,8 +244,13 @@ class ProcessWebmentionsCommand extends Command
             case 'mention':
             case 'reply':
             default:
-                if (! empty($hentry['properties']['content'][0]['value']) && mb_strlen($hentry['properties']['content'][0]['value'], 'UTF-8') <= config('max_length', 500)
-                 && ! empty($hentry['properties']['content'][0]['html'])) {
+                $maxChars = 500;
+
+                if (
+                    !empty($hentry['properties']['content'][0]['value'])
+                    && mb_strlen($hentry['properties']['content'][0]['value'], 'UTF-8') <= $maxChars
+                    && !empty($hentry['properties']['content'][0]['html'])
+                ) {
                     // If the mention is short enough, store it in its entirety.
                     $comment = strip_tags($hentry['properties']['content'][0]['html']);
                 } else {
@@ -257,7 +262,7 @@ class ProcessWebmentionsCommand extends Command
                         $comment = $context;
                     } elseif (! empty($hentry['properties']['content'][0]['html'])) {
                         // Simply store an excerpt of the webmention source.
-                        $comment = \Cake\Utility\Text::truncate(strip_tags($hentry['properties']['content'][0]['html']), 500);
+                        $comment = \Cake\Utility\Text::truncate(strip_tags($hentry['properties']['content'][0]['html']), $maxChars);
                     }
                 }
         }
