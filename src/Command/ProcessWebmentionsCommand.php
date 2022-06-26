@@ -227,15 +227,15 @@ class ProcessWebmentionsCommand extends Command
         // Overwrite default content based on post type.
         switch ($postType) {
             case 'bookmark':
-                $comment = '&hellip; bookmarked this!';
+                $comment = 'bookmarked this!';
                 break;
 
             case 'like':
-                $comment = '&hellip; liked this!';
+                $comment = 'liked this!';
                 break;
 
             case 'repost':
-                $comment = '&hellip; reposted this!';
+                $comment = 'reposted this!';
                 break;
 
             case 'mention':
@@ -254,10 +254,10 @@ class ProcessWebmentionsCommand extends Command
                     // Fetch the bit of text surrounding the link to our page.
                     $context = $this->fetchContext($hentry['properties']['content'][0]['html'], $webmention->target);
 
-                    if (! empty($context)) {
+                    if (!empty($context)) {
                         // Found context, now store it.
                         $comment = $context;
-                    } elseif (! empty($hentry['properties']['content'][0]['html'])) {
+                    } elseif (!empty($hentry['properties']['content'][0]['html'])) {
                         // Simply store an excerpt of the webmention source.
                         $comment = \Cake\Utility\Text::truncate(strip_tags($hentry['properties']['content'][0]['html']), $maxChars);
                     }

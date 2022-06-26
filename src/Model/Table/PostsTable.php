@@ -157,13 +157,6 @@ class PostsTable extends Table
         $parsed = $Parsedown->text($html);
 
         $mentionClient = new MentionClient();
-        MentionClient::enableDebug();
-
-        var_dump([
-            $sourceUrl,
-            $parsed,
-        ]);
-
         $mentionClient->sendMentions($sourceUrl, $parsed);
     }
 }
