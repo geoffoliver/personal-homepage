@@ -135,7 +135,7 @@ class PostsTable extends Table
         return $data;
     }
 
-    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
+    public function afterSaveCommit(EventInterface $event, EntityInterface $entity, ArrayObject $options)
     {
         $protocol = 'http';
         $hostname = env('HTTP_HOST');
@@ -157,6 +157,13 @@ class PostsTable extends Table
         $parsed = $Parsedown->text($html);
 
         $mentionClient = new MentionClient();
+        MentionClient::enableDebug();
+
+        var_dump([
+            $sourceUrl,
+            $parsed,
+        ]);
+
         $mentionClient->sendMentions($sourceUrl, $parsed);
     }
 }
