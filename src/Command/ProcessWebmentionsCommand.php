@@ -41,10 +41,10 @@ class ProcessWebmentionsCommand extends Command
     {
         $this->Webmentions = $this->fetchTable('Webmentions');
         $this->Comments = $this->fetchTable('Comments');
-        $this->findPendingWebmentions();
+        $this->findPendingWebmentions($io);
     }
 
-    protected function findPendingWebmentions()
+    protected function findPendingWebmentions(ConsoleIo $io)
     {
         $mentions = $this->Webmentions->find()
             ->where([
@@ -57,17 +57,19 @@ class ProcessWebmentionsCommand extends Command
         }
 
         foreach ($mentions as $mention) {
-            $this->processWebmention($mention);
+            $this->processWebmention($io, $mention);
         }
     }
 
-    private function processWebmention(Webmention $mention): void
+    private function processWebmention(ConsoleIo $io, Webmention $mention): void
     {
         $cacheKey = md5($mention->source);
 
+        $io->out("Attempting to load {$mention->source} HTML from cache");
         $html = Cache::read($cacheKey, 'webmentions');
 
         if (!$html) {
+            $io->out("Unable to locate {$mention->source} in cache, loading source data");
             // also yanked from https://github.com/janboddez/iw-utils/blob/main/app/Jobs/ProcessWebmentions.php
             $context = stream_context_create(['http' => [
                 'follow_location' => true,
@@ -80,6 +82,8 @@ class ProcessWebmentionsCommand extends Command
         }
 
         if (strpos($html, $mention->target) === false) {
+            $io->error("{$mention->target} not found in HTML!");
+
             $mention->set('status', 'invalid');
             $this->Webmentions->save($mention);
             return;
@@ -96,6 +100,7 @@ class ProcessWebmentionsCommand extends Command
         }
 
         if (!$exists) {
+            $io->error("Invalid post/media ({$mention->type} - {$mention->type_id})");
             $mention->set('status', 'inavlid');
             $this->Webmentions->save($mention);
             return;
@@ -114,6 +119,8 @@ class ProcessWebmentionsCommand extends Command
             'url' => $mention->source,
         ];
 
+        $io->out('Parsing microformats');
+
         $this->parseMicroformats($commentData, $html, $mention);
 
         $existing = $this->Comments->find()
@@ -124,9 +131,11 @@ class ProcessWebmentionsCommand extends Command
             ->first();
 
         if ($existing) {
+            $io->out('Updating existing comment');
             $mention->set('status', 'updated');
             $saveComment = $this->Comments->patchEntity($existing, $commentData);
         } else {
+            $io->out('Creating new comment');
             $mention->set('status', 'created');
             $saveComment = $this->Comments->newEntity($commentData);
         }
@@ -134,6 +143,8 @@ class ProcessWebmentionsCommand extends Command
         $this->Comments->save($saveComment);
 
         $this->Webmentions->save($mention);
+
+        $io->out('Done processing webmention');
     }
 
     // everything below here taken from https://github.com/janboddez/iw-utils/blob/main/app/Jobs/ProcessWebmentions.php

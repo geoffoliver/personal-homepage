@@ -67,8 +67,10 @@ class WebmentionsController extends AppController
                     $postOrMedia = false;
 
                     if ($type === 'view-post' || $type === 'post') {
+                        $type = 'post';
                         $postOrMedia = $this->fetchTable('Posts')->findById($id);
                     } else if ($type === 'view-media' || $type === 'media') {
+                        $type = 'media';
                         $postOrMedia = $this->fetchTable('Medias')->findById($id);
                     }
 
