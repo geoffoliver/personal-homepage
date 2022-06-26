@@ -63,7 +63,9 @@ class ProcessWebmentionsCommand extends Command
 
     private function processWebmention(Webmention $mention): void
     {
-        $html = Cache::read($mention->source, 'webmentions');
+        $cacheKey = md5($mention->source);
+
+        $html = Cache::read($cacheKey, 'webmentions');
 
         if (!$html) {
             // also yanked from https://github.com/janboddez/iw-utils/blob/main/app/Jobs/ProcessWebmentions.php
@@ -74,7 +76,7 @@ class ProcessWebmentionsCommand extends Command
             ]]);
 
             $html = @file_get_contents($mention->source, false, $context);
-            Cache::write($mention->source, 'webmentions');
+            Cache::write($cacheKey, 'webmentions');
         }
 
         if (strpos($html, $mention->target) === false) {
