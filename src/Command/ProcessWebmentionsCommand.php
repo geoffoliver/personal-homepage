@@ -106,8 +106,6 @@ class ProcessWebmentionsCommand extends Command
             return;
         }
 
-        // $host = parse_url($mention->source, PHP_URL_HOST);
-
         $commentData = [
             'model_id' => $mention->type_id,
             'comment' => 'I mentioned your post on my website!',
@@ -141,7 +139,6 @@ class ProcessWebmentionsCommand extends Command
         }
 
         $this->Comments->save($saveComment);
-
         $this->Webmentions->save($mention);
 
         $io->out('Done processing webmention');

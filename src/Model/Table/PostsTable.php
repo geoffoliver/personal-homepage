@@ -1,14 +1,15 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Event\Event;
-use Cake\Datasource\EntityInterface;
 use ArrayObject;
 use App\Lib\oEmbed;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
+use IndieWeb\MentionClient;
 
 /**
  * Posts Model
@@ -132,5 +133,30 @@ class PostsTable extends Table
         $data['embeds'] = json_encode($embeds);
 
         return $data;
+    }
+
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
+    {
+        $protocol = 'http';
+        $hostname = env('HTTP_HOST');
+        if (env('HTTPS')) {
+            $protocol .= 's';
+        }
+
+        $domain = $protocol . '://' . $hostname;
+
+        $sourceUrl = "{$domain}/view-post/{$entity->id}";
+        $html = $entity->content;
+
+        if ($entity->source) {
+            $html .= " - [{$entity->source}]({$entity->source})";
+        }
+
+        $Parsedown = new \Parsedown();
+        $Parsedown->setStrictMode(true);
+        $parsed = $Parsedown->text($html);
+
+        $mentionClient = new MentionClient();
+        $mentionClient->sendMentions($sourceUrl, $parsed);
     }
 }
