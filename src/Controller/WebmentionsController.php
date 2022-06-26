@@ -56,15 +56,20 @@ class WebmentionsController extends AppController
 
             \Cake\Error\Debugger::log([$parsed, $parts]);
 
-            if (count($parts) >= 2) {
-                $id = $parts[count($parts) - 1];
-                $type = $parts[count($parts) - 2];
+            $partsCount = count($parts);
+            if ($partsCount >= 2) {
+                $id = $parts[$partsCount - 1];
+                $type = $parts[$partsCount - 2];
+                if ($type === 'view' && $partsCount >= 3) {
+                    $type = $parts[$partsCount - 3];
+                }
+
                 $exists = false;
 
-                if ($type === 'post') {
+                if ($type === 'view-post' || $type == 'post') {
                     $posts = $this->fetchTable('Posts');
                     $exists = $posts->findById($id);
-                } else if ($type === 'media') {
+                } else if ($type === 'view-media' || $type = 'media') {
                     $medias = $this->fetchTable('Medias');
                     $exists = $medias->findById($id);
                 }
