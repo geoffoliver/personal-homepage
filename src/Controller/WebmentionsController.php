@@ -53,30 +53,34 @@ class WebmentionsController extends AppController
             // make sure target actually exists
             $parsed = parse_url($target);
             $parts = $parsed['path'] ? explode('/', trim($parsed['path'], '/')) : [];
-
-            \Cake\Error\Debugger::log([$parsed, $parts]);
-
             $partsCount = count($parts);
+
             if ($partsCount >= 2) {
                 $id = $parts[$partsCount - 1];
                 $type = $parts[$partsCount - 2];
+
                 if ($type === 'view' && $partsCount >= 3) {
                     $type = $parts[$partsCount - 3];
                 }
 
-                $exists = false;
+                if ($id && $type) {
+                    $postOrMedia = false;
 
-                if ($type === 'view-post' || $type == 'post') {
-                    $posts = $this->fetchTable('Posts');
-                    $exists = $posts->findById($id);
-                } else if ($type === 'view-media' || $type = 'media') {
-                    $medias = $this->fetchTable('Medias');
-                    $exists = $medias->findById($id);
-                }
+                    if ($type === 'view-post' || $type === 'post') {
+                        $postOrMedia = $this->fetchTable('Posts')->findById($id);
+                    } else if ($type === 'view-media' || $type === 'media') {
+                        $postOrMedia = $this->fetchTable('Medias')->findById($id);
+                    }
 
-                if ($exists) {
-                    $webmention = $this->Webmentions->patchEntity($webmention, ['source' => $source, 'target' => $target]);
-                    $this->Webmentions->save($webmention);
+                    if ($postOrMedia) {
+                        $this->Webmentions->patchEntity($webmention, [
+                            'source' => $source,
+                            'target' => $target,
+                            'type' => $type,
+                            'type_id' => $id,
+                        ]);
+                        $this->Webmentions->save($webmention);
+                    }
                 }
             }
         }

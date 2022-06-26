@@ -25,7 +25,11 @@ class CreateWebmentions extends AbstractMigration
             'default' => null,
             'null' => false,
         ]);
-        $table->addColumn('target', 'enum', [
+        $table->addColumn('target', 'string', [
+            'default' => null,
+            'null' => false,
+        ]);
+        $table->addColumn('status', 'enum', [
             'default' => 'pending',
             'values' => ['pending', 'created', 'updated', 'duplicate', 'invalid'],
         ]);

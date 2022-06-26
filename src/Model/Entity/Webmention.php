@@ -28,6 +28,9 @@ class Webmention extends Entity
     protected $_accessible = [
         'source' => true,
         'target' => true,
+        'status' => true,
+        'type' => true,
+        'type_id' => true,
         'created' => true,
         'modified' => true,
     ];
