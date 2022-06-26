@@ -2,7 +2,7 @@
 
 use Cake\Utility\Hash;
 echo '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";
-$Parsedown = new Parsedown();
+$Parsedown = new \Parsedown();
 $Parsedown->setStrictMode(true);
 
 ?>
