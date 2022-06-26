@@ -32,9 +32,12 @@ null,
 $content = isset($item->content) ? $item->content : (isset($item->description) ? $item->description : null);
 
 if ($content) {
+    $Parsedown = new \Parsedown();
+    $Parsedown->setStrictMode(true);
+
     $this->Html->meta([
         'name' => 'description',
-        'content' => preg_replace("/\r\n?/", " ", substr($content, 0, 155))
+        'content' => $Parsedown->text(preg_replace("/\r\n?/", " ", substr($content, 0, 155)))
     ],
     null,
     [
@@ -43,7 +46,7 @@ if ($content) {
 
     $this->Html->meta([
         'property' => 'og:description',
-        'content' => preg_replace("/\r\n?/", " ", $this->Text->truncate($content, 500))
+        'content' => $Parsedown->text(preg_replace("/\r\n?/", " ", $this->Text->truncate($content, 500)))
     ],
     null,
     [
