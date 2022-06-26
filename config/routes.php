@@ -15,7 +15,7 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
 
     $csrf->skipCheckCallback(function($request) {
         $public = [
-            'Users' => ['indie-auth'],
+            'Users' => ['indieAuth'],
             'Webmentions' => ['add'],
         ];
 
