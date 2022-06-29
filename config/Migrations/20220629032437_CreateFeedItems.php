@@ -51,6 +51,7 @@ class CreateFeedItems extends AbstractMigration
         $table->addColumn('content', 'text', [
             'default' => null,
             'null' => true,
+            'limit' => 'LONG_TEXT',
         ]);
 
         $table->addColumn('media', 'string', [
