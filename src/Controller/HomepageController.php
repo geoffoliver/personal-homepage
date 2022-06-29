@@ -77,6 +77,13 @@ class HomepageController extends AppController
         // tell the view to use the ajax layout
         $this->viewBuilder()->setLayout('ajax');
 
+        $this->FeedItems = $this->fetchTable('FeedItems');
+        $this->Friends = $this->fetchTable('Friends');
+
+        // get all our friends
+        $hasFriends = $this->Friends->find()->count() > 0;
+
+        /*
         // load up the friends model
         $this->Friends = $this->fetchTable('Friends');
 
@@ -134,13 +141,42 @@ class HomepageController extends AppController
         if (count($posts) > $page * $limit) {
             $next = $page + 1;
         }
+        */
+
+        // paginate the posts
+        $limit = 50;
+        $page = 1;
+        if ($this->request->getQuery('page')) {
+            $page = $this->request->getQuery('page');
+        }
+
+        $page = (int) $page;
+
+        $posts = $this->FeedItems->find()
+            ->contain(['Friends'])
+            ->limit($limit)
+            ->order(['date_modified' => 'DESC'])
+            ->page($page);
+
+        $prev = null;
+        $next = null;
+
+        if ($page > 1) {
+            $prev = $page - 1;
+        }
+
+        $hasNext = $this->FeedItems->find()
+            ->limit($limit)
+            ->page($page + 1)
+            ->count() > 0;
+
+        $next = $hasNext ? $page + 1 : null;
 
         // set some stuff for the view and call it a day
         $this->set([
-            'posts' => $paginated,
-            'friends' => $friends,
+            'posts' => $posts->all(),
+            'hasFriends' => $hasFriends,
             'pagination' => [
-                'total' => count($posts),
                 'prev' => $prev,
                 'next' => $next
             ]
@@ -149,6 +185,7 @@ class HomepageController extends AppController
 
     private function setVarsForHomepageAndFeed()
     {
+        /*
         // load up some models
         $this->Posts = $this->fetchTable('Posts');
         $this->Medias = $this->fetchTable('Medias');
@@ -167,7 +204,7 @@ class HomepageController extends AppController
             $photos = $photos->where(['Medias.public' => true]);
             $photos = $photos->cache('photos', 'homepage_assets');
         }
-	/*
+
         // limit to 12 photos... this should probably be a setting.
         $photos = $photos->limit(12)->all();
 
@@ -189,7 +226,7 @@ class HomepageController extends AppController
             ->limit(12)
             ->cache('friends', 'homepage_assets')
             ->all();
-	*/
+        */
         // set some variables in the view and let other stuff happen
         $this->set([
             'user' => $this->request->getAttribute('identity'),

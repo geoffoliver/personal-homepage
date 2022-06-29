@@ -59,7 +59,7 @@ use Cake\Utility\Hash;
     </div>
     <div class="feed-post-item-content">
         <?php
-            $content = $post->content_html;
+            $content = $post->content;
 
             if (isset($post->media) && $post->media) {
                 $content = $this->Html->tag(

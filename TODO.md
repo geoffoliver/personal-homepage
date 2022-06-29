@@ -11,10 +11,11 @@
 - [x] Add option to posts to show embeds
 - [x] Edit embeds?
 - [x] Convert atom feed to RSS
-- [ ] Soft delete
+- [ ] Categories
+- [ ] Soft delete posts
     - [ ] Return 410 (gone) for deleted posts (https://indieweb.org/deleted)
 - [ ] Update import commands to support new `MediasTable::uploadAndCreate` method
-- [ ] Search feature
+- [ ] Search
 - [ ] Make nav editable in settings
 # Maybe
 

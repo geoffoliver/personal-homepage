@@ -1,5 +1,5 @@
 <?php
-if (!$friends->count()) {
+if (!$hasFriends) {
     echo $this->Html->div('box',
         implode('<br>', [
             __('You don\'t have any friends setup!'),
