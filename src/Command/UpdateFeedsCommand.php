@@ -41,7 +41,9 @@ class UpdateFeedsCommand extends Command
         $this->FeedItems = $this->fetchTable('FeedItems');
 
         // get all our friends
-        $friends = $this->Friends->find()->all();
+        $friends = $this->Friends->find()
+            // ->where(['id' => 'db431abe-e28f-4155-9533-fa3172506004'])
+            ->all();
 
         foreach ($friends as $friend) {
             $io->out("Syncing feed for {$friend->name}");

@@ -76,7 +76,7 @@ class Friend extends Entity
                     'url' => $item->url,
                     'author' => isset($item->author) ? $item->author : null,
                     'date_published' => $item->date_published,
-                    'date_modified' => isset($item->date_modified) ? $item->date_modified : null,
+                    'date_modified' => isset($item->date_modified) ? $item->date_modified : $item->date_published,
                     'content' => isset($item->content_html) ? $item->content_html : null,
                     'media' => isset($item->media) ? $item->media : null,
                     'page_feed' => isset($item->_page_feed) ? $item->_page_feed : null,
