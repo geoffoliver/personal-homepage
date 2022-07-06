@@ -247,7 +247,7 @@ class FeedParser
 
         foreach ($feed->items as $item) {
             $item->date_published = new Time($item->date_published);
-            $item->date_modified = new Time($item->date_modified);
+            $item->date_modified = $item->date_modified ? new Time($item->date_modified) : null;
             $item->content_html = $this->purifier->purify($item->content_html);
         }
 
