@@ -11,6 +11,7 @@
 - [x] Add option to posts to show embeds
 - [x] Edit embeds?
 - [x] Convert atom feed to RSS
+- [ ] Mark feed items as read
 - [ ] Categories
 - [ ] Soft delete posts
     - [ ] Return 410 (gone) for deleted posts (https://indieweb.org/deleted)

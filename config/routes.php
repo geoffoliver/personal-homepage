@@ -57,6 +57,26 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
         ]
     );
 
+    $rbRoutes->connect('/feed/{friend_id}',
+        [
+            'controller' => 'Homepage',
+            'action' => 'feed'
+        ],
+        [
+            '_name' => 'friendFeed'
+        ]
+    )->setPass(['friend_id']);
+
+    $rbRoutes->connect('/feed-item/read/{id}',
+        [
+            'controller' => 'FeedItems',
+            'action' => 'markRead'
+        ],
+        [
+            '_name'=> 'markFeedItemRead'
+        ]
+    )->setPass(['id']);
+
     // site info
     $rbRoutes->connect('/site-info',
         [

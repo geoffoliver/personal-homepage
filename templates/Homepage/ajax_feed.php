@@ -25,7 +25,7 @@ if (count($posts) === 0) {
     return;
 }
 
-foreach ($posts as $post) {
+foreach ($posts as $n => $post) {
     echo $this->element(
         'feed/item',
         ['post' => $post]

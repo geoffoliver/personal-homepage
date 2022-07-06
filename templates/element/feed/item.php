@@ -1,7 +1,7 @@
 <?php
 use Cake\Utility\Hash;
 ?>
-<div class="feed-post-item">
+<div class="feed-post-item<?= $post->is_read ? ' is-read' : ''; ?>" data-unread="<?= $post->is_read ? 'false' : 'true'; ?>" data-feed-item-id="<?= $post->id; ?>">
     <div class="feed-post-item-header">
         <figure class="image is-48x48 is-rounded friend-icon">
             <?= $this->Html->link(
