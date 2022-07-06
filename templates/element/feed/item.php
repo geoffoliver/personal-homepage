@@ -27,7 +27,8 @@ use Cake\Utility\Hash;
                     $post->url,
                     [
                         'target' => '_blank',
-                        'rel' => 'noopener noreferrer'
+                        'rel' => 'noopener noreferrer',
+                        'escape' => false
                     ]
                 ); ?>
             </h1>
