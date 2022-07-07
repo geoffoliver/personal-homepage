@@ -21,7 +21,7 @@ class ParsedownHashTags extends \Parsedown
         if (preg_match($this->hashTagPattern, $Excerpt['context'], $matches)) {
             $url = Router::url([
                 '_name' => 'tag',
-                'tag' => $matches[1],
+                'tag' => mb_strtolower($matches[1]),
             ], true);
 
             return [
