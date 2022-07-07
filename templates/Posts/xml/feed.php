@@ -1,8 +1,10 @@
 <?php
 
 use Cake\Utility\Hash;
+use App\Lib\ParsedownHashTags;
+
 echo '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";
-$Parsedown = new \Parsedown();
+$Parsedown = new ParsedownHashTags();
 $Parsedown->setStrictMode(true);
 
 ?>
