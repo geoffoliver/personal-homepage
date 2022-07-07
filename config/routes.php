@@ -77,6 +77,16 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
         ]
     )->setPass(['id']);
 
+    $rbRoutes->connect('/tag/{tag}',
+        [
+            'controller' => 'Homepage',
+            'action' => 'index'
+        ],
+        [
+            '_name'=> 'tag'
+        ]
+    )->setPass(['tag']);
+
     // site info
     $rbRoutes->connect('/site-info',
         [

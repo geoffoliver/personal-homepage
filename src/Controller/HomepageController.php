@@ -42,7 +42,7 @@ class HomepageController extends AppController
         $this->modelClass = false;
     }
 
-    public function index()
+    public function index($tag = null)
     {
         // do some heavy lifting
         $this->setVarsForHomepageAndFeed();
@@ -53,6 +53,18 @@ class HomepageController extends AppController
             unset($this->paginate['Posts']['contain']['Comments']['conditions']);
         }
 
+        if ($tag) {
+            $tag = trim($tag);
+            if ($tag) {
+                // filter posts by tag (hashtag)
+                list ($tag) = explode(' ', $tag);
+                $conditions = isset($this->paginate['Posts']['conditions']) ? $this->paginate['Posts']['conditions'] : [];
+                $this->paginate['Posts']['conditions'] = array_merge($conditions, [
+                    'Posts.content LIKE' => "%#{$tag}%"
+                ]);
+            }
+        };
+
         try {
             // get the posts!
             $posts = $this->paginate('Posts');
@@ -62,7 +74,8 @@ class HomepageController extends AppController
 
         // tada!
         $this->set([
-            'posts' => $posts
+            'posts' => $posts,
+            'tag' => $tag,
         ]);
     }
 

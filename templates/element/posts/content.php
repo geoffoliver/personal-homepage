@@ -1,10 +1,12 @@
 <?php
 
+use App\Lib\ParsedownHashTags;
+
 if (!isset($content) || !$content) {
     return;
 }
 
-$Parsedown = new \Parsedown();
+$Parsedown = new ParsedownHashTags();
 $Parsedown->setStrictMode(true);
 $parsed = $Parsedown->text($content);
 
