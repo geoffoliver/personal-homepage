@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use App\Lib\ParsedownHashTags;
+use App\Lib\CustomParsedown;
 
 use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
@@ -24,7 +24,7 @@ class PostsController extends AppController
     {
         parent::initialize();
 
-        $this->parsedown = new ParsedownHashTags();
+        $this->parsedown = new CustomParsedown();
         $this->parsedown->setStrictMode(true);
 
         $this->Authentication->allowUnauthenticated(['feed', 'view']);

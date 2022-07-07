@@ -1,5 +1,5 @@
 <?php
-use App\Lib\ParsedownHashTags;
+use App\Lib\CustomParsedown;
 
 if ($item->name) {
     $this->Html->meta([
@@ -42,7 +42,7 @@ null,
 $content = isset($item->content) ? $item->content : (isset($item->description) ? $item->description : null);
 
 if ($content) {
-    $Parsedown = new ParsedownHashTags();
+    $Parsedown = new CustomParsedown();
     $Parsedown->setStrictMode(true);
 
     $this->Html->meta([

@@ -1,7 +1,7 @@
 <?php
-use App\Lib\ParsedownHashTags;
+use App\Lib\CustomParsedown;
 
-$Parsedown = new ParsedownHashTags();
+$Parsedown = new CustomParsedown();
 $Parsedown->setStrictMode(true);
 
 $this->assign('title', __('About Me'));

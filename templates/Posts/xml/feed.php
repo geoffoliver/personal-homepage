@@ -1,12 +1,11 @@
 <?php
 
 use Cake\Utility\Hash;
-use App\Lib\ParsedownHashTags;
+use App\Lib\CustomParsedown;
 
 echo '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";
-$Parsedown = new ParsedownHashTags();
+$Parsedown = new CustomParsedown();
 $Parsedown->setStrictMode(true);
-
 ?>
 <rss
     version="2.0"

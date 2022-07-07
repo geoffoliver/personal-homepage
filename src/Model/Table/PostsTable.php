@@ -7,7 +7,7 @@ use Cake\Validation\Validator;
 use Cake\Event\Event;
 use ArrayObject;
 use App\Lib\oEmbed;
-use App\Lib\ParsedownHashTags;
+use App\Lib\CustomParsedown;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use IndieWeb\MentionClient;
@@ -153,7 +153,7 @@ class PostsTable extends Table
             $html .= " - [{$entity->source}]({$entity->source})";
         }
 
-        $Parsedown = new ParsedownHashTags();
+        $Parsedown = new CustomParsedown();
         $Parsedown->setStrictMode(true);
         $parsed = $Parsedown->text($html);
 

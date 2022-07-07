@@ -18,6 +18,7 @@
 - [ ] Update import commands to support new `MediasTable::uploadAndCreate` method
 - [ ] Search
 - [ ] Make nav editable in settings
+- [ ] Setting for homepage post order
 
 # Maybe
 

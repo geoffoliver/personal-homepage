@@ -1,11 +1,11 @@
 <?php
 use Cake\Utility\Hash;
-use App\Lib\ParsedownHashTags;
+use App\Lib\CustomParsedown;
 
 $this->element('social-meta-tags', ['item' => $media]);
 $this->assign('title', $media->name);
 $this->append('css', $this->Html->css('medias/view.css'));
-$Parsedown = new ParsedownHashTags();
+$Parsedown = new CustomParsedown();
 $Parsedown->setStrictMode(true);
 ?>
 <section class="section" id="viewMedia">
