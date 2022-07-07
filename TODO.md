@@ -13,6 +13,7 @@
 - [x] Convert atom feed to RSS
 - [x] Mark feed items as read
 - [x] Tags
+- [ ] Mark posts read when bottom is past halfway up the screen
 - [ ] Soft delete posts
     - [ ] Return 410 (gone) for deleted posts (https://indieweb.org/deleted)
 - [ ] Update import commands to support new `MediasTable::uploadAndCreate` method
