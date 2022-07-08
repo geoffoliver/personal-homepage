@@ -251,7 +251,10 @@ class MediasTable extends Table
             return false;
         } else if (strpos($mime, 'video') === 0) {
             try {
-                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $ffmpeg = \FFMpeg\FFMpeg::create([
+                    'ffmpeg.binaries' => '/usr/bin/ffmpeg',
+                    'ffprobe.binaries' => '/usr/bin/ffprobe',
+                ]);
                 $video = $ffmpeg->open($file->getPathname());
                 $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(0));
 
