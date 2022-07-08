@@ -129,6 +129,9 @@
     previewTemplate: templateHtml,
     previewsContainer: '#add-post-attachments',
     withCredentials: true,
+    headers: {
+      'X-CSRF-Token': window.csrfToken,
+    },
     init: function() {
       this.on("success", success);
       this.on("error", error);

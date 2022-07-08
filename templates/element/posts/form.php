@@ -1,4 +1,9 @@
 <?php
+echo $this->Html->scriptBlock(sprintf(
+    'var csrfToken = %s;',
+    json_encode($this->request->getAttribute('csrfToken'))
+));
+
 echo $this->Form->create($post, ['id' => 'postForm']);
 
     echo '<div id="edit">';
