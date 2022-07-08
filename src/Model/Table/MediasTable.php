@@ -249,9 +249,7 @@ class MediasTable extends Table
             unset($thumb);
 
             return false;
-        }
-
-        if (strpos($mime, 'video') === 0) {
+        } else if (strpos($mime, 'video') === 0) {
             try {
                 $ffmpeg = \FFMpeg\FFMpeg::create();
                 $video = $ffmpeg->open($file->getPathname());

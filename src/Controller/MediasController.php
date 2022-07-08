@@ -96,7 +96,7 @@ class MediasController extends AppController
             ->where([
                 'Medias.id' => $id
             ])
-            ->contain([
+             ->contain([
                 'Users',
                 'Albums',
                 'Posts',
