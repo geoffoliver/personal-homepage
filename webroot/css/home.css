@@ -55,7 +55,7 @@
 }
 
 .homepage-post .post-media {
-  margin: 1rem -20px 1.5rem;
+  margin: 1rem 0 1.5rem;
   display: flex;
   flex-wrap: wrap;
   border: 1px solid #efefef;
