@@ -12,7 +12,8 @@
                     'fullBase' => true,
                     'controls' => true,
                     'tag' => 'audio',
-                    'autoplay' => false
+                    'autoplay' => false,
+                    'class' => 'u-audio',
                 ]
             )
         );
@@ -21,6 +22,7 @@
             $this->Html->tag('video', null, [
                 'controls' => true,
                 'loop' => true,
+                'class' => 'u-video',
                 'data-lazy-src' => $this->Url->build([
                     'controller' => 'Medias',
                     'action' => 'download',
