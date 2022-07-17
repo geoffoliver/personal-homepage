@@ -8,7 +8,7 @@
                 'loop' => true,
                 'loading' => 'lazy',
                 'class' => 'u-video',
-                'data-lazy-src' => $this->Url->build([
+                'src' => $this->Url->build([
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
@@ -54,7 +54,7 @@
         $render = $this->Html->tag('img', null, [
             'class' => 'u-photo',
             'loading' => 'lazy',
-            'data-lazy-src' => $this->Url->build([
+            'src' => $this->Url->build([
                 'controller' => 'Medias',
                 'action' => 'download',
                 $media->id,

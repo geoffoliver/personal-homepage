@@ -28,7 +28,6 @@ echo $this->Html->css('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styl
 $this->append('script', $this->Html->script('https://use.fontawesome.com/releases/v5.12.0/js/all.js', ['defer']));
 
 // utilities
-$this->append('script', $this->Html->script('util/lazyload.js'));
 $this->append('script', $this->Html->script('util/fix-iframe-embeds.js'));
 $this->append('script', $this->Html->script('util/nav.js'));
 $this->append('script', $this->Html->script('util/highlight-code.js'));

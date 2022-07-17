@@ -29,7 +29,7 @@ $routeName = ($type === 'photos' ? 'photoAlbum' : 'videoAlbum');
                             $cover = $this->Html->image(
                                 null,
                                 [
-                                    'data-lazy-src' => $this->Url->build([
+                                    'src' => $this->Url->build([
                                         'controller' => 'Medias',
                                         'action' => 'download',
                                         $coverImage->id,
