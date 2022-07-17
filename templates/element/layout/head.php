@@ -67,7 +67,7 @@
 
     $meLinks = Hash::get($settings, 'indieweb-me-links');
     if ($meLinks) {
-        $meLinks = preg_split('/(\r|\n)/', $meLinks);
+        $meLinks = preg_split('/(\r\n)/', $meLinks);
         foreach ($meLinks as $ml) {
             echo $this->Html->tag('link', null, [
                 'rel' => 'me',
