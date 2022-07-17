@@ -44,6 +44,7 @@
                         isset($size) ? $size : 'thumbnail'
                     ]),
                     'loading' => 'lazy',
+                    'class' => 'u-photo',
                 ]
             ),
             [
