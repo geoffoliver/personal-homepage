@@ -2,7 +2,7 @@
     'img',
     null,
     [
-        'data-lazy-src' => $this->Url->build([
+        'src' => $this->Url->build([
             'controller' => 'Medias',
             'action' => 'download',
             $media->id,

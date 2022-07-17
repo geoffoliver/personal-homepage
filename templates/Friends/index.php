@@ -32,7 +32,7 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                             'img',
                                             null,
                                             [
-                                                'data-lazy-src' => $this->Url->build([
+                                                'src' => $this->Url->build([
                                                     'controller' => 'Friends',
                                                     'action' => 'icon',
                                                     $friend->id

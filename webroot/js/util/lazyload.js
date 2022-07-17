@@ -88,7 +88,7 @@
       }
     });
   }
-
+  /*
   document.addEventListener('DOMContentLoaded', function() {
     lazyObserver = new IntersectionObserver(observeImage, {
       rootMargin: '200px 0px',
@@ -112,4 +112,5 @@
     // tell the observer to start observing
     observer.observe(document.body, {childList: true, subtree: true});
   });
+  */
 })();

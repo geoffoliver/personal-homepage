@@ -462,10 +462,6 @@ img {
   transition: 0.1s;
 }
 
-img[data-lazy-src] {
-  opacity: 0;
-}
-
 /**
  * Media modal
  */

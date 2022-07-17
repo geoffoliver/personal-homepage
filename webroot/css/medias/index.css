@@ -31,7 +31,3 @@
   width: 100%;
   object-fit: cover;
 }
-
-.media-link img[data-lazy-src] {
-  width: 20vw;
-}

@@ -71,7 +71,7 @@ $this->append('css', $this->Html->css('medias/index.css'));
                                 'img',
                                 null,
                                 [
-                                    'data-lazy-src' => $this->Url->build([
+                                    'src' => $this->Url->build([
                                         'controller' => 'Medias',
                                         'action' => 'download',
                                         $media->id,

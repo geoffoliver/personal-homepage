@@ -25,7 +25,7 @@
                 'controls' => true,
                 'loop' => true,
                 'class' => 'u-video',
-                'data-lazy-src' => $this->Url->build([
+                'src' => $this->Url->build([
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
@@ -41,7 +41,7 @@
                 'img',
                 null,
                 [
-                    'data-lazy-src' => $this->Url->build([
+                    'src' => $this->Url->build([
                         'controller' => 'Medias',
                         'action' => 'download',
                         $media->id,

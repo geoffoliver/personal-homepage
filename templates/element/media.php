@@ -51,7 +51,6 @@
             )
         );
     } elseif (strpos($media->mime, 'image/') === 0) {
-        $iwType = 'u-photo';
         $render = $this->Html->tag('img', null, [
             'class' => 'u-photo',
             'loading' => 'lazy',
