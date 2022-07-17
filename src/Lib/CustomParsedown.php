@@ -29,7 +29,7 @@ class CustomParsedown extends \Parsedown
                     'text' => $matches[0],
                     'attributes' => [
                         'href' => $url,
-                        'class' => 'hashtag', //style class of url
+                        'class' => 'hashtag p-category', //style class of url
                     ],
                 ],
             ];
