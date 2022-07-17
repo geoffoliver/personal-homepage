@@ -58,23 +58,25 @@ $this->append('script', $this->Html->script('posts/view.js'));
                                     ['content' => $post->content]
                                 );
                             }
-
-                            if ($post->embeds) {
-                                echo $this->element(
-                                    'posts/embeds',
-                                    ['post' => $post]
-                                );
-                            }
-
-                            if ($post->medias) {
-                                echo $this->element(
-                                    'posts/media',
-                                    ['post' => $post]
-                                );
-                            }
                         ?>
                     </div>
-                    <?= $this->element('item-footer', ['item' => $post, 'comments' => false]); ?>
+                    <?php
+                        if ($post->embeds) {
+                            echo $this->element(
+                                'posts/embeds',
+                                ['post' => $post]
+                            );
+                        }
+
+                        if ($post->medias) {
+                            echo $this->element(
+                                'posts/media',
+                                ['post' => $post]
+                            );
+                        }
+
+                        echo $this->element('item-footer', ['item' => $post, 'comments' => false]);
+                    ?>
                 </div>
             </div>
         </div>
