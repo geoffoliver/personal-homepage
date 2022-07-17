@@ -12,6 +12,8 @@
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
+                ], [
+                    'fullBase' => true
                 ]),
             ])
             /*
@@ -57,6 +59,8 @@
                 'controller' => 'Medias',
                 'action' => 'download',
                 $media->id,
+            ], [
+                'fullBase' => true
             ]),
         ]);
     } else {
@@ -66,7 +70,9 @@
                 'controller' => 'Medias',
                 'action' => 'download',
                 $media->id,
-            ])
+            ], [
+                'fullBase' => true
+            ]),
         );
     }
 

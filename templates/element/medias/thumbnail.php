@@ -7,6 +7,8 @@
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
+                ], [
+                    'fullBase' => true
                 ]),
                 [
                     'fullBase' => true,
@@ -27,6 +29,8 @@
                     'controller' => 'Medias',
                     'action' => 'download',
                     $media->id
+                ], [
+                    'fullBase' => true
                 ]),
                 'loading' => 'lazy',
             ])
@@ -42,6 +46,8 @@
                         'action' => 'download',
                         $media->id,
                         isset($size) ? $size : 'thumbnail'
+                    ], [
+                        'fullBase' => true
                     ]),
                     'loading' => 'lazy',
                     'class' => 'u-photo',
