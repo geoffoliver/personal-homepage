@@ -2,8 +2,8 @@
 use Cake\Utility\Hash;
 $linkSpan = '<span class="fas ml-2 fa-link" aria-hidden="true"></span>';
 ?>
-<div class="homepage-post h-entry">
-    <article class="media">
+<article class="homepage-post h-entry">
+    <div class="media">
         <div class="media-content">
             <div class="content">
                 <?php if ($post->name): ?>
@@ -79,5 +79,5 @@ $linkSpan = '<span class="fas ml-2 fa-link" aria-hidden="true"></span>';
                 ]); ?>
             </div>
         </div>
-    </article>
-</div>
+    </div>
+</article>
