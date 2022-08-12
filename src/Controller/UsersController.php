@@ -307,7 +307,7 @@ class UsersController extends AppController
             && is_string($clientId)
             && verify_signed_code($me . $redirectUri . $clientId, $code))
         ) {
-            throw new \Exception("Invalid code - {$code} - {$redirectUri} - {$clientId}");
+            throw new \Exception("Invalid code - {$code} - {$redirectUri} - {$clientId} - {$me}");
         }
 
         // start to generate a response
