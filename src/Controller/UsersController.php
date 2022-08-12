@@ -357,7 +357,7 @@ class UsersController extends AppController
             $proto .= 's';
         }
 
-        return $proto . '://' . env('SERVER_NAME'); //  . '/';
+        return $proto . '://' . env('SERVER_NAME') . '/';
     }
 
 }
