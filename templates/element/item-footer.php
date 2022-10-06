@@ -55,7 +55,7 @@ if ($isPost) {
 
     if ($original && $item->source) {
         $links[]= $this->Html->link(
-            '<span class="fas fa-external-link-alt" aria-hidden="true"></span>&nbsp' . __('View Original'),
+            '<span class="fas fa-external-link-alt" aria-hidden="true"></span>&nbsp;' . __('View Original'),
             $item->source,
             [
                 'escape' => false,
