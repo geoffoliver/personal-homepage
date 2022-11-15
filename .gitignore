@@ -51,4 +51,4 @@ node_modules/
 webroot/build/
 
 # Pages
-pages/
+pages/*
