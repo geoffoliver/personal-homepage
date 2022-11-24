@@ -104,7 +104,7 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
             body: "url=" + urlValue,
             responseType: "json",
             headers: {
-                "X-CSRF-Token": "<?= $this->request->getParam('_csrfToken'); ?>"
+                "X-CSRF-Token": "<?= $this->request->getAttribute('csrfToken'); ?>"
             }
         }, function (code, response) {
             overlay.style.display = 'none';
