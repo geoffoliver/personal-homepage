@@ -102,7 +102,7 @@ class HomepageController extends AppController
 
         $page = (int) $page;
 
-        $where = null;
+        $where = [];
 
         if (Hash::get($this->settings, 'hide-read')) {
            $where = [
