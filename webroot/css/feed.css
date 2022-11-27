@@ -97,7 +97,7 @@ feed-post-item.is-read {
   padding: 16px;
 }
 
-.followings-list {
+.following-list {
   list-style: none !important;
   margin: 15px 0 0 0 !important;
   padding: 0;
@@ -106,21 +106,21 @@ feed-post-item.is-read {
   top: 57px;
 }
 
-.followings-list li {
+.following-list li {
   padding: 0 !important;
   margin: 0 !important;
 }
 
-.followings-list li  + li {
+.following-list li  + li {
   border-top: 1px solid #ccc;
 }
 
-.followings-list li a {
+.following-list li a {
   display: block;
   padding: 6px 12px;
 }
 
-.followings-list a.active {
+.following-list a.active {
   font-weight: bold;
   background: #eff5fb;
 }

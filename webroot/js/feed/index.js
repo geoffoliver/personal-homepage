@@ -7,7 +7,6 @@
 
   const markAsRead = (item) => {
     item.classList.add('is-read');
-    lazyObserver.unobserve(item);
     const url = `/feed-item/read/${item.dataset.feedItemId}.json`;
     nanoajax.ajax({
       url: url,
@@ -37,27 +36,13 @@
     });
   };
 
-  const observeItem = (items) => {
-    items.forEach(function(item) {
-      if (item.isIntersecting && item.intersectionRatio === 1) {
-        markAsRead(item.target);
-      } else {
-        watching[item.target.dataset.feedItemId] = item.target;
-      }
-    });
-  };
-
   const initFeedItems = () => {
     const feedItems = getFeedItems();
     feedItems.forEach(function(item, n) {
-      lazyObserver.observe(item);
+      watching[item.dataset.feedItemId] = item;
       delete item.dataset.unread;
     });
   };
-
-  const lazyObserver = new IntersectionObserver(observeItem, {
-    threshold: [0, 1.0],
-  });
 
   document.addEventListener('DOMContentLoaded', function() {
     var observer = new MutationObserver(function(mutations) {

@@ -105,13 +105,15 @@ class HomepageController extends AppController
 
         $page = (int) $page;
 
-        $where = null;
+        $where = [
+            'is_read' => false
+        ];
 
         $followingId = $this->request->getQuery('following');
         if ($followingId) {
-            $where = [
+            $where = array_merge($where, [
                 'following_id' => $followingId,
-            ];
+            ]);
         }
 
         $posts = $this->FeedItems->find()
