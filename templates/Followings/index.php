@@ -1,54 +1,54 @@
 <?php
-$this->assign('title', __('Friends'));
-$this->assign('css', $this->Html->css('friends/index.css'));
+$this->assign('title', __('Following'));
+$this->assign('css', $this->Html->css('followings/index.css'));
 ?>
-<section class="section" id="friendsPage">
+<section class="section" id="followingsPage">
     <div class="columns">
         <div class="column">
             <h1 class="title">
-                <?= __('Friends'); ?>
+                <?= __('Following'); ?>
                 <?php if ($user): ?>
                     <?= $this->Html->link(
-                        $this->Html->tag('i', '', ['class' => 'fas fa-plus-circle']) . '&nbsp;&nbsp;' . __('Add Friend'),
+                        $this->Html->tag('i', '', ['class' => 'fas fa-plus-circle']) . '&nbsp;&nbsp;' . __('Add Follow'),
                         [
                             'action' => 'add'
                         ],
                         [
-                            'title' => __('Add Friend'),
+                            'title' => __('Add Follow'),
                             'class' => 'button is-dark is-size-6',
                             'escape' => false
                         ]
                     ); ?>
                 <?php endif; ?>
             </h1>
-            <?php if ($friends): ?>
+            <?php if ($followings): ?>
                 <div class="row">
                     <div class="columns is-multiline">
-                        <?php foreach ($friends as $friend): ?>
+                        <?php foreach ($followings as $following): ?>
                             <div class="column is-half">
-                                <div class="friends-list-friend">
-                                    <div class="friends-list-friend-icon">
+                                <div class="followings-list-following">
+                                    <div class="followings-list-following-icon">
                                         <?= $this->Html->tag(
                                             'img',
                                             null,
                                             [
                                                 'src' => $this->Url->build([
-                                                    'controller' => 'Friends',
+                                                    'controller' => 'Followings',
                                                     'action' => 'icon',
-                                                    $friend->id
+                                                    $following->id
                                                 ]),
-                                                'alt' => "Icon for {$friend->name}",
+                                                'alt' => "Icon for {$following->name}",
                                                 'loading' => 'lazy'
                                             ]
                                         ); ?>
                                     </div>
-                                    <div class="friends-list-friend-info">
+                                    <div class="followings-list-following-info">
                                         <p>
-                                            <strong><?= $friend->name; ?></strong>
+                                            <strong><?= $following->name; ?></strong>
                                         </p>
                                         <?= $this->Html->link(
                                             __('View Website'),
-                                            $friend->url,
+                                            $following->url,
                                             [
                                                 'target' => '_blank',
                                                 'class' => 'is-size-7'
@@ -56,12 +56,12 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                         ); ?>
                                     </div>
                                     <?php if ($user): ?>
-                                        <div class="friends-list-friend-buttons buttons are-small">
+                                        <div class="followings-list-following-buttons buttons are-small">
                                             <?= $this->Html->Link(
                                                 __('Edit'),
                                                 [
                                                     'action' => 'edit',
-                                                    $friend->id
+                                                    $following->id
                                                 ],
                                                 [
                                                     'class' => 'level-item button is-dark is-outlined is-fullwidth',
@@ -70,9 +70,9 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                                             <?php
                                                 echo $this->Form->postLink(
                                                     __('Delete'),
-                                                    ['action' => 'delete', $friend->id],
+                                                    ['action' => 'delete', $following->id],
                                                     [
-                                                        'confirm' => __('Are you sure you want to delete this friend?'),
+                                                        'confirm' => __('Are you sure you want to delete this following?'),
                                                         'class' => 'button is-danger is-outlined is-fullwidth',
                                                         'type' => 'submit'
                                                     ]
@@ -89,10 +89,10 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                 <?php if ($user): ?>
                     <div class="message is-dark">
                         <div class="message-body">
-                            <?= __('You have not setup any friends yet.'); ?>
+                            <?= __('You aren\'t following anybody!'); ?>
                             <br><br>
                             <?= $this->Html->link(
-                                __('Add Friend'),
+                                __('Add Follow'),
                                 [
                                     'action' => 'add'
                                 ],
@@ -105,7 +105,7 @@ $this->assign('css', $this->Html->css('friends/index.css'));
                 <?php else: ?>
                     <div class="message is-dark">
                         <div class="message-body">
-                            <?= __('There are no friends to display.'); ?>
+                            <?= __('I\'m not following anybody just yet.'); ?>
                         </div>
                     </div>
                 <?php endif; ?>

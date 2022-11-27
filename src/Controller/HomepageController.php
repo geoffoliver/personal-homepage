@@ -79,10 +79,10 @@ class HomepageController extends AppController
         ]);
     }
 
-    public function feed($friendId = null)
+    public function feed($followingId = null)
     {
         // we don't do much here (it all happens in `ajaxFeed`)
-        $this->setVarsForHomepageAndFeed($friendId);
+        $this->setVarsForHomepageAndFeed($followingId);
     }
 
     public function ajaxFeed()
@@ -91,10 +91,10 @@ class HomepageController extends AppController
         $this->viewBuilder()->setLayout('ajax');
 
         $this->FeedItems = $this->fetchTable('FeedItems');
-        $this->Friends = $this->fetchTable('Friends');
+        $this->Followings = $this->fetchTable('Followings');
 
-        // get all our friends
-        $hasFriends = $this->Friends->find()->count() > 0;
+        // get all our followings
+        $hasFollowings = $this->Followings->find()->count() > 0;
 
         // paginate the posts
         $limit = 50;
@@ -107,15 +107,15 @@ class HomepageController extends AppController
 
         $where = null;
 
-        $friendId = $this->request->getQuery('friend');
-        if ($friendId) {
+        $followingId = $this->request->getQuery('following');
+        if ($followingId) {
             $where = [
-                'friend_id' => $friendId,
+                'following_id' => $followingId,
             ];
         }
 
         $posts = $this->FeedItems->find()
-            ->contain(['Friends'])
+            ->contain(['Followings'])
             ->where($where)
             ->limit($limit)
             ->order(['date_modified' => 'DESC'])
@@ -139,7 +139,7 @@ class HomepageController extends AppController
         // set some stuff for the view and call it a day
         $this->set([
             'posts' => $posts->all(),
-            'hasFriends' => $hasFriends,
+            'hasFollowings' => $hasFollowings,
             'pagination' => [
                 'prev' => $prev,
                 'next' => $next
@@ -147,12 +147,12 @@ class HomepageController extends AppController
         ]);
     }
 
-    private function setVarsForHomepageAndFeed($friendId = null)
+    private function setVarsForHomepageAndFeed($followingId = null)
     {
         $this->set([
             'user' => $this->request->getAttribute('identity'),
-            'friends' => $this->fetchTable('Friends')->find()->orderAsc('name')->all(),
-            'friendId' => $friendId,
+            'followings' => $this->fetchTable('Followings')->find()->orderAsc('name')->all(),
+            'followingId' => $followingId,
         ]);
     }
 }

@@ -3,24 +3,24 @@ use Cake\Utility\Hash;
 ?>
 <div class="feed-post-item<?= $post->is_read ? ' is-read' : ''; ?>" data-unread="<?= $post->is_read ? 'false' : 'true'; ?>" data-feed-item-id="<?= $post->id; ?>">
     <div class="feed-post-item-header">
-        <figure class="image is-48x48 is-rounded friend-icon">
+        <figure class="image is-48x48 is-rounded following-icon">
             <?= $this->Html->link(
                 $this->Html->image(
                     $this->Url->build([
-                        'controller' => 'Friends',
+                        'controller' => 'Followings',
                         'action' => 'icon',
-                        $post->friend->id
+                        $post->following->id
                     ]),
                     ['class' => 'is-rounded']
                 ),
-                $post->friend->url,
+                $post->following->url,
                 [
                     'target' => '_blank',
                     'escape' => false
                 ]
             ); ?>
         </figure>
-        <div class="feed-post-item-friend-name-container">
+        <div class="feed-post-item-following-name-container">
             <h1 class="is-size-5 feed-post-item-title">
                 <?= $this->Html->link(
                     $post->title,
@@ -32,13 +32,13 @@ use Cake\Utility\Hash;
                     ]
                 ); ?>
             </h1>
-            <div class="feed-post-item-friend-name-and-time">
+            <div class="feed-post-item-following-name-and-time">
                 <?= $this->Html->link(
-                    $post->friend->name,
-                    $post->friend->url,
+                    $post->following->name,
+                    $post->following->url,
                     [
                         'target' => '_blank',
-                        'class' => 'feed-post-item-friend-name'
+                        'class' => 'feed-post-item-following-name'
                     ]
                 ); ?>
                 <?php if (isset($post->author) && isset($post->author->name) && $post->author->name): ?>

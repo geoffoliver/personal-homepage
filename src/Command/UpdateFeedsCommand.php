@@ -36,18 +36,18 @@ class UpdateFeedsCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        // load up the friends model
-        $this->Friends = $this->fetchTable('Friends');
+        // load up the followings model
+        $this->Followings = $this->fetchTable('Followings');
         $this->FeedItems = $this->fetchTable('FeedItems');
 
-        // get all our friends
-        $friends = $this->Friends->find()
+        // get all our followings
+        $followings = $this->Followings->find()
             // ->where(['id' => 'db431abe-e28f-4155-9533-fa3172506004'])
             ->all();
 
-        foreach ($friends as $friend) {
-            $io->out("Syncing feed for {$friend->name}");
-            $friend->syncFeed();
+        foreach ($followings as $following) {
+            $io->out("Syncing feed for {$following->name}");
+            $following->syncFeed();
         }
 
         $this->FeedItems->deleteAll([

@@ -6,11 +6,11 @@ main form select {
   width: 100%;
 }
 
-.add-friend-fields {
+.add-following-fields {
   position: relative;
 }
 
-#addFriendFieldOverlay {
+#addFollowingFieldOverlay {
   position: absolute;
   z-index: 10;
   left: 0;
@@ -24,6 +24,6 @@ main form select {
   font-size: 1.5rem;
 }
 
-#addFriendFieldOverlay svg {
+#addFollowingFieldOverlay svg {
   margin-right: 10px;
 }

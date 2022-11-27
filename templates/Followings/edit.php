@@ -1,12 +1,12 @@
 <?php
-$this->assign('title', __('Edit Friend'));
-$this->assign('css', $this->Html->css('friends/add.css'));
+$this->assign('title', __('Edit Follow'));
+$this->assign('css', $this->Html->css('followings/add.css'));
 ?>
-<section class="section" id="editFriendPage">
+<section class="section" id="editFollowPage">
     <div class="container">
         <div class="columns">
             <div class="column is-three-fifths is-offset-one-fifth">
-                <h1 class="is-size-3"><?= __('Edit Friend'); ?></h1>
+                <h1 class="is-size-3"><?= __('Edit Follow'); ?></h1>
                 <?php
                     echo $this->Form->create();
                         echo $this->Form->control(
@@ -15,7 +15,7 @@ $this->assign('css', $this->Html->css('friends/add.css'));
                                 'label' => __('Website URL'),
                                 'type' => 'url',
                                 'required' => true,
-                                'value' => $friend->url
+                                'value' => $following->url
                             ]
                         );
                         echo $this->Form->control(
@@ -24,7 +24,7 @@ $this->assign('css', $this->Html->css('friends/add.css'));
                                 'label' => __('Name'),
                                 'type' => 'text',
                                 'required' => true,
-                                'value' => $friend->name
+                                'value' => $following->name
                             ]
                         );
                         // echo $this->Form->control(
@@ -32,7 +32,7 @@ $this->assign('css', $this->Html->css('friends/add.css'));
                         //     [
                         //         'label' => __('Description'),
                         //         'type' => 'textarea',
-                        //         'value' => $friend->description
+                        //         'value' => $following->description
                         //     ]
                         // );
                         echo $this->Form->control(
@@ -41,7 +41,7 @@ $this->assign('css', $this->Html->css('friends/add.css'));
                                 'label' => __('Feed URL'),
                                 'type' => 'text',
                                 'required' => true,
-                                'value' => $friend->feed_url
+                                'value' => $following->feed_url
                             ]
                         );
                         echo $this->Form->control(
@@ -49,11 +49,11 @@ $this->assign('css', $this->Html->css('friends/add.css'));
                             [
                                 'label' => __('Icon'),
                                 'type' => 'text',
-                                'value' => $friend->icon
+                                'value' => $following->icon
                             ]
                         );
                         echo $this->Form->button(
-                            __('Save Friend'),
+                            __('Save Follow'),
                             [
                                 'type' => 'submit',
                                 'class' => 'button is-dark'

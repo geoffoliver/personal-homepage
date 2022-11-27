@@ -46,7 +46,7 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
         ]
     );
 
-    // news feed (posts from your friends)
+    // news feed (posts from your followings)
     $rbRoutes->connect('/feed',
         [
             'controller' => 'Homepage',
@@ -123,13 +123,13 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
         ]
     );
 
-    $rbRoutes->connect('/friends',
+    $rbRoutes->connect('/following',
         [
-            'controller' => 'Friends',
+            'controller' => 'Followings',
             'action' => 'index'
         ],
         [
-            '_name' => 'friends',
+            '_name' => 'followings',
         ]
     );
 
@@ -255,7 +255,7 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
     $controllers = [
         'Albums' => 'albums',
         'Comments' => 'comments',
-        'Friends' => 'friends',
+        'Followings' => 'following',
         'Medias' => 'medias',
         'Posts' => 'posts',
         'Settings' => 'settings',

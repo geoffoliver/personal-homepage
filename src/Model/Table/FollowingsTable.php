@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Friends Model
+ * Followings Model
  *
- * @method \App\Model\Entity\Friend get($primaryKey, $options = [])
- * @method \App\Model\Entity\Friend newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Friend[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Friend|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Friend saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Friend patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Friend[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Friend findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Following get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Following newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Following[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Following|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Following saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Following patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Following[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Following findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class FriendsTable extends Table
+class FollowingsTable extends Table
 {
     /**
      * Initialize method
@@ -32,7 +32,7 @@ class FriendsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('friends');
+        $this->setTable('followings');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 

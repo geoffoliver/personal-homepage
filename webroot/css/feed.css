@@ -48,12 +48,12 @@ feed-post-item.is-read {
   background: #f5f5f5;
 }
 
-.feed-post-item-friend-name-container {
+.feed-post-item-following-name-container {
   padding-left: 15px;
   width: calc(100% - 48px);
 }
 
-.feed-post-item-friend-name-and-time {
+.feed-post-item-following-name-and-time {
   font-size: 0.75rem;
   color: #666;
 }
@@ -62,7 +62,7 @@ feed-post-item.is-read {
   margin-bottom: 0.25rem !important;
 }
 
-.feed-post-item-header .friend-icon {
+.feed-post-item-header .following-icon {
   margin: 0 !important;
   width: 48px;
 }
@@ -97,7 +97,7 @@ feed-post-item.is-read {
   padding: 16px;
 }
 
-.friends-list {
+.followings-list {
   list-style: none !important;
   margin: 15px 0 0 0 !important;
   padding: 0;
@@ -106,21 +106,21 @@ feed-post-item.is-read {
   top: 57px;
 }
 
-.friends-list li {
+.followings-list li {
   padding: 0 !important;
   margin: 0 !important;
 }
 
-.friends-list li  + li {
+.followings-list li  + li {
   border-top: 1px solid #ccc;
 }
 
-.friends-list li a {
+.followings-list li a {
   display: block;
   padding: 6px 12px;
 }
 
-.friends-list a.active {
+.followings-list a.active {
   font-weight: bold;
   background: #eff5fb;
 }

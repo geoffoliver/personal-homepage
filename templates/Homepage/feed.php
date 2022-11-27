@@ -8,8 +8,8 @@ $this->assign('title', __('My Feed'));
 
 $ajaxUrl = '/homepage/ajax-feed';
 
-if ($friendId) {
-    $ajaxUrl .= '?friend=' . $friendId;
+if ($followingId) {
+    $ajaxUrl .= '?following=' . $followingId;
 }
 
 $this->append('css', $this->Html->css('feed.css'));
@@ -27,7 +27,7 @@ $this->append('script', $this->Html->scriptBlock("(function() {
 ?>
 <div class="columns">
     <div class="column is-one-quarter">
-        <ul class="friends-list">
+        <ul class="following-list">
             <li>
                 <?= $this->Html->link(
                     __('All Feeds'),
@@ -35,17 +35,17 @@ $this->append('script', $this->Html->scriptBlock("(function() {
                         '_name' => 'feed'
                     ],
                     [
-                        'class' => !$friendId ? 'active' : null,
+                        'class' => !$followingId ? 'active' : null,
                     ]
                 ); ?>
             </li>
-            <?php foreach($friends as $friend): ?>
+            <?php foreach($followings as $following): ?>
                 <li>
                     <a
-                        href="<?= $this->Url->build(['_name' => 'friendFeed', 'friend_id' => $friend->id]); ?>"
-                        <?= $friend->id === $friendId ? 'class="active"' : '' ?>
+                        href="<?= $this->Url->build(['_name' => 'followingFeed', 'following_id' => $following->id]); ?>"
+                        <?= $following->id === $followingId ? 'class="active"' : '' ?>
                     >
-                        <?= $friend->name; ?>
+                        <?= $following->name; ?>
                     </a>
                 </li>
             <?php endforeach; ?>

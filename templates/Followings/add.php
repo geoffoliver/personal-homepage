@@ -1,13 +1,13 @@
 <?php
-$this->assign('title', __('Add Friend'));
-$this->assign('css', $this->Html->css('friends/add.css'));
+$this->assign('title', __('Add Follow'));
+$this->assign('css', $this->Html->css('followings/add.css'));
 $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
 ?>
-<section class="section" id="addFriendPage">
+<section class="section" id="addFollowPage">
     <div class="container">
         <div class="columns">
             <div class="column is-three-fifths is-offset-one-fifth">
-                <h1 class="is-size-3"><?= __('Add Friend'); ?></h1>
+                <h1 class="is-size-3"><?= __('Add Follow'); ?></h1>
                 <?php
                     echo $this->Form->create();
                         echo $this->Form->control(
@@ -19,13 +19,13 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
                                 'templateVars' => [
                                     'help' => $this->Html->para(
                                         'help',
-                                        __('Paste/enter the URL to your friend\'s website and we will try to fill out the rest of the fields automatically.')
+                                        __('Paste/enter the URL to the website you want to follow and we will try to fill out the rest of the fields automatically.')
                                     )
                                 ]
                             ]
                         );
                 ?>
-                <div class="add-friend-fields">
+                <div class="add-follow-fields">
                 <?php
                         echo $this->Form->control(
                             'name',
@@ -60,13 +60,13 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
                             ]
                         );
                 ?>
-                    <div id="addFriendFieldOverlay" style="display: none;">
+                    <div id="addFollowFieldOverlay" style="display: none;">
                         <span class="fas fa-spin fa-spinner"></span> Loading...
                     </div>
                 </div>
                 <?php
                         echo $this->Form->button(
-                            __('Add Friend'),
+                            __('Add Follow'),
                             [
                                 'type' => 'submit',
                                 'class' => 'button is-dark'
@@ -85,7 +85,7 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
     };
 
     var url = $('url');
-    var overlay = $('addFriendFieldOverlay');
+    var overlay = $('addFollowFieldOverlay');
 
     $('feed-url').closest('.field').classList.add('hidden');
     $('icon').closest('.field').classList.add('hidden');
@@ -99,7 +99,7 @@ $this->append('script', $this->Html->script('lib/nanoajax/nanoajax.min.js'));
         overlay.style.display = null;
 
         nanoajax.ajax({
-            url: "/friends/fetch-details.json",
+            url: "/following/fetch-details.json",
             method: "POST",
             body: "url=" + urlValue,
             responseType: "json",

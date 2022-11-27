@@ -7,7 +7,7 @@ use App\Lib\FeedParser;
 use App\Model\Table\FeedItemsTable;
 
 /**
- * Friend Entity
+ * Following Entity
  *
  * @property string $id
  * @property string $url
@@ -19,7 +19,7 @@ use App\Model\Table\FeedItemsTable;
  * @property \Cake\I18n\FrozenTime $modified
  */
 
-class Friend extends Entity
+class Following extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -51,7 +51,7 @@ class Friend extends Entity
 
     public function syncFeed()
     {
-        // get the feed for the friend
+        // get the feed for the followed site
         $feed = $this->getFeed(false);
         $feedItems = new FeedItemsTable();
 
@@ -70,7 +70,7 @@ class Friend extends Entity
                 }
 
                 $feedItem = $feedItems->newEntity([
-                    'friend_id' => $this->id,
+                    'following_id' => $this->id,
                     'title' => $item->title,
                     'summary' => isset($item->summary) ? $item->summary : null,
                     'url' => $item->url,

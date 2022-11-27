@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
 /**
  * FeedItems Model
  *
- * @property \App\Model\Table\FriendsTable&\Cake\ORM\Association\BelongsTo $Friends
+ * @property \App\Model\Table\FollowingsTable&\Cake\ORM\Association\BelongsTo $Followings
  *
  * @method \App\Model\Entity\FeedItem newEmptyEntity()
  * @method \App\Model\Entity\FeedItem newEntity(array $data, array $options = [])
@@ -47,8 +47,8 @@ class FeedItemsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Friends', [
-            'foreignKey' => 'friend_id',
+        $this->belongsTo('Followings', [
+            'foreignKey' => 'following_id',
             'joinType' => 'INNER',
         ]);
     }
@@ -62,9 +62,9 @@ class FeedItemsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->uuid('friend_id')
-            ->requirePresence('friend_id', 'create')
-            ->notEmptyString('friend_id');
+            ->uuid('following_id')
+            ->requirePresence('following_id', 'create')
+            ->notEmptyString('following_id');
 
         $validator
             ->scalar('title')
@@ -122,7 +122,7 @@ class FeedItemsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('friend_id', 'Friends'), ['errorField' => 'friend_id']);
+        $rules->add($rules->existsIn('following_id', 'Followings'), ['errorField' => 'following_id']);
 
         return $rules;
     }

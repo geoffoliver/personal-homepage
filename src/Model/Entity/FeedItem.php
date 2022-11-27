@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * FeedItem Entity
  *
  * @property string $id
- * @property string $friend_id
+ * @property string $following_id
  * @property string $title
  * @property string|null $summary
  * @property string $url
@@ -23,7 +23,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\Friend $friend
+ * @property \App\Model\Entity\Following $following
  */
 class FeedItem extends Entity
 {
@@ -37,7 +37,7 @@ class FeedItem extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'friend_id' => true,
+        'following_id' => true,
         'title' => true,
         'summary' => true,
         'url' => true,
@@ -50,6 +50,6 @@ class FeedItem extends Entity
         'date_modified' => true,
         'created' => true,
         'modified' => true,
-        'friend' => true,
+        'following' => true,
     ];
 }

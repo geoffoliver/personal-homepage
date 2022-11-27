@@ -1,12 +1,12 @@
 <?php
-if (!$hasFriends) {
+if (!$hasFollowings) {
     echo $this->Html->div('box',
         implode('<br>', [
-            __('You don\'t have any friends setup!'),
+            __('You aren\'t following anybody!'),
             $this->Html->link(
-                __('Add Friend'),
+                __('Add Following'),
                 [
-                    'controller' => 'Friends',
+                    'controller' => 'Followings',
                     'action' => 'add'
                 ]
             )

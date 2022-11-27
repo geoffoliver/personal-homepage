@@ -24,9 +24,9 @@ $routeName = $this->request->getParam('_name') ? $this->request->getParam('_name
         <div class="navbar-end">
             <?php
                 echo $this->Html->link(
-                    __('Friends'),
-                    ['_name' => 'friends'],
-                    ['class' => 'navbar-item ' . ($routeName === 'friends' ? 'is-active' : '')]
+                    __('Following'),
+                    ['_name' => 'followings'],
+                    ['class' => 'navbar-item ' . ($routeName === 'followings' ? 'is-active' : '')]
                 );
                 echo $this->Html->link(
                     __('About'),

@@ -7,10 +7,10 @@ use Cake\Cache\Cache;
 use Cake\Http\Client;
 use Cake\Utility\Hash;
 
-class FriendsController extends AppController
+class FollowingsController extends AppController
 {
     public $paginate = [
-        'Friends' => [
+        'Followings' => [
             'order' => [
                 'name' => 'ASC',
                 'created' => 'DESC'
@@ -22,69 +22,69 @@ class FriendsController extends AppController
     {
         parent::initialize();
 
-        // allow unauthed users to view friend list and friend icons
+        // allow unauthed users to view following list and following icons
         $this->Authentication->allowUnauthenticated(['index', 'icon']);
     }
 
     public function index()
     {
-        // get all of our friends
-        $friends = $this->Friends->find()
+        // get all of our followings
+        $followings = $this->Followings->find()
             ->order([
-                'Friends.name' => 'ASC',
-                'Friends.created' => 'ASC'
+                'Followings.name' => 'ASC',
+                'Followings.created' => 'ASC'
             ])
             ->all();
 
         // done
         $this->set([
-            'friends' => $friends,
+            'followings' => $followings,
             'user' => $this->request->getAttribute('identity')
         ]);
     }
 
     public function add()
     {
-        $friend = $this->Friends->newEmptyEntity();
+        $following = $this->Followings->newEmptyEntity();
 
         if ($this->request->is('post')) {
-            $friend = $this->Friends->patchEntity($friend, $this->request->getData());
-            if ($this->Friends->save($friend)) {
-                $this->Flash->success(__('The friend has been saved.'));
+            $following = $this->Followings->patchEntity($following, $this->request->getData());
+            if ($this->Followings->save($following)) {
+                $this->Flash->success(__('The following has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->Flash->error(__('The friend could not be saved. Please, try again.'));
+            $this->Flash->error(__('The following could not be saved. Please, try again.'));
         }
-        $this->set(compact('friend'));
+        $this->set(compact('following'));
     }
 
     public function edit($id = null)
     {
-        $friend = $this->Friends->get($id, [
+        $following = $this->Followings->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $friend = $this->Friends->patchEntity($friend, $this->request->getData());
-            if ($this->Friends->save($friend)) {
+            $following = $this->Followings->patchEntity($following, $this->request->getData());
+            if ($this->Followings->save($following)) {
                 Cache::delete($id, 'icons');
-                $this->Flash->success(__('The friend has been saved.'));
+                $this->Flash->success(__('The following has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The friend could not be saved. Please, try again.'));
+            $this->Flash->error(__('The following could not be saved. Please, try again.'));
         }
-        $this->set(compact('friend'));
+        $this->set(compact('following'));
     }
 
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $friend = $this->Friends->get($id);
-        if ($this->Friends->delete($friend)) {
-            $this->Flash->success(__('The friend has been deleted.'));
+        $following = $this->Followings->get($id);
+        if ($this->Followings->delete($following)) {
+            $this->Flash->success(__('The following has been deleted.'));
         } else {
-            $this->Flash->error(__('The friend could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The following could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -125,17 +125,17 @@ class FriendsController extends AppController
 
     public function icon($id, $update = false)
     {
-        $friend = $this->Friends->get($id);
+        $following = $this->Followings->get($id);
 
-        // make sure we're trying to see an icon for a friend that exists
-        if (!$friend) {
-            throw new \Exception('Invalid friend');
+        // make sure we're trying to see an icon for a following that exists
+        if (!$following) {
+            throw new \Exception('Invalid following');
         }
 
-        $icon = Cache::read($friend->id, 'icons');
+        $icon = Cache::read($following->id, 'icons');
 
-        // make sure the friend has an icon
-        if ($friend->icon) {
+        // make sure the following has an icon
+        if ($following->icon) {
             // if we're not asking to update, check if we _should_ update because
             // the icon is too old
             if (!$update) {
@@ -145,15 +145,15 @@ class FriendsController extends AppController
             // should we update the icon?
             if ($update) {
                 // try it out!
-                if ($newIcon = @file_get_contents($friend->icon)) {
+                if ($newIcon = @file_get_contents($following->icon)) {
                     $icon = $newIcon;
-                    Cache::write($friend->id, $icon, 'icons');
+                    Cache::write($following->id, $icon, 'icons');
                 }
             }
 
             if ($icon) {
                 // try to figure out the type we should send
-                $basename = basename($friend->icon);
+                $basename = basename($following->icon);
                 $parts = explode('?', $basename);
 
                 $iconName = $parts[0];
@@ -169,14 +169,14 @@ class FriendsController extends AppController
                     }
                 }
 
-                // try to return the icon for the friend
+                // try to return the icon for the following
                 return $this->response->withStringBody($icon);
             }
         }
 
-        // if we're still here, just display a random icon for the friend
+        // if we're still here, just display a random icon for the following
         $icon = new \Jdenticon\Identicon();
-        $icon->setValue($friend->id);
+        $icon->setValue($following->id);
         $icon->setSize(64);
         $icon->displayImage('png');
         exit();
