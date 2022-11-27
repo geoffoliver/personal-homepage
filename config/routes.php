@@ -57,15 +57,15 @@ $routes->scope('/', function (RouteBuilder $rbRoutes) {
         ]
     );
 
-    $rbRoutes->connect('/feed/{friend_id}',
+    $rbRoutes->connect('/feed/{following_id}',
         [
             'controller' => 'Homepage',
             'action' => 'feed'
         ],
         [
-            '_name' => 'friendFeed'
+            '_name' => 'followingFeed'
         ]
-    )->setPass(['friend_id']);
+    )->setPass(['following_id']);
 
     $rbRoutes->connect('/feed-item/read/{id}',
         [
