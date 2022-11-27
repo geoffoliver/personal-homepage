@@ -111,13 +111,21 @@ feed-post-item.is-read {
   margin: 0 !important;
 }
 
+.following-list li .image {
+  display: inline;
+  margin-right: 5px;
+  flex-shrink: 0;
+}
+
 .following-list li  + li {
   border-top: 1px solid #ccc;
 }
 
 .following-list li a {
-  display: block;
+  display: flex;
   padding: 6px 12px;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .following-list a.active {

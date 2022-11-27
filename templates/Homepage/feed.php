@@ -45,6 +45,16 @@ $this->append('script', $this->Html->scriptBlock("(function() {
                         href="<?= $this->Url->build(['_name' => 'followingFeed', 'following_id' => $following->id]); ?>"
                         <?= $following->id === $followingId ? 'class="active"' : '' ?>
                     >
+                        <div class="image is-16x16">
+                            <?= $this->Html->image(
+                                $this->Url->build([
+                                    'controller' => 'Followings',
+                                    'action' => 'icon',
+                                    $following->id
+                                ]),
+                                ['class' => 'is-rounded']
+                            ); ?>
+                        </div>
                         <?= $following->name; ?>
                     </a>
                 </li>
