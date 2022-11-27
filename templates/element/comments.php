@@ -28,7 +28,13 @@ $email = $this->Identity->get('email') ? $this->Identity->get('email') : (isset(
                     <div class="comment">
                         <div class="comment-info">
                             <div class="commenter-name">
-                                <?= $comment->display_name; ?>
+                                <?php if ($comment->url): ?>
+                                    <a href="<?= $comment->url; ?>" target="_blank" rel="noopener noreferrer">
+                                        <?= $comment->display_name; ?>
+                                    </a>
+                                <?php else: ?>
+                                    <?= $comment->display_name; ?>
+                                <?php endif; ?>
                             </div>
                             <time>
                                 <?= $comment->created->setTimezone(Hash::get($settings, 'timezone'))->format(Hash::get($settings, 'time-format')); ?>
