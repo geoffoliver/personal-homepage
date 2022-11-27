@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Cache\Cache;
+use Cake\Utility\Hash;
 
 class HomepageController extends AppController
 {
@@ -37,9 +37,6 @@ class HomepageController extends AppController
 
         // everybody should be able to see the homepage
         $this->Authentication->allowUnauthenticated(['index']);
-
-        // there is no 'Homepage' model so...
-        $this->modelClass = false;
     }
 
     public function index($tag = null)
@@ -105,9 +102,13 @@ class HomepageController extends AppController
 
         $page = (int) $page;
 
-        $where = [
-            'is_read' => false
-        ];
+        $where = null;
+
+        if (Hash::get($this->settings, 'hide-read')) {
+           $where = [
+                'is_read' => false
+            ];
+        }
 
         $followingId = $this->request->getQuery('following');
         if ($followingId) {

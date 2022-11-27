@@ -455,6 +455,13 @@ pre .hljs {
 }
 
 /**
+ * Fix checkboxes
+ */
+label input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/**
  * Lazyload images
  */
 img {
@@ -504,22 +511,6 @@ img {
 .pf-oembed > blockquote {
   width: 100%;
 }
-
-/*
-.pf-oembed.with-iframe {
-  position: relative;
-  padding-top: 56.25%;
-  overflow: hidden;
-}
-
-.pf-oembed.with-iframe iframe {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-*/
 
 .pf-oembed twitter-widget {
   margin: 0 auto;

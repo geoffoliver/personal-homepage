@@ -26,6 +26,7 @@
       const rect = item.getBoundingClientRect();
       const bottom = rect.bottom;
 
+
       if (bottom > 0) {
         return;
       }

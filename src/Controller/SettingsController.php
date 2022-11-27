@@ -111,10 +111,16 @@ class SettingsController extends AppController
             // yay!
             $this->Flash->success(__('Settings updated.'));
         } else {
-            var_dump($settings);
-            die();
             // boooo!!
-            $this->Flash->error(__('Unable to update settings.'));
+            $errs = [];
+            foreach ($settings as $s) {
+                $errors = $s->getErrors();
+                if (!$errors) {
+                    continue;
+                }
+                $errs[$s->name] = $errors;
+            }
+            $this->Flash->error(__('Unable to update settings. Errors: ' . print_r($errs, true)));
         }
 
         // later, gator

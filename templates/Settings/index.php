@@ -131,6 +131,14 @@ $this->assign('title', __('Settings'));
                     'type' => 'text',
                     'value' => Hash::get($settings, 'time-format', 'F j, Y \a\t g:i a')
                 ]);
+
+                echo '<label class="label" >Read Posts</label>';
+                echo $this->Form->control('hide-read', [
+                    'label' => __('Hide read posts from feed'),
+                    'type' => 'checkbox',
+                    'checked' => Hash::get($settings, 'hide-read', false) === '1'
+                ]);
+
             ?>
             <hr />
             <div class="field">
