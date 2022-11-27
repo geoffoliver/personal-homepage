@@ -55,9 +55,18 @@ class Following extends Entity
         $feed = $this->getFeed(false);
         $feedItems = new FeedItemsTable();
 
+        // keep track of how many feed items we find
+        $found = 0;
+        // if we find this many existing items, we'll stop working
+        $maxToFind = 5;
+
         // if we've got a feed and it looks good...
         if ($feed && isset($feed->items) && $feed->items) {
             foreach ($feed->items as $item) {
+                if ($found >= $maxToFind) {
+                    break;
+                }
+
                 $existing = $feedItems->find()
                     ->where([
                         'url' => $item->url,
@@ -66,6 +75,7 @@ class Following extends Entity
 
                 // if we already know about this, no need to re-add it... maybe.
                 if ($existing) {
+                    $found++;
                     continue;
                 }
 

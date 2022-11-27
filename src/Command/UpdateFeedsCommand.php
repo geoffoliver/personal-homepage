@@ -42,16 +42,36 @@ class UpdateFeedsCommand extends Command
 
         // get all our followings
         $followings = $this->Followings->find()
-            // ->where(['id' => 'db431abe-e28f-4155-9533-fa3172506004'])
             ->all();
 
+        $start = microtime(true);
+
+        $ts = date('Y-m-d H:i:s');
+        $io->out("Syncing feeds at {$ts}");
+
         foreach ($followings as $following) {
-            $io->out("Syncing feed for {$following->name}");
+            $io->out("Syncing feed for {$following->name}...");
+            $s = microtime(true);
+
             $following->syncFeed();
+
+            $e = microtime(true);
+            $ms = $e - $s;
+            $io->out("Took {$ms} seconds");
         }
+
+        $now = microtime(true);
+
+        $ms = $now - $start;
+        $io->out("Synced all feeds in {$ms} seconds");
 
         $this->FeedItems->deleteAll([
             'created <=' => date('Y-m-d', strtotime('-30 days')),
         ]);
+
+        $now = microtime(true);
+
+        $ms = $now - $start;
+        $io->out("Finished in {$ms} seconds");
     }
 }
