@@ -227,15 +227,15 @@ class ProcessWebmentionsCommand extends Command
         // Overwrite default content based on post type.
         switch ($postType) {
             case 'bookmark':
-                $comment = 'bookmarked this!';
+                $comment = __('This post was bookmarked.');
                 break;
 
             case 'like':
-                $comment = 'liked this!';
+                $comment = __('This post was liked.');
                 break;
 
             case 'repost':
-                $comment = 'reposted this!';
+                $comment = __('This post was reposted.');
                 break;
 
             case 'mention':
