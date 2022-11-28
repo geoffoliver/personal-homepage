@@ -18,9 +18,9 @@ if (!$hasFollowings) {
 
 if (count($posts) === 0) {
     if ($this->request->getQuery('page')) {
-        echo $this->Html->div('box', __('There are no more posts to display.'));
+        echo $this->Html->div('mt-4 box', __('There are no more posts to display.'));
     } else {
-        echo $this->Html->div('box', __('There are no posts to display.'));
+        echo $this->Html->div('mt-4 box', __('There are no posts to display.'));
     }
     return;
 }
