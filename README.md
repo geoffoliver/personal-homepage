@@ -179,10 +179,4 @@ _not_ part of what ships with Cake.
 
 # TODO
 
--Password reset
--Editing media details on add/edit post
--Themes
--[Web sign-in](https://indieweb.org/How_to_set_up_web_sign-in_on_your_own_domain)
--[Webmentions](https://indieweb.org/Webmention)
--[Add Microformats](https://indieweb.org/Getting_Started#Add_microformats_to_your_content)
--[]
+[See TODO](TODO.md)
