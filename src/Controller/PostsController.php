@@ -385,7 +385,9 @@ class PostsController extends AppController
             $nextUrl = Router::url([
                 '_name' => 'jsonFeed',
                 '_ext' => 'json',
-                'page' => $paging['page'] + 1
+                '?' => [
+                    'page' => $paging['page'] + 1
+                ],
             ], true);
         }
 
