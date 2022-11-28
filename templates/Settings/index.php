@@ -108,13 +108,6 @@ $this->assign('title', __('Settings'));
                     );
                 }
 
-                echo $this->Form->control('indieweb-me-links', [
-                    'label' => __('Indieweb "Me" links')  ,
-                    'type' => 'textarea',
-                    'value' => Hash::get($settings, 'indieweb-me-links'),
-                    'after' => 'Hey!'
-                ]);
-
                 echo '<hr />';
 
                 echo $this->Html->tag('h4', __('Other'), ['class' => 'title']);
@@ -130,6 +123,13 @@ $this->assign('title', __('Settings'));
                     'label' => __('Time Format'),
                     'type' => 'text',
                     'value' => Hash::get($settings, 'time-format', 'F j, Y \a\t g:i a')
+                ]);
+
+                echo $this->Form->control('indieweb-me-links', [
+                    'label' => __('Indieweb "Me" links')  ,
+                    'type' => 'textarea',
+                    'value' => Hash::get($settings, 'indieweb-me-links'),
+                    'after' => 'Hey!'
                 ]);
 
                 echo '<label class="label" >Read Posts</label>';
