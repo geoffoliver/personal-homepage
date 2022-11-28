@@ -14,9 +14,10 @@
 - [x] Mark feed items as read
 - [x] Tags
 - [x] Fix file uploads
-- [ ] Mark posts read when bottom is past halfway up the screen
+- [x] Mark posts read when bottom past the top of the screen
 - [ ] Soft delete posts
     - [ ] Return 410 (gone) for deleted posts (https://indieweb.org/deleted)
+- [ ] Update import commands to work with Cake4
 - [ ] Update import commands to support new `MediasTable::uploadAndCreate` method
 - [ ] Search
 - [ ] Make nav editable in settings

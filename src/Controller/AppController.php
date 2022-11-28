@@ -15,7 +15,6 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\Event\Event;
 
 /**
  * Application Controller
@@ -68,7 +67,7 @@ class AppController extends Controller
 
         foreach ($set as $s) {
             $this->settings[$s->name] = $s->value;
-        };
+        }
 
         $this->set('settings', $this->settings);
 
