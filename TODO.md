@@ -1,13 +1,17 @@
 # Definitely
 
 - [ ] Indieweb features
-    - [x] Webmentions
-    - [ ] Post types
-        - [ ] Reply (https://indieweb.org/in-reply-to)
-        - [ ] Like (https://indieweb.org/like)
-        - [ ] Bookmark (https://indieweb.org/bookmark)
-        - [ ] Repost (https://indieweb.org/repost)
-    - [ ] Send webmentions to brid.gy
+    - [x] Handle Webmentions
+      - [ ] Follow
+    - [ ] [Reply](https://indieweb.org/in-reply-to)
+    - [ ] [Like](https://indieweb.org/like)
+    - [ ] [Bookmark](https://indieweb.org/bookmark)
+    - [ ] [Repost](https://indieweb.org/repost)
+    - [ ] [Quotation](https://indieweb.org/quotation)
+    - [ ] [Follow](https://indieweb.org/follow)
+- [ ] ActivityPub features (https://w3.org/TR/activitypub)
+    - [Basic info here](https://blog.joinmastodon.org/2018/06/how-to-implement-a-basic-activitypub-server/)
+- [ ] Send webmentions to brid.gy
 - [x] Add option to posts to show embeds
 - [x] Edit embeds?
 - [x] Convert atom feed to RSS

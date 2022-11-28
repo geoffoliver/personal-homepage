@@ -24,65 +24,65 @@ class WebmentionsController extends AppController
      */
     public function add()
     {
-        $webmention = $this->Webmentions->newEmptyEntity();
+        if (!$this->request->is('post')) {
+            throw new \Exception('Invalid request');
+        }
 
-        if ($this->request->is('post')) {
-            $source = $this->request->getData('source');
-            $target = $this->request->getData('target');
+        $source = $this->request->getData('source');
+        $target = $this->request->getData('target');
 
-            if (!$source) {
-                throw new \Cake\Http\Exception\BadRequestException('Missing source');
+        if (!$source) {
+            throw new \Cake\Http\Exception\BadRequestException('Missing source');
+        }
+
+        if (!$target) {
+            throw new \Cake\Http\Exception\BadRequestException('Missing target');
+        }
+
+        $protocol = 'http';
+        $hostname = env('HTTP_HOST');
+        if (env('HTTPS')) {
+            $protocol .= 's';
+        }
+
+        $domain = $protocol . '://' . $hostname;
+
+        if (parse_url($target, PHP_URL_HOST) !== parse_url($domain, PHP_URL_HOST)) {
+            throw new \Cake\Http\Exception\BadRequestException('Bad request');
+        }
+
+        // make sure target actually exists
+        $parsed = parse_url($target);
+        $parts = $parsed['path'] ? explode('/', trim($parsed['path'], '/')) : [];
+        $partsCount = count($parts);
+
+        if ($partsCount >= 2) {
+            $id = $parts[$partsCount - 1];
+            $type = $parts[$partsCount - 2];
+
+            if ($type === 'view' && $partsCount >= 3) {
+                $type = $parts[$partsCount - 3];
             }
 
-            if (!$target) {
-                throw new \Cake\Http\Exception\BadRequestException('Missing target');
-            }
+            if ($id && $type) {
+                $postOrMedia = false;
 
-            $protocol = 'http';
-            $hostname = env('HTTP_HOST');
-            if (env('HTTPS')) {
-                $protocol .= 's';
-            }
-
-            $domain = $protocol . '://' . $hostname;
-
-            if (parse_url($target, PHP_URL_HOST) !== parse_url($domain, PHP_URL_HOST)) {
-                throw new \Cake\Http\Exception\BadRequestException('Bad request');
-            }
-
-            // make sure target actually exists
-            $parsed = parse_url($target);
-            $parts = $parsed['path'] ? explode('/', trim($parsed['path'], '/')) : [];
-            $partsCount = count($parts);
-
-            if ($partsCount >= 2) {
-                $id = $parts[$partsCount - 1];
-                $type = $parts[$partsCount - 2];
-
-                if ($type === 'view' && $partsCount >= 3) {
-                    $type = $parts[$partsCount - 3];
+                if ($type === 'view-post' || $type === 'post') {
+                    $type = 'post';
+                    $postOrMedia = $this->fetchTable('Posts')->findById($id);
+                } else if ($type === 'view-media' || $type === 'media') {
+                    $type = 'media';
+                    $postOrMedia = $this->fetchTable('Medias')->findById($id);
                 }
 
-                if ($id && $type) {
-                    $postOrMedia = false;
-
-                    if ($type === 'view-post' || $type === 'post') {
-                        $type = 'post';
-                        $postOrMedia = $this->fetchTable('Posts')->findById($id);
-                    } else if ($type === 'view-media' || $type === 'media') {
-                        $type = 'media';
-                        $postOrMedia = $this->fetchTable('Medias')->findById($id);
-                    }
-
-                    if ($postOrMedia) {
-                        $this->Webmentions->patchEntity($webmention, [
-                            'source' => $source,
-                            'target' => $target,
-                            'type' => $type,
-                            'type_id' => $id,
-                        ]);
-                        $this->Webmentions->save($webmention);
-                    }
+                if ($postOrMedia) {
+                    $webmention = $this->Webmentions->newEntity([
+                        'source' => $source,
+                        'target' => $target,
+                        'type' => $type,
+                        'type_id' => $id,
+                    ]);
+                    $this->Webmentions->save($webmention);
                 }
             }
         }
